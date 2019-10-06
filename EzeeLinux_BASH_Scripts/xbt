@@ -1,0 +1,165 @@
+#!/bin/bash
+
+# XBT -- External Backup Tool (v. 1.7) -- by Joe Collins (December 6th, 2017)
+#
+# Part of the EzeeLinux Bash Script Collection. www.ezeelinux.com
+#
+# A Script to create a snapshot backup of /etc and /home on a dedicated
+# external USB drive.
+#
+# ...And away we go!
+
+# Echo Help Page into less utility then exit:
+
+if [ "$1" == "--help" ]; then
+    less << _EOF_
+
+ XBT -- External Backup Tool -- Help Page
+ (v. 1.7)
+
+ Commands:
+
+ xbt = Makes an XBT backup.
+ xbt --help = Prints this help information.
+ xbt --restore = Fully restores system's /home directory.
+ q = Exit this Help Page.
+
+ Description:
+
+ XBT will update files that have changed, remove files that have been
+ deleted and add any new files that have been created since the last backup.
+ The initial backup can take a lot of time if you have a lot of data stored
+ in your system's /home directory. XBT creates a directory with the host name
+ of the machine it's backing up from inside XBT-Backups. This allows users to
+ share one XBT_Drive with multiple machines.
+
+ The directory structure and all files are stored openly to allow users easy
+ access if they only need to retrieve a few files or directories using a file
+ manager. Data from can be restored with the built in emergency "xbt restore"
+ command if the user wants to roll back to the exact state of /home when the
+ last backup was taken.
+
+ A simple log file is added to the XBT_Drive that shows when each
+ backup is taken and any errors that might occur. This file is appended
+ every time XBT is run. The Log file is placed in XBT-Backups.
+
+ Requirements:
+
+ XBT is designed to work with Ubuntu and Linux Mint but it should run
+ on many other Linux distributions. You need to prepare an XBT_Drive.
+ This can be any USB storage device. The dedicated USB drive must be
+ formatted to a Linux native file system such as Ext4 to ensure that file
+ permissions will be stored unchanged. The USB drive needs to have enough
+ free capacity to store all data in /home on all of the machines you want to
+ use the drive for. The drive MUST be labeled as "XBT_Drive" for the script to
+ run. If XBT_Drive is not detected, the script exits with an error.
+
+ Disclaimer:
+
+ THIS SOFTWARE IS PROVIDED BY EZEELINUX “AS IS” AND ANY EXPRESS OR IMPLIED
+ WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+ MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO
+ EVENT SHALL EZEELINUX BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL,
+ EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO,
+ PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR
+ BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER
+ IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+ ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
+ POSSIBILITY OF SUCH DAMAGE.
+
+_EOF_
+   exit
+fi
+
+# Check for valid backup media:
+
+if [ ! -d /media/"$USER"/XBT_Drive ]; then
+	echo "NO DRIVE FOUND! Please make sure XBT_Drive USB is connected."
+    exit 1
+fi
+
+# Tell 'em who we are:
+
+clear
+echo $'\n'$"XBT -- External Backup Tool (Version 1.7)"$'\n'
+
+# Make sure sudo is on:
+
+echo "Checking sudo permissions..."
+sudo ls >/dev/null
+
+# Check for "--restore" argument and run restore action if found then exit:
+
+if [ "$1" == "--restore" ]; then
+    echo $'\n'$"WARNING!"$'\n'
+    echo "Any new files created in /home since last backup WILL BE DELETED!"
+    echo "Are you sure you want to restore now? [y/N]"
+    read choice
+        if test "$choice" == "y"; then
+        read -p "Close any running applications and press Enter to continue."
+        echo $'\n'$"Restoring /home... Please DO NOT open any applications."
+        sudo rsync -aH --delete --info=progress2 \
+        /media/"$USER"/XBT_Drive/XBT_Backups/"$HOSTNAME"/Home_Backup/ \
+        /home/
+            if [ "$?" == "0" ]; then
+                echo $'\n'$"Restoration complete!"
+                echo "Wait! Syncing drives..."
+                sync
+                echo "...Done."
+                echo "It's now safe to remove XBT_Drive. Thanks for using XBT!"
+                echo "Restart machine for all changes to take effect."
+                exit
+            else
+                echo "XBT Error: Restoration FAILED! No valid backup directory."
+                exit 1
+            fi
+        else
+        echo "XBT restoration canceled."
+        exit
+        fi
+fi
+
+# Check for invalid arguments before running full backup:
+
+if  [ -n "$1"  ]; then
+    echo "XBT Error: Invalid argument. Try xbt, xbt --help or xbt --restore."
+    exit 1
+fi
+
+# Log file is created in /tmp:
+
+echo "Backup sent to XBT_Drive USB from $HOSTNAME by '$USER' on:" \
+> /tmp/backup.log
+date >> /tmp/backup.log
+echo "Errors:" >> /tmp/backup.log
+
+# BEGIN BACKUP OPERATIONS USING RSYNC:
+
+# Creating machine specific directories on XBT_Drive USB:
+
+mkdir -p /media/"$USER"/XBT_Drive/XBT_Backups/"$HOSTNAME"
+
+# Starting synchronization:
+
+echo $'\n'$"Backing up /etc..."
+sudo rsync -aH --delete --info=progress2 /etc/ \
+/media/"$USER"/XBT_Drive/XBT_Backups/"$HOSTNAME"/Etc_Backup/ 2>> /tmp/backup.log
+echo $'\n'$"Backing up /home..."
+sudo rsync -aH --delete --info=progress2 /home/ \
+/media/"$USER"/XBT_Drive/XBT_Backups/"$HOSTNAME"/Home_Backup/ 2>> /tmp/backup.log
+echo "--------------------
+-  All backed up!  -
+--------------------" | tee -a /tmp/backup.log
+
+# Log file is created or appended in XBT_Backups directory from /tmp:
+# (/tmp/backup.log will be removed from on next reboot.)
+
+cat /tmp/backup.log >> /media/"$USER"/XBT_Drive/XBT_Backups/xbt-backup.log
+
+# Writing all cached data to drives then exit:
+
+echo "Wait! Syncing drives..."
+sync
+echo "...Done.
+It's now safe to remove XBT_Drive. Thanks for using XBT!"$'\n'
+exit

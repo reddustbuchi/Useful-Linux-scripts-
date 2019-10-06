@@ -1,0 +1,15 @@
+#!/bin/bash
+
+# Advanced command to fully update system: "up"
+
+echo "Starting full system update..."
+echo "Checking sudo permissions..."
+sudo ls >/dev/null
+sudo apt update
+sudo apt dist-upgrade -yy
+sudo apt-get autoremove -yy
+sudo apt-get autoclean
+echo "--------------------"
+echo "- Update Complete! -"
+echo "--------------------"
+

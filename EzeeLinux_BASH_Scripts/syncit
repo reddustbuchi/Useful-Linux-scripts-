@@ -1,0 +1,58 @@
+#!/bin/bash
+
+# SyncIt - An alias to sync to local machines on SSH enabled network.
+# Put the last digits of the local IP as argument to sync directories.
+
+# Check for arguments before running script:
+
+if  [ -z "$1"  ]; then
+    echo "SyncIt Error: No argument. No host IP. You Suck!"
+    exit 1
+fi
+
+#  Declare unctions and variables:
+
+HOSTIP=$1
+
+transfer_status () {
+    # Exit script if transfer fails.
+    if [ "$?" != "0" ]; then
+        echo "SyncIt Error: Target host not available on network! Try again."
+        exit 1
+    fi
+}
+
+# Start syncing:
+
+echo $'\n'$"SyncIt: Synchronizing directories..."
+
+echo $'\n'$"Syncing Audio..."
+rsync -avz --delete /home/"$USER"/Audio/ 192.168.0."$HOSTIP":Audio/
+transfer_status
+
+echo $'\n'$"Syncing bin..."
+rsync -avz --delete /home/"$USER"/bin/ 192.168.0."$HOSTIP":bin/
+transfer_status
+
+echo $'\n'$"Syncing Documents..."
+rsync -avz --delete /home/"$USER"/Documents/ 192.168.0."$HOSTIP":Documents/
+transfer_status
+
+echo $'\n'$"Syncing Music..."
+rsync -avz --delete /home/"$USER"/Music/ 192.168.0."$HOSTIP":Music/
+transfer_status
+
+echo $'\n'$"Syncing Pictures..."
+rsync -avz --delete /home/"$USER"/Pictures/ 192.168.0."$HOSTIP":Pictures/
+transfer_status
+
+echo $'\n'$"Syncing Videos..."
+rsync -avz --delete /home/"$USER"/Videos/ 192.168.0."$HOSTIP":Videos/
+transfer_status
+
+echo "---------------------------
+- All directories synced! -
+---------------------------"
+
+exit
+
