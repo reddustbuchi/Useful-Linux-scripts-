@@ -1,0 +1,71 @@
+apt-get update && sudo apt-get upgrade -y && sudo apt dist-upgrade
+
+sudo apt-get -f install && sudo apt-get autoremove && sudo apt-get -y autoclean && sudo apt-get -y clean
+
+2222222222
+
+apt install pkg-config libnl-3-dev libnl-genl-3-dev libpcap-dev libcurl4-openssl-dev libssl-dev zlib1g-dev net-tools nmap nmap-common arp-scan arping arptables arpwatch fonts-roboto fonts-inconsolata fonts-firacode netdiscover wget gdebi gedit curl perl ruby git expect bully cowpatty beef-xss lighttpd hostapd hostapd-wpe reaver isc-dhcp-server python-pip python3-pip  dsniff crunch hashcat hashcat-utils  engrampa gnome-terminal gnome-terminal-data quake bleachbit xfce4-goodies debian-goodies jfsutils xfsprogs mtools lintian xorriso syslinux syslinux-common syslinux-utils  python-glade2 plymouth-x11 mokutil libglade2-0 dialog synaptic squashfs-tools audacious pavucontrol software-properties-common  autotools-dev bzr nodejs npm optipng x11-apps p7zip-full unrar tlp  powertop pciutils unace p7zip-rar sharutils arj lunzip lzip jq make gcc vim gitk gitg gnome-disk-utility apt gnome-terminal-dbgsym libtsm-dev libtsm3 nautilus-extension-gnome-terminal nautilus-extension-gnome-terminal-dbgsym thunar-archive-plugin thunar-data thunar-gtkhash libthunarx-3-0 libthunarx-3-dev libncap-dev xfce4-places-plugin wajig pcaputils libpcap-dev libpcap0.8 libpcap0.8-dbg libpcap0.8-dev hashcat hashcat-utils  beef mdk4 hcxtools hcxdumptool timeshift build-essential autoconf automake libtool ethtool shtool rfkill zlib1g-dev libsqlite3-dev libpcre3-dev libhwloc-dev libcmocka-dev wpasupplicant tcpdump screen iw usbutils libpcap-dev pixiewps git bc php-cgi
+
+
+
+sudo bash -c "echo 'vm.swappiness = 10' >> /etc/sysctl.conf"
+
+deb https://mirrors.ocf.berkeley.edu/kali kali-rolling main non-free contrib
+# deb-src https://mirrors.ocf.berkeley.edu/kali kali-rolling main non-free cont
+
+sudo apt purge libreoffice-* remmina rhythmbox thunderbird shotwell gnome-sudoku gnome-mines gnome-mahjongg aisleriot hplip catfish clementine evolution focuswriter geany geary gimp inkscape openshot screenruler screenfetch caffeine gimp-data gimp-plugin-registry gimp-data-extras obs-studio
+
+tl-wr543g
+
+rdx3ibWD3ghrU1sFNUOEEsQMG6zV3lsz
+
+wirtualnebiuro.bydgoszcz.pl
+
+C:\Users\adam\AppData\Local\Packages\KaliLinux.54290C8133FEE_ey8k8hqnwqnmg
+
+udo add-apt-repository ppa:mikhailnov/pulseeffects -y
+sudo apt update
+sudo apt install pulseeffects pulseaudio --install-recommends
+
+sudo add-apt-repository ppa:nilarimogard/webupd8
+sudo apt-get update
+sudo apt-get install pulseaudio-equalizer
+
+UBUNTU: 
+
+sudo apt install pkg-config wget gdebi gedit curl perl ruby git python-pip python3-pip gnome-terminal-data ntfs-3g xfsprogs mtools syslinux syslinux-common syslinux-utils synaptic squashfs-tools audacious pavucontrol software-properties-common p7zip-full unrar pciutils unace p7zip-rar make gcc gnome-disk-utility apt libtsm-dev libtsm3 nautilus-extension-gnome-terminal wajig autoconf automake libtool bc timeshift engrampa 
+
+
+cd /tmp/
+
+wget -c https://kernel.ubuntu.com/~kernel-ppa/mainline/v5.3/linux-headers-5.3.0-050300_5.3.0-050300.201909152230_all.deb
+
+wget -c https://kernel.ubuntu.com/~kernel-ppa/mainline/v5.3/linux-headers-5.3.0-050300-generic_5.3.0-050300.201909152230_amd64.deb
+
+wget -c https://kernel.ubuntu.com/~kernel-ppa/mainline/v5.3/linux-image-unsigned-5.3.0-050300-generic_5.3.0-050300.201909152230_amd64.deb
+
+wget -c https://kernel.ubuntu.com/~kernel-ppa/mainline/v5.3/linux-modules-5.3.0-050300-generic_5.3.0-050300.201909152230_amd64.deb
+
+sudo dpkg -i *.deb
+sudo apt install thermald lm-sensors libsensors4-dev mrtgutils-sensors fancontrol read-edid i2c-tools intel-microcode amd64-microcode make gcc cpu-checker powertop cpufrequtils cpufreqd numlockx 
+
+sudo add-apt-repository ppa:webupd8team/y-ppa-manager
+
+sudo apt-add-repository -y ppa:teejee2008/ppa
+wget https://atom-installer.github.com/v1.39.1/atom-amd64.deb
+dpkg -i  atom-amd64.deb
+wget https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb
+sudo dpkg -i google-chrome-stable_current_amd64.deb
+
+sudo add-apt-repository ppa:noobslab/macbuntu
+sudo apt-get update
+sudo apt-get install macbuntu-os-icons-v1804 macbuntu-os-ithemes-v1804
+
+LAN
+00-21-27-E6-97-97-64
+196.168.1.1
+255.255.255.0
+
+WIRELESS
+
+00-21-27-E6-97-64
