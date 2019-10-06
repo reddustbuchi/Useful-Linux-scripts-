@@ -1,0 +1,41 @@
+A3-8W6ZV3-QS8APD-V3Y55-WSYPY-2ZK36-7LMT3
+
+https://github.com/erikdubois/ArchMate
+
+sudo pacman-db-upgrade && sync
+sudo pacman -Syu
+
+sudo pacman -S git wget curl python-pip 
+
+git clone https://aur.archlinux.org/yay.git
+cd yay
+makepkg -si 
+
+sudo pacman -S vlc file-roller zlib p7zip unzip zip zziplib zsh vim binutils make curl gcc fakeroot — noconfirm — needed
+
+yay -S atom-editor
+sudo systemctl enable fstrim.timer
+
+sudo nano /etc/sysctl.d/100-manjaro.conf
+vm.swappiness=10
+
+sudo pacman -S exfat-utils fuse-exfat a52dec faac faad2 flac jasper lame libdca libdv gst-libav libmad libmpeg2 libtheora libvorbis libxv wavpack x264 xvidcore gstreamer0.10-plugins flashplugin libdvdcss libdvdread libdvdnav gecko-mediaplayer dvd+rw-tools dvdauthor dvgrab p7zip p7zip-plugins unrar tar rsync
+
+
+https://rhnotebook.wordpress.com/2010/01/31/how-to-setup-arch-linux-w-openbox/
+
+https://erikdubois.be/how-to-install-openbox-on-arch-linux/
+
+https://cyruslab.net/2012/02/06/arch-linux-install-openbox/
+
+https://ramsdenj.com/2016/03/28/building-a-custom-linux-environment-with-openbox.html
+
+https://github.com/powerline/fonts.git
+
+yay -S ttf-fork-awesome otf-font-awesome-5-free python-fontawesome python-qtawesome-git ython2-qtawesome-git awesome-terminal-fonts-git awesome-terminal-fonts-patched nerd-fonts-git ttf-font-icons ttf-font-awesome-4 otf-font-awesome-4 nerd-fonts-complete ttf-font-awesome otf-font-awesome
+ 
+git clone https://github.com/dylanaraps/neofetch
+git clone https://github.com/powerline/fonts.git --depth=1
+pip install powerline-shell
+
+MAIL DO ZENKA: beata-150@o2.pl
