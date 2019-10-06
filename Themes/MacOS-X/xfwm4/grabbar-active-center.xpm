@@ -1,0 +1,29 @@
+/* XPM */
+static char *grabbar_active_center_png[] = {
+/* columns rows colors chars-per-pixel */
+"11 5 18 1",
+"  c #B1B1B1",
+". c #B2B2B2",
+"X c #C1C1C1",
+"o c gray77",
+"O c gray78",
+"+ c #EEEEEE",
+"@ c gray95",
+"# c #F4F4F4",
+"$ c gray96",
+"% c #F6F6F6",
+"& c gray97",
+"* c #F8F8F8",
+"= c #F9F9F9",
+"- c gray98",
+"; c #FBFBFB",
+": c gray99",
+"> c #FDFDFD",
+", c #FEFEFE",
+/* pixels */
+"@$=&%=>=*;,",
+"+#=%%*:=&->",
+"+++++++++++",
+"XooXoooXooO",
+" ......... "
+};

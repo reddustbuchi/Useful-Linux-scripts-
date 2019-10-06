@@ -1,0 +1,12 @@
+STRINGTABLE Osymmetry
+{
+	Osymmetry "Symmetry Object";
+
+	SYMMETRYOBJECT_PLANE			"Mirror Plane";
+		SYMMETRYOBJECT_PLANE_XY "XY";
+		SYMMETRYOBJECT_PLANE_YZ "ZY";
+		SYMMETRYOBJECT_PLANE_XZ "XZ";
+	SYMMETRYOBJECT_WELD				"Weld Points";
+	SYMMETRYOBJECT_TOLERANCE	"Weld Tolerance" "Tolerance";
+	SYMMETRYOBJECT_ONPLANE		"Symmetrical";
+}

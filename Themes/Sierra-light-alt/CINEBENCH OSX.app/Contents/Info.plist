@@ -1,0 +1,155 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>BuildMachineOSBuild</key>
+	<string>11G63</string>
+	<key>CFBundleDevelopmentRegion</key>
+	<string>English</string>
+	<key>CFBundleDocumentTypes</key>
+	<array>
+		<dict>
+			<key>CFBundleTypeExtensions</key>
+			<array>
+				<string>*</string>
+			</array>
+			<key>CFBundleTypeOSTypes</key>
+			<array>
+				<string>****</string>
+			</array>
+			<key>CFBundleTypeRole</key>
+			<string>Editor</string>
+		</dict>
+		<dict>
+			<key>CFBundleTypeExtensions</key>
+			<array>
+				<string>c4d</string>
+			</array>
+			<key>CFBundleTypeIconFile</key>
+			<string>c4ddoc</string>
+			<key>CFBundleTypeName</key>
+			<string>CINEMA 4D Document</string>
+			<key>CFBundleTypeOSTypes</key>
+			<array>
+				<string>C4DC</string>
+			</array>
+			<key>CFBundleTypeRole</key>
+			<string>Editor</string>
+			<key>LSIsAppleDefaultForType</key>
+			<true/>
+		</dict>
+		<dict>
+			<key>CFBundleTypeExtensions</key>
+			<array>
+				<string>l4d</string>
+			</array>
+			<key>CFBundleTypeName</key>
+			<string>CINEMA 4D Layout</string>
+			<key>CFBundleTypeRole</key>
+			<string>Editor</string>
+		</dict>
+		<dict>
+			<key>CFBundleTypeExtensions</key>
+			<array>
+				<string>cat4d</string>
+			</array>
+			<key>CFBundleTypeName</key>
+			<string>CINEMA 4D Catalog</string>
+			<key>CFBundleTypeRole</key>
+			<string>Editor</string>
+		</dict>
+		<dict>
+			<key>CFBundleTypeExtensions</key>
+			<array>
+				<string>lib4d</string>
+			</array>
+			<key>CFBundleTypeName</key>
+			<string>CINEMA 4D Preset Library</string>
+			<key>CFBundleTypeRole</key>
+			<string>Editor</string>
+		</dict>
+		<dict>
+			<key>CFBundleTypeExtensions</key>
+			<array>
+				<string>cob</string>
+			</array>
+			<key>CFBundleTypeName</key>
+			<string>CINEMA 4D COFFEE Binary</string>
+			<key>CFBundleTypeRole</key>
+			<string>Editor</string>
+		</dict>
+		<dict>
+			<key>CFBundleTypeExtensions</key>
+			<array>
+				<string>cof</string>
+			</array>
+			<key>CFBundleTypeName</key>
+			<string>CINEMA 4D COFFEE Source</string>
+			<key>CFBundleTypeRole</key>
+			<string>Editor</string>
+		</dict>
+		<dict>
+			<key>CFBundleTypeExtensions</key>
+			<array>
+				<string>csc</string>
+			</array>
+			<key>CFBundleTypeName</key>
+			<string>CINEMA 4D COFFEE Script</string>
+			<key>CFBundleTypeRole</key>
+			<string>Editor</string>
+		</dict>
+		<dict>
+			<key>CFBundleTypeExtensions</key>
+			<array>
+				<string>xgr</string>
+			</array>
+			<key>CFBundleTypeName</key>
+			<string>CINEMA 4D XGroup</string>
+			<key>CFBundleTypeRole</key>
+			<string>Editor</string>
+		</dict>
+	</array>
+	<key>CFBundleExecutable</key>
+	<string>CINEBENCH OSX</string>
+	<key>CFBundleGetInfoString</key>
+	<string>CINEMA 4D 15.0 © 1989-2013 MAXON Computer GmbH</string>
+	<key>CFBundleIconFile</key>
+	<string>c4dapp</string>
+	<key>CFBundleIdentifier</key>
+	<string>net.maxon.cinema4d</string>
+	<key>CFBundleInfoDictionaryVersion</key>
+	<string>6.0</string>
+	<key>CFBundleName</key>
+	<string>CINEBENCH OSX</string>
+	<key>CFBundlePackageType</key>
+	<string>APPL</string>
+	<key>CFBundleShortVersionString</key>
+	<string>15.0</string>
+	<key>CFBundleVersion</key>
+	<string>15.0</string>
+	<key>DTCompiler</key>
+	<string>com.apple.compilers.llvm.clang.1_0</string>
+	<key>DTPlatformBuild</key>
+	<string>4H1003</string>
+	<key>DTPlatformVersion</key>
+	<string>GM</string>
+	<key>DTSDKBuild</key>
+	<string>12D75</string>
+	<key>DTSDKName</key>
+	<string>macosx10.8</string>
+	<key>DTXcode</key>
+	<string>0462</string>
+	<key>DTXcodeBuild</key>
+	<string>4H1003</string>
+	<key>LSArchitecturePriority</key>
+	<array>
+		<string>x86_64</string>
+	</array>
+	<key>LSBackgroundOnly</key>
+	<string>0</string>
+	<key>NSMainNibFile</key>
+	<string>c4d</string>
+	<key>NSPrincipalClass</key>
+	<string>NSApplication</string>
+</dict>
+</plist>

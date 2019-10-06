@@ -1,0 +1,3101 @@
+// CINEBENCH script, (C) MAXON Computer GmbH 2013
+
+include "c4d_symbols.h"
+
+var AUTORUN_ACTIVE						= 0x8000;
+var AUTORUN_RENDERING_SINGLE	= 0x0001;
+var AUTORUN_RENDERING_MULTI		= 0x0002;
+var AUTORUN_OGLHW 						= 0x0004;
+var AUTORUN_SHUTDOWN					= 0x4000;
+
+var AUTORUN = 0;
+var PRINTVISSYMBOL;
+
+var CINEBENCH_PLUGIN_ID = 900323;
+var CINEBENCH_PLUGIN_ID_STATWIN = 200000260;
+var CINEBENCH_ADVANCED_ID = 200000256;
+var CINEBENCH_RUNALLTESTS_ID = 200000257;
+var CINEBENCH_KEEPBEST_ID = 200000258;
+var CINEBENCH_MESSAGEPLUGIN = 200000259;
+var CINEBENCH_DISCLAIMER = 200000261;
+var CINEBENCH_WEBSITE = 200000262;
+var CINEBENCH_SHOWPREFS = 200000263;
+var CINEBENCH_DISCLAIMERACCEPTED = 200000268;
+var ID_PICTUREVIEWER = 430000700;
+
+var MACHINEINFO_C4DTYPE = 2011; // String
+var MACHINEINFO_PROCESSORHTCOUNT = 2012; // LONG
+
+var COLOR_RANK_REF;					// Manager - Background 1 - Active
+var COLOR_RANK_IDENTICAL;		// Manager - Background 2 - Active
+var COLOR_RANK_MYSCORE;			// Manager - Background11 - Inactive
+
+var disclaimerdlg;
+var disclaimer_accepted;
+
+var eoglpossible = 0;
+
+var compareframe = 794;
+
+var calc_maximum  = 0;
+var advanced_mode = 0;
+var ogl_hard_cb   = 0.0;	// sum for 3D Bench
+var ogl_hard_quality = 0.0;
+var ogl_hard_quality_failed = 0;
+var render_1_cb   = 0.0;	// sum for RenderBench single
+var render_x_cb   = 0.0;	// sum for RenderBench MP
+var render_1_time = 0.0;
+var render_x_time = 0.0;
+var renderer = "",info_machine ="", info_c4d = "", info_os = "", info_mhz = 0.0;
+var g_scorechanged = 0;
+var showsplash;
+var fixed_framestep = 0.0;
+var logoFilename;
+
+var suppressqualitytest=0;
+var countprimitives=0;
+var x_ogl_hard  = 1;
+var x_render_1  = 1;
+var x_render_x  = 1;
+var cb_maxscore = 0; // 1 = calc maximum of all runs, 0 = calc avg of all runs
+
+var x_opengl_testcnt = 1; // number of tests
+
+var dialog,statdialog;
+var autoruntime = 0;
+var autostarted = 0;
+var hasOGLExt = 0;
+
+var SHADING_FAC = 50;
+var duration=1000.0; // blending duration (milliseconds)
+
+var R_PANELVIEW = 59000;
+var yourscore; // BaseContainer
+var ranking_mode;
+var ranking_info_gl,ranking_info_cpu;
+
+WriteRankingFile();
+
+ClearAutoStart()
+{
+	autostarted = FALSE;
+	if (AUTORUN==AUTORUN_ACTIVE)
+	{
+		// done
+		var t;
+		var le;
+
+		le = GeGetLineEnd();
+
+		t =  "CINEBENCH R15 Result\n\n";
+		if (render_1_cb) t += "Rendering (Single   CPU) : " + tostring(render_1_cb,".2f") + " pts\n";
+		if (render_x_cb) t += "Rendering (Multiple CPU) : " + tostring(render_x_cb,".2f") + " pts\n";
+		if (ogl_hard_cb || ogl_hard_quality_failed)
+		{
+			t += "Shading (OpenGL)                : " + tostring(ogl_hard_cb,".2f") + " fps\n";
+			t += "Shading (OpenGL) Reference Match: " + tostring(ogl_hard_quality,".2f") + "%";
+			t += !ogl_hard_quality_failed ? " (test successful)" : " (test failed)";
+			t += "\n";
+		}
+		t += "\n";
+
+		SetClipboardData(t);
+
+		print(PRINTVISSYMBOL+"\n"+t);
+
+		Sleep(2);
+
+		shutdown();
+	}
+}
+
+enum
+{
+	IDC_RANKING_COMBO		= 5000,
+	IDC_RANKING_INFO,
+	IDC_RANKING_SAVE,
+	IDC_RANKING_UA,
+	IDC_RANKING_LEGEND,
+	IDC_MAXONLOGO1,
+	IDC_MAXONLOGO2,
+	IDC_MAINGROUP,
+
+	IDC__
+};
+
+enum
+{
+	B_COMPLETE  = 4000,
+	B_RENDER_1,
+	B_RENDER_M,
+	B_OPENGL_SW,
+	B_OPENGL_HW,
+
+	R_RENDER_1,
+	R_RENDER_M,
+	R_OPENGL_SOFT,
+	R_OPENGL_HARD,
+	R_OPENGL_QUALITY,
+	R_OPENGL_EXT,
+
+	R_GAIN_MP1,
+	R_GAIN_MP2,
+	R_GAIN_OGLHW_OGLSW,
+
+	R_RM1,
+	R_RM2,
+
+	B_INFO_NAME,
+	B_INFO_MACH,
+	B_INFO_CPUCOUNT,
+	B_INFO_C4D,
+	B_INFO_OS,
+	B_INFO_GFX,
+	B_INFO_USERINFO,
+
+	X_RENDER_1,
+	X_RENDER_M,
+	X_OPENGL_HW
+}
+
+enum
+{
+	RANK_dummy,
+	
+	RANK_CORES,
+	RANK_LOGICALPERPACKAGE,
+	RANK_MHZ,
+	RANK_PROCESSOR,
+	RANK_OPENGLVENDOR,
+	RANK_OPENGLCARD,
+	RANK_OPENGLVERSION,
+	RANK_OPENGLDRIVERVERSION,
+	RANK_OSTYPE,
+	RANK_CBVERSION,
+	
+	RANK_CPU1,
+	RANK_CPUx,
+	RANK_OPENGL,
+	RANK_OPENGL_QUALITY,
+	RANK_MPRATIO,
+	
+	RANK_IDENTICAL, // same hardware this machine
+	
+	RANK_C4DINFO,
+	RANK_C4DVERSION,
+	RANK_C4DBUILDID,
+	
+
+	RANK_MAX_
+};
+
+var resource;
+var resourceroot;
+
+GeLoadString(id)
+{
+	return resource->GetString(id);
+}
+
+GeLoadString1(id,arg1)
+{
+	var str = GeLoadString(id);
+	var i;
+	var l = sizeof(str);
+	for (i=0;i<l;i++)
+	{
+		if (str[i]=='#')
+		{
+			str = strmid(str,0,i)+arg1+strmid(str,i+1,l-i-1);
+			i += sizeof(arg1)-1;
+			l = sizeof(str);
+			break;
+		}
+	}
+	return str;
+}
+
+GetCpuCountFromContainer(bc)
+{
+	var txt = tostring(bc->GetInt(RANK_CORES)) + " " + GeLoadString(bc->GetInt(RANK_CORES)>1 ? IDS_CB_CORES : IDS_CB_CORE);
+	if (bc->GetInt(RANK_LOGICALPERPACKAGE)>=1)
+	{
+		var l = bc->GetInt(RANK_CORES)*bc->GetInt(RANK_LOGICALPERPACKAGE);
+		txt += ", "+tostring(l) + " " + GeLoadString(l>1 ? IDS_CB_THREADS : IDS_CB_THREAD);
+	}
+	return txt;
+}
+
+GetCpuCountFromContainerShort(bc)
+{
+	var txt = tostring(bc->GetInt(RANK_CORES))+GeLoadString(IDS_CB_CORES_SHORT);
+	if (bc->GetInt(RANK_LOGICALPERPACKAGE)>=1)
+		txt += "/"+tostring(bc->GetInt(RANK_CORES)*bc->GetInt(RANK_LOGICALPERPACKAGE))+GeLoadString(IDS_CB_THREADS_SHORT);
+	return txt;
+}
+
+CalcNewCB(oldcb,newcb)
+{
+	println("CB ",tostring(newcb,"0.2f")," (",tostring(oldcb,"0.2f"),")");
+	if (!calc_maximum) return newcb;
+	if (oldcb<newcb) return newcb;
+	return oldcb;
+}
+
+// ************************ Renderbereich **********************
+PrepareRender(name)
+{
+	var d,start;
+
+	if (!LoadDocument(name))
+	{
+		print(PRINTVISSYMBOL+"Error loading "+name->GetFullString()+"\n");
+		return FALSE;
+	}
+	d = GetActiveDocument();
+
+	if (!d)
+	{
+		var text;
+		text = GeLoadString1(IDS_CB_ERROR_NOTFOUND,name->GetLastString());
+
+		if (!AUTORUN)
+			TextDialog(text);
+		else
+			print(PRINTVISSYMBOL+text+"\n");
+		return FALSE;
+	}
+
+	var rd = d->GetFirstRenderData();
+	var bc = rd->GetContainer();
+
+	var xm = bc->GetData(RDATA_XRES);
+	var ym = bc->GetData(RDATA_YRES);
+	var shadow = bc->GetData(RDATA_OPTION_SHADOW);
+
+	bc->SetData(RDATA_XRES,32);
+	bc->SetData(RDATA_YRES,32);
+	bc->SetData(RDATA_OPTION_SHADOW,FALSE);
+	rd->SetContainer(bc);
+
+	if (!d->Render(NULL,FALSE))
+	{
+		if (!AUTORUN)
+			TextDialog(GeLoadString(IDS_CB_ERROR_START_PRERENDERING),DLG_OK);
+		else
+			print(PRINTVISSYMBOL+"Error starting PreRendering\n");
+	}
+
+	bc->SetData(RDATA_XRES,xm);
+	bc->SetData(RDATA_YRES,ym);
+	bc->SetData(RDATA_OPTION_SHADOW,shadow);
+	rd->SetContainer(bc);
+
+	return TRUE;
+}
+
+DoRender(mp)
+{
+	var start;
+	var d  = GetActiveDocument();
+	var rd = d->GetFirstRenderData();
+	var bc = rd->GetContainer();
+
+	bc->SetData(RDATA_SUPPRESSMP,mp);
+	rd->SetContainer(bc);
+
+	start = time();
+	if (!d->Render(NULL,TRUE))
+	{
+		if (!AUTORUN)
+			TextDialog(GeLoadString(IDS_CB_ERROR_START_RENDERING),DLG_OK);
+		else
+			print(PRINTVISSYMBOL+"Error starting Rendering\n");
+	}
+
+	return start;
+}
+
+// ***********************  3D Bereich **********************
+ClearAll(doc)
+{
+	while (doc->GetFirstObject())
+	{
+		doc->GetFirstObject()->Remove();
+	}
+
+	while (doc->GetFirstMaterial())
+	{
+		doc->GetFirstMaterial()->Remove();
+	}
+}
+
+MergeReferenceImages(compareframe)
+{
+	var maps = new(array,1024);
+	var cur=0,xm=0,ym=0;
+	var cmpstr = "oglref_"+tostring(int(compareframe));
+	var fn = GeGetStartupPath();
+	fn->AddLast("plugins");
+	fn->AddLast("bench");
+	fn->AddLast("ogl");
+	fn->AddLast("refimages");
+	
+	var browse = new(BrowseFiles);
+	if (!browse->Init(fn,FALSE)) return;
+
+print(PRINTVISSYMBOL+"parsing reference images in: "+fn->GetFullString()+"\n");
+
+	while (browse->GetNext())
+	{
+		var ff = fn->GetClone();
+		ff->AddLast(browse->GetName());
+
+		if (browse->IsDir())
+		{
+		}
+		else if (ff->CheckSuffix("tif"))
+		{
+			var refmap = new(BaseBitmap,1,1);
+			var s = browse->GetName();
+
+			if (cmpstr!=strmid(s,0,sizeof(cmpstr)))
+			{
+				println("Skip Image: "+ff->GetFullString());
+				continue;
+			}
+
+			if (refmap)
+			{
+				if (IMAGE_OK!=refmap->Load(ff))
+				{
+					print(PRINTVISSYMBOL+"Error loading reference image : "+ff->GetFullString()+"\n");
+					continue;
+				}
+				if (!cur)
+				{
+					xm = refmap->GetWidth();
+					ym = refmap->GetHeight();
+				}
+				else if (xm != refmap->GetWidth() || ym != refmap->GetHeight())
+				{
+					print(PRINTVISSYMBOL+"Error ref image has different size than the first one : "+ff->GetFullString()+"\n");
+					continue;
+				}
+			}
+			print(PRINTVISSYMBOL+"added image: "+ff->GetFullString()+"\n");
+			maps[cur++] = refmap;
+		}
+	}
+
+	print(PRINTVISSYMBOL+"found "+tostring(cur)+" maps\n");
+
+	var errorvalue = 0;
+	var m,x,y,rgb,c;
+	if (cur>1)
+	{
+		for (y=0;y<ym;y++)
+		{
+			for (x=0;x<xm;x++)
+			{
+				rgb=vector(0.0,0.0,0.0);
+				for (m=0;m<cur;m++)
+				{
+					var col = maps[m]->GetPixel(x,y);
+					rgb += col;
+				}
+				rgb /= float(cur);
+				maps[0]->DrawPixel(x,y,rgb);
+			}
+		}
+
+		var ic = new(BaseContainer);
+		var fn = GeGetStartupPath(); 
+		fn->AddLast("plugins"); 
+		fn->AddLast("bench"); 
+		fn->AddLast("ogl"); 
+		fn->AddLast("oglref_"+tostring(int(compareframe))+".tif");
+		if (IMAGE_OK!=maps[0]->Save(fn,FILTER_TIF,ic,(1<<5)|(1<<27)))
+		{
+			print(PRINTVISSYMBOL+"Error saving ref image: "+fn->GetFullString()+"\n");
+		}
+		print(PRINTVISSYMBOL+"new reference image saved: "+fn->GetFullString()+"\n");
+	}
+	return TRUE;
+}
+
+ConvertFilename(s)
+{
+	var j;
+	for (j=0;j<sizeof(s);j++)
+	{
+		if ((s[j]>='A' && s[j]<='Z') || (s[j]>='a' && s[j]<='z') || (s[j]>='0' && s[j]<='9'))
+		{
+		}
+		else
+			s[j]='_';
+	}
+	return s;
+}
+
+SetStatusMessage(txt)
+{
+	if (statdialog)
+	{
+		if (sizeof(txt))
+			statdialog->SetString(1001,txt,FLAG_CENTER_HORIZ);
+		else
+			statdialog->SetString(1001,GeLoadString(IDS_CB_WELCOME),FLAG_CENTER_HORIZ);
+	}	
+}
+
+DoShadingQualityTest(doc,dlg,videopost,fadeoutcontainer)
+{
+	var fps = doc->GetFps();
+	var t = new(BaseTime);
+	t->SetFrame(compareframe,fps);
+	doc->SetTime(t);
+
+	var map = new(BaseBitmap,1,1);
+	if (!map)
+	{
+		println("Error initializing bitmap");
+		TextDialog(GeLoadString(IDS_CB_GLERROR2),DLG_OK);
+		return FALSE;
+	}
+	
+	println("Create Reference Image for frame "+tostring(int(compareframe)));
+	var tt,fade;
+
+	// esc check + vista redraw trigger
+	if (TRUE)
+	{
+		Sleep(1);
+		var res = dlg->maxonlogo1->GetInputEvent(BFM_INPUT_KEYBOARD);
+		if (res && res->GetInt(BFM_INPUT_DEVICE)==BFM_INPUT_KEYBOARD && res->GetInt(BFM_INPUT_CHANNEL)==KEY_ESC)
+		{
+			return FALSE;
+		}
+	}
+
+	fadeoutcontainer->SetData(1000,0.0);
+	videopost->SetContainer(fadeoutcontainer);
+	if (!DrawViews(DRAWFLAGS_NO_THREAD | DRAWFLAGS_PRIVATE_NO_WAIT_GL_FINISHED | DRAWFLAGS_NO_REDUCTION | DRAWFLAGS_FORCEFULLREDRAW | DRAWFLAGS_ONLY_ACTIVE_VIEW))
+	{
+		println("Error in OpenGL Draw. Timeout reached.");
+		TextDialog(GeLoadString(IDS_CB_GLERROR2),DLG_OK);
+		return FALSE;
+	}
+
+	for (fade=10, tt=time(); fade<duration; fade=(time()-tt))
+	{
+		fadeoutcontainer->SetData(1000,SmoothStep(0.0,1.0,fade/duration));
+		videopost->SetContainer(fadeoutcontainer);
+		DrawViews(DRAWFLAGS_NO_THREAD | DRAWFLAGS_PRIVATE_NO_WAIT_GL_FINISHED | DRAWFLAGS_NO_REDUCTION | DRAWFLAGS_FORCEFULLREDRAW | DRAWFLAGS_ONLY_ACTIVE_VIEW);
+
+		// esc check + vista redraw trigger
+		if (TRUE)
+		{
+			var res = dlg->maxonlogo1->GetInputEvent(BFM_INPUT_KEYBOARD);
+			if (res && res->GetInt(BFM_INPUT_DEVICE)==BFM_INPUT_KEYBOARD && res->GetInt(BFM_INPUT_CHANNEL)==KEY_ESC)
+			{
+				return FALSE;
+			}
+		}
+	}
+	fadeoutcontainer->SetData(1000,1.0);
+	videopost->SetContainer(fadeoutcontainer);
+	DrawViews(DRAWFLAGS_NO_THREAD | DRAWFLAGS_PRIVATE_NO_WAIT_GL_FINISHED | DRAWFLAGS_NO_REDUCTION | DRAWFLAGS_FORCEFULLREDRAW | DRAWFLAGS_ONLY_ACTIVE_VIEW);
+
+	if (!GetViewPortBitmap(map))
+	{
+		println("Error reading framebuffer");
+		TextDialog(GeLoadString(IDS_CB_GLERROR2),DLG_OK);
+		return FALSE;
+	}
+
+	var xm,ym;
+	xm = map->GetWidth();
+	ym = map->GetHeight();
+	
+	var fn = GeGetStartupWritePath();
+	var ic = new(BaseContainer);
+	var s = "oglref_"+tostring(int(compareframe))+"_"+
+						yourscore->GetString(RANK_C4DVERSION)+"_"+yourscore->GetString(RANK_C4DBUILDID)+"_"+
+						yourscore->GetString(RANK_OPENGLVENDOR)+"_"+yourscore->GetString(RANK_OPENGLCARD)+"_"+
+						yourscore->GetString(RANK_OPENGLVERSION)+"_"+yourscore->GetString(RANK_OSTYPE);
+
+	fn->AddLast(ConvertFilename(s)+".tif");
+
+	if (IMAGE_OK!=map->Save(fn,FILTER_TIF,ic,(1<<5)|(1<<27)))
+	{
+		println("Error: saving ref image "+fn->GetFullString());
+	}
+
+	var reffn = GeGetStartupPath(); 
+	reffn->AddLast("plugins"); 
+	reffn->AddLast("bench"); 
+	reffn->AddLast("ogl"); 
+	reffn->AddLast("oglref_"+tostring(int(compareframe))+".tif");
+
+	var refmap = new(BaseBitmap,1,1);
+	if (refmap)
+	{
+		if (IMAGE_OK!=refmap->Load(reffn))
+		{
+			println("Error loading reference image : "+reffn->GetFullString());
+			TextDialog(GeLoadString(IDS_CB_GLERROR2),DLG_OK);
+			return FALSE;
+		}
+	}
+	
+	if (refmap->GetWidth()!=map->GetWidth() || refmap->GetHeight()!=map->GetHeight())
+	{
+		println("Error: reference map has different resolution.");
+		TextDialog(GeLoadString(IDS_CB_GLERROR2),DLG_OK);
+		return FALSE;
+	}
+
+	var diffmap = new(BaseBitmap,xm,ym);
+
+	println("Comparing Images");
+
+	var pixelcnt = float(xm*ym);
+	var pixelthreshold = 0.03; // 3% errortolerance
+	var maxerrorpixel = int(pixelcnt*pixelthreshold);
+	var errorvalue = 0;
+	var x,y;
+	var colthresh = 4.0/255.0;
+	var again = 0;
+
+	do
+	{
+		if (again==0)
+		{
+			diffmap->SetPen(vector(0,255,0));
+		}
+		else
+		{
+			diffmap->SetPen(vector(255,0,0));
+			again=2;
+		}
+
+		errorvalue = 0;
+		for (y=0;y<ym;y++)
+		{
+			for (x=0;x<xm;x++)
+			{
+				var c1 = refmap->GetPixel(x,y);
+				var c2 = map->GetPixel(x,y);
+				var xd = abs(c1.x-c2.x);
+				var yd = abs(c1.y-c2.y);
+				var zd = abs(c1.z-c2.z);
+				if (xd>colthresh || yd>colthresh || zd>colthresh)
+				{
+					errorvalue++;
+					if (again==0 && maxerrorpixel==errorvalue)
+					{
+						again=1;
+						diffmap->SetPen(vector(255,0,0));
+						x=100000;
+						y=100000;
+					}
+					if (diffmap)
+					{
+						diffmap->DrawPixel(x,y);
+					}
+				}
+			}
+		}
+	} while (again==1);
+	
+	ogl_hard_quality = (1.0-float(errorvalue)/pixelcnt)*100.0;
+	ogl_hard_quality_failed = errorvalue>=maxerrorpixel;
+	print(PRINTVISSYMBOL+"errorpixel: "+tostring(errorvalue)+"\n");
+	print(PRINTVISSYMBOL+"opengl reference match: "+tostring(ogl_hard_quality,".2f")+"%\n");
+
+	g_scorechanged = TRUE;
+	yourscore->SetData(RANK_OPENGL_QUALITY,ogl_hard_quality);
+	if (advanced_mode) dlg->SetRankingMode(RANK_OPENGL_QUALITY);
+	dlg->Init();
+
+	if (diffmap)
+	{
+		var s = "ogldiff_"+tostring(int(compareframe))+"_"+
+						yourscore->GetString(RANK_C4DVERSION)+"_"+yourscore->GetString(RANK_C4DBUILDID)+"_"+
+						yourscore->GetString(RANK_OPENGLVENDOR)+"_"+yourscore->GetString(RANK_OPENGLCARD)+"_"+
+						yourscore->GetString(RANK_OPENGLVERSION)+"_"+yourscore->GetString(RANK_OSTYPE);
+
+		fn->RemoveLast();
+		fn->AddLast(ConvertFilename(s)+".tif");
+
+		if (IMAGE_OK!=diffmap->Save(fn,FILTER_TIF,ic,(1<<5)|(1<<27)))
+		{
+			println("Error: saving diff image "+fn->GetFullString());
+		}
+		else
+		{
+			Sleep(duration);
+
+			fadeoutcontainer->SetData(1001,fn);
+
+			SetStatusMessage(GeLoadString(IDS_CB_PERFORM_OGLTEST_DIFFERENCE));
+
+			for (fade=10, tt=time(); fade<duration; fade=(time()-tt))
+			{
+				fadeoutcontainer->SetData(1000,SmoothStep(0.0,1.0,(duration-fade)/duration));
+				videopost->SetContainer(fadeoutcontainer);
+				DrawViews(DRAWFLAGS_NO_THREAD | DRAWFLAGS_PRIVATE_NO_WAIT_GL_FINISHED | DRAWFLAGS_NO_REDUCTION | DRAWFLAGS_FORCEFULLREDRAW | DRAWFLAGS_ONLY_ACTIVE_VIEW);
+				// esc check + vista redraw trigger
+				if (TRUE)
+				{
+					var res = dlg->maxonlogo1->GetInputEvent(BFM_INPUT_KEYBOARD);
+					if (res && res->GetInt(BFM_INPUT_DEVICE)==BFM_INPUT_KEYBOARD && res->GetInt(BFM_INPUT_CHANNEL)==KEY_ESC)
+					{
+						return FALSE;
+					}
+				}
+			}
+			fadeoutcontainer->SetData(1000,0.0);
+			videopost->SetContainer(fadeoutcontainer);
+			DrawViews(DRAWFLAGS_NO_THREAD | DRAWFLAGS_PRIVATE_NO_WAIT_GL_FINISHED | DRAWFLAGS_NO_REDUCTION | DRAWFLAGS_FORCEFULLREDRAW | DRAWFLAGS_ONLY_ACTIVE_VIEW);
+
+			if (ogl_hard_quality_failed)
+			{
+				TextDialog(GeLoadString(IDS_CB_QUALITYERROR1),DLG_OK);
+			}
+
+			Sleep(duration);
+
+			for (fade=10, tt=time(); fade<duration; fade=(time()-tt))
+			{
+				fadeoutcontainer->SetData(1000,SmoothStep(0.0,1.0,fade/duration));
+				videopost->SetContainer(fadeoutcontainer);
+				DrawViews(DRAWFLAGS_NO_THREAD | DRAWFLAGS_PRIVATE_NO_WAIT_GL_FINISHED | DRAWFLAGS_NO_REDUCTION | DRAWFLAGS_FORCEFULLREDRAW | DRAWFLAGS_ONLY_ACTIVE_VIEW);
+
+				// esc check + vista redraw trigger
+				if (TRUE)
+				{
+					var res = dlg->maxonlogo1->GetInputEvent(BFM_INPUT_KEYBOARD);
+					if (res && res->GetInt(BFM_INPUT_DEVICE)==BFM_INPUT_KEYBOARD && res->GetInt(BFM_INPUT_CHANNEL)==KEY_ESC)
+					{
+						return FALSE;
+					}
+				}
+			}
+			fadeoutcontainer->SetData(1000,1.0);
+			videopost->SetContainer(fadeoutcontainer);
+			DrawViews(DRAWFLAGS_NO_THREAD | DRAWFLAGS_PRIVATE_NO_WAIT_GL_FINISHED | DRAWFLAGS_NO_REDUCTION | DRAWFLAGS_FORCEFULLREDRAW | DRAWFLAGS_ONLY_ACTIVE_VIEW);
+
+			fadeoutcontainer->SetData(1001, logoFilename);
+			videopost->SetContainer(fadeoutcontainer);
+		}
+	}
+	
+	Sleep(duration);
+
+	for (fade=10, tt=time(); fade<duration; fade=(time()-tt))
+	{
+		fadeoutcontainer->SetData(1000,SmoothStep(0.0,1.0,(duration-fade)/duration));
+		videopost->SetContainer(fadeoutcontainer);
+		DrawViews(DRAWFLAGS_NO_THREAD | DRAWFLAGS_PRIVATE_NO_WAIT_GL_FINISHED | DRAWFLAGS_NO_REDUCTION | DRAWFLAGS_FORCEFULLREDRAW | DRAWFLAGS_ONLY_ACTIVE_VIEW);
+		// esc check + vista redraw trigger
+		if (TRUE)
+		{
+			var res = dlg->maxonlogo1->GetInputEvent(BFM_INPUT_KEYBOARD);
+			if (res && res->GetInt(BFM_INPUT_DEVICE)==BFM_INPUT_KEYBOARD && res->GetInt(BFM_INPUT_CHANNEL)==KEY_ESC)
+			{
+				return FALSE;
+			}
+		}
+	}
+	fadeoutcontainer->SetData(1000,0.0);
+	videopost->SetContainer(fadeoutcontainer);
+	DrawViews(DRAWFLAGS_NO_THREAD | DRAWFLAGS_PRIVATE_NO_WAIT_GL_FINISHED | DRAWFLAGS_NO_REDUCTION | DRAWFLAGS_FORCEFULLREDRAW | DRAWFLAGS_ONLY_ACTIVE_VIEW);
+
+	return TRUE;
+}
+
+ShadeIt_2(name,cycles,dlg)
+{
+	var lastsleep = time();
+	var canceled = FALSE;
+
+	var doc,f1,f2,t1,t2,t,i,j,bd;
+	var countprim, statistics;
+
+	SetStatusMessage(GeLoadString(IDS_CB_PERFORM_OGLTEST_LOADING));
+	dlg->SetString(R_OPENGL_HARD,GeLoadString(IDS_CB_PERFORM_OGLTEST_LOADING_SHORT),FLAG_ALIGN_RIGHT);
+
+	var debugtimer = time();
+	if (!LoadDocument(name))
+	{
+		print(PRINTVISSYMBOL+"Error loading "+name->GetFullString()+"\n");
+		return FALSE;
+	}
+
+	doc = GetActiveDocument();
+	var fn = new(Filename);
+	fn->SetFullString("");
+	//doc->SetFilename(fn);
+
+	var realtime,realfps,fps = doc->GetFps(),trisdrawn,quadsdrawn,totaltrisdrawn;
+	t = new(BaseTime);
+
+	// primitiv caches aufbauen!!!
+
+	var rdata = doc->GetFirstRenderData();
+	if (!rdata)
+	{
+		println("Error no renderdata found");
+		return 0.0;
+	}
+	
+	var videopost = rdata->GetFirstVideoPost();
+
+	var ID_FADEOUTVIDEOPOST=450000244;
+	for (; videopost; videopost=videopost->GetNext())
+	{
+		if (videopost->GetType()==ID_FADEOUTVIDEOPOST)
+			break;
+	}
+
+	if (!videopost)
+	{
+		println("Error no videopost found");
+		return 0.0;
+	}
+
+	var fadeoutcontainer = videopost->GetContainer();
+	var file = GeGetStartupPath(); file->AddLast("plugins"); file->AddLast("bench"); file->AddLast("cb.jpg");
+	fadeoutcontainer->SetData(1001, file);
+	videopost->DelBit(BIT_VPDISABLED);
+	fadeoutcontainer->SetData(1000,0.0);
+	videopost->SetContainer(fadeoutcontainer);
+
+	dlg->BringToFront(R_PANELVIEW);
+
+	// esc check + vista redraw trigger
+	if (TRUE)
+	{
+		Sleep(1);
+		var res = dlg->maxonlogo1->GetInputEvent(BFM_INPUT_KEYBOARD);
+		if (res && res->GetInt(BFM_INPUT_DEVICE)==BFM_INPUT_KEYBOARD && res->GetInt(BFM_INPUT_CHANNEL)==KEY_ESC)
+		{
+			return 0.0;
+		}
+		lastsleep = time();
+	}
+
+	t->SetFrame(0,fps);
+		doc->SetTime(t);
+
+	debugtimer = time()-debugtimer;
+	println("load scene: "+tostring(debugtimer)+" ms");
+	debugtimer = time();
+
+	SetStatusMessage(GeLoadString(IDS_CB_PERFORM_OGLTEST_PREPARE));
+	dlg->SetString(R_OPENGL_HARD,GeLoadString(IDS_CB_PERFORM_OGLTEST_PREPARE_SHORT),FLAG_ALIGN_RIGHT);
+
+	if (!DrawViews(DRAWFLAGS_PRIVATE_NO_3DCLIPPING | DRAWFLAGS_NO_THREAD | DRAWFLAGS_PRIVATE_NO_WAIT_GL_FINISHED | DRAWFLAGS_NO_REDUCTION | DRAWFLAGS_FORCEFULLREDRAW | DRAWFLAGS_ONLY_ACTIVE_VIEW | DRAWFLAGS_STATICBREAK))
+	{
+		println("Error in OpenGL preparation. Timeout reached.");
+		var res = dlg->maxonlogo1->GetInputEvent(BFM_INPUT_KEYBOARD);
+		if (res && res->GetInt(BFM_INPUT_DEVICE)==BFM_INPUT_KEYBOARD && res->GetInt(BFM_INPUT_CHANNEL)==KEY_ESC)
+			TextDialog(GeLoadString(IDS_CB_CANCELED),DLG_OK);
+		else
+			TextDialog(GeLoadString(IDS_CB_GLTIMEOUT),DLG_OK);
+		KillDocument(doc);
+		SetStatusMessage("");
+		return 0.0;
+	}
+
+	// esc check + vista redraw trigger
+	if (TRUE)
+	{
+		Sleep(1);
+		var res = dlg->maxonlogo1->GetInputEvent(BFM_INPUT_KEYBOARD);
+		if (res && res->GetInt(BFM_INPUT_DEVICE)==BFM_INPUT_KEYBOARD && res->GetInt(BFM_INPUT_CHANNEL)==KEY_ESC)
+		{
+			return 0.0;
+		}
+		lastsleep = time();
+	}
+
+	debugtimer = time()-debugtimer;
+	print(PRINTVISSYMBOL+"prepare scene: "+tostring(debugtimer)+" ms\n");
+	debugtimer = time();
+
+	SetStatusMessage(GeLoadString(IDS_CB_PERFORM_OGLTEST_TESTMATCH));
+	dlg->SetString(R_OPENGL_HARD,GeLoadString(IDS_CB_PERFORM_OGLTEST_TESTMATCH_SHORT),FLAG_ALIGN_RIGHT);
+	if (!suppressqualitytest && !DoShadingQualityTest(doc,dlg,videopost,fadeoutcontainer))
+	{
+		KillDocument(doc);
+		SetStatusMessage("");
+		return FALSE;
+	}
+
+	debugtimer = time()-debugtimer;
+	println("test opengl match: "+tostring(debugtimer)+" ms");
+	debugtimer = time();
+
+	SetStatusMessage(GeLoadString(IDS_CB_PERFORM_OGLTEST_RUNBENCH));
+	dlg->SetString(R_OPENGL_HARD,GeLoadString(IDS_CB_PERFORM_OGLTEST_RUNBENCH_SHORT),FLAG_ALIGN_RIGHT);
+
+	f1 = doc->GetMinTime()->GetFrame(fps);
+	f2 = 1100;//doc->GetMaxTime()->GetFrame(fps);
+
+	var framesshowed = 0;
+
+	if (f1<1) f1=1;
+
+	videopost->DelBit(BIT_VPDISABLED);
+	fadeoutcontainer->SetData(1000,0.0);
+	videopost->SetContainer(fadeoutcontainer);
+
+	i=435;
+	t->SetFrame(i,fps);
+	doc->SetTime(t);
+	DrawViews(DRAWFLAGS_NO_THREAD | DRAWFLAGS_PRIVATE_NO_WAIT_GL_FINISHED | DRAWFLAGS_NO_REDUCTION | DRAWFLAGS_FORCEFULLREDRAW | DRAWFLAGS_ONLY_ACTIVE_VIEW);
+
+	t1 = time();
+	for (; i<455; i++)
+	{
+		t->SetFrame(i,fps);
+		doc->SetTime(t);
+		DrawViews(DRAWFLAGS_NO_THREAD | DRAWFLAGS_PRIVATE_NO_WAIT_GL_FINISHED | DRAWFLAGS_NO_REDUCTION | DRAWFLAGS_FORCEFULLREDRAW | DRAWFLAGS_ONLY_ACTIVE_VIEW);
+		framesshowed++;
+	}
+
+	debugtimer = time()-debugtimer;
+	println("calc speed: "+tostring(debugtimer)+" ms");
+	debugtimer = time();
+
+	t2 = time();
+	realtime = (t2-t1)/float(framesshowed);
+	realfps = 1000.0/realtime;
+	println("calculate frames speed: ",tostring(realtime,"0.2f")," msec; ",tostring(realfps,".2f")," fps");
+	println("scene fps "+tostring(fps));
+
+	var framestep = fixed_framestep != 0.0 ? fixed_framestep : (float(fps)/float(realfps));
+	if (framestep>5.00) framestep=5.00; // don't let more than 5 frames out
+	if (framestep<0.025) framestep=0.025; // dont more then 1000 fps
+	println("fixed framestep "+tostring(framestep));
+	
+	var loops,timestep = new(BaseTime);
+	timestep->SetFrame(framestep*1000.0,fps*1000.0);
+
+	var cb_max=0.0;
+	var cb_sum=0.0;
+	var cb_cnt=0;
+	var fade = 0.0;
+	countprim = new(BaseContainer);
+	statistics = new(BaseContainer);
+	
+	for (loops=0; !canceled && loops<x_opengl_testcnt; loops++)
+	{
+		gc();
+		t1 = time();
+		framesshowed=0;
+
+		t->SetFrame(f1,fps);
+		for (; t->GetFrame(fps)<f2; i++)
+		{
+//println("draw frame "+tostring(t->GetFrame(fps*1000)/1000.0));
+			doc->SetTime(t);
+			t->Add(timestep);
+
+			if (fade<1.0)
+			{
+				fade=SmoothStep(0.0,1.0,(time()-t1)/duration);
+				fadeoutcontainer->SetData(1000,fade);
+				videopost->SetContainer(fadeoutcontainer);
+				//if (fade>=1.0)
+					//videopost->SetBit(BIT_VPDISABLED);
+			}
+
+			DrawViews(DRAWFLAGS_NO_THREAD | DRAWFLAGS_PRIVATE_NO_WAIT_GL_FINISHED | DRAWFLAGS_NO_REDUCTION | DRAWFLAGS_FORCEFULLREDRAW | DRAWFLAGS_ONLY_ACTIVE_VIEW);
+			framesshowed++;
+			if (countprimitives)
+			{
+				doc->GetLastDrawStatistics(statistics);
+				countprim->SetData(DRAW_STATISTIC_TRIANGLES, countprim->GetInt(DRAW_STATISTIC_TRIANGLES) + statistics->GetInt(DRAW_STATISTIC_TRIANGLES));
+				countprim->SetData(DRAW_STATISTIC_QUADS, countprim->GetInt(DRAW_STATISTIC_QUADS) + statistics->GetInt(DRAW_STATISTIC_QUADS));
+				countprim->SetData(DRAW_STATISTIC_LINES, countprim->GetInt(DRAW_STATISTIC_LINES) + statistics->GetInt(DRAW_STATISTIC_LINES));
+				countprim->SetData(DRAW_STATISTIC_POINTS, countprim->GetInt(DRAW_STATISTIC_POINTS) + statistics->GetInt(DRAW_STATISTIC_POINTS));
+				countprim->SetData(DRAW_STATISTIC_TRIANGLE_STRIPS, countprim->GetInt(DRAW_STATISTIC_TRIANGLE_STRIPS) + statistics->GetInt(DRAW_STATISTIC_TRIANGLE_STRIPS));
+				countprim->SetData(DRAW_STATISTIC_LINE_STRIPS, countprim->GetInt(DRAW_STATISTIC_LINE_STRIPS) + statistics->GetInt(DRAW_STATISTIC_LINE_STRIPS));
+			}
+
+			if (abs(time()-lastsleep)>50)
+			{
+				var res = dlg->maxonlogo1->GetInputEvent(BFM_INPUT_KEYBOARD);
+				if (res && res->GetInt(BFM_INPUT_DEVICE)==BFM_INPUT_KEYBOARD && res->GetInt(BFM_INPUT_CHANNEL)==KEY_ESC)
+				{
+					canceled = TRUE;
+					j=cycles;
+					break;
+				}
+				lastsleep = time();
+			}
+		}
+		t2 = time();
+		realtime = (t2-t1)/float(framesshowed);
+		realfps = 1000.0/realtime;
+		println(tostring(realtime,".2f")," msec; ",tostring(realfps,".2f")," fps");
+		if (countprimitives)
+		{
+			trisdrawn = float(countprim->GetInt(DRAW_STATISTIC_TRIANGLES));
+			quadsdrawn = float(countprim->GetInt(DRAW_STATISTIC_QUADS));
+			totaltrisdrawn = trisdrawn + 2 * quadsdrawn;
+			println(tostring(countprim->GetInt(DRAW_STATISTIC_TRIANGLES))," triangles; ",tostring(countprim->GetInt(DRAW_STATISTIC_QUADS)), " quads");
+			trisdrawn = trisdrawn / float(framesshowed) * realfps;
+			quadsdrawn = quadsdrawn / float(framesshowed) * realfps;
+			totaltrisdrawn = totaltrisdrawn / float(framesshowed) * realfps;
+			println(tostring(trisdrawn,".2f")," tris/sec; ",tostring(quadsdrawn,".2f")," quads/sec; ",tostring(totaltrisdrawn,".2f")," total tris/sec");
+		}
+
+		if (realfps>cb_max) cb_max=realfps;
+		cb_sum+=realfps;
+		cb_cnt++;
+
+		videopost->DelBit(BIT_VPDISABLED);
+		fadeoutcontainer->SetData(1001, logoFilename);
+		videopost->SetContainer(fadeoutcontainer);
+		var newdur = duration*1.5;
+		for (fade=10, t1=time(); fade<newdur; fade=(time()-t1))
+		{
+			doc->SetTime(t);
+			t->Add(timestep);
+
+			fadeoutcontainer->SetData(1000,SmoothStep(0.0,1.0,(newdur-fade)/newdur));
+			videopost->SetContainer(fadeoutcontainer);
+			DrawViews(DRAWFLAGS_NO_THREAD | DRAWFLAGS_PRIVATE_NO_WAIT_GL_FINISHED | DRAWFLAGS_NO_REDUCTION | DRAWFLAGS_FORCEFULLREDRAW |  DRAWFLAGS_ONLY_ACTIVE_VIEW);
+			// esc check + vista redraw trigger
+			if (TRUE)
+			{
+				var res = dlg->maxonlogo1->GetInputEvent(BFM_INPUT_KEYBOARD);
+				if (res && res->GetInt(BFM_INPUT_DEVICE)==BFM_INPUT_KEYBOARD && res->GetInt(BFM_INPUT_CHANNEL)==KEY_ESC)
+				{
+					return FALSE;
+				}
+			}
+		}
+		fade=0.0;
+		fadeoutcontainer->SetData(1000,0.0);
+		videopost->SetContainer(fadeoutcontainer);
+		DrawViews(DRAWFLAGS_NO_THREAD | DRAWFLAGS_PRIVATE_NO_WAIT_GL_FINISHED | DRAWFLAGS_NO_REDUCTION | DRAWFLAGS_FORCEFULLREDRAW | DRAWFLAGS_ONLY_ACTIVE_VIEW);
+
+		Sleep(400);
+	}
+	
+	dlg->BringToFront(ID_PICTUREVIEWER);
+
+	KillDocument(doc);
+
+	if (realfps>cb_max) cb_max=realfps;
+
+	SetStatusMessage("");
+	
+	if (canceled)
+	{
+		return 0.0;
+	}
+	
+	if (cb_cnt<=1)
+		return realfps;
+
+	if (cb_maxscore)
+		return cb_max;
+	
+	return cb_sum/float(cb_cnt);
+}
+
+DoShade(dlg)
+{
+	var t2;
+	var e2=0.0;
+
+gc();
+
+	var doc=GetActiveDocument();
+
+	KillDocument(doc);
+
+//	SetMousePointer(MOUSE_HIDE);
+
+	var file = GeGetStartupPath(); file->AddLast("plugins"); file->AddLast("bench"); 
+	file->AddLast("ogl"); file->AddLast("eogl.c4d");
+
+	logoFilename = GeGetStartupPath(); logoFilename->AddLast("plugins"); logoFilename->AddLast("bench"); 
+	logoFilename->AddLast("cb.jpg");
+
+	t2 = ShadeIt_2(file,SHADING_FAC,dlg);
+	if (t2!=0.0) e2 = t2;
+
+//	SetMousePointer(MOUSE_SHOW);
+
+	return e2;
+}
+
+// ************************ make a dialog class  ********************************************
+
+
+class RankingTable
+{
+	private:
+		var rankingarray;
+		
+	public:
+		RankingTable();
+		
+		AddEntry(bc);
+		GetSortedArray(sortid);
+		GetCount();
+}
+
+var rankingtable;
+
+RankingTable::RankingTable()
+{
+	rankingarray = new(array,0);
+}
+
+RankingTable::GetCount()
+{
+	return sizeof(rankingarray);
+}
+
+RankingTable::AddEntry(bc)
+{
+	var newarray = new(array,sizeof(rankingarray)+1);
+	var i;
+	for (i=0;i<sizeof(rankingarray);i++)
+	{
+		newarray[i]=rankingarray[i];
+	}
+	newarray[i]=bc;
+	rankingarray = newarray;
+}
+
+RankingTable::GetSortedArray(sortid)
+{
+	var sortedarray = new(array,sizeof(rankingarray));
+	var i;
+	for (i=0;i<sizeof(rankingarray);i++)
+	{
+		sortedarray[i] = rankingarray[i];
+	}
+
+	// simple bubble sort
+	var chg=1;
+	while (chg)
+	{
+		chg = 0;
+		for (i=0;i<sizeof(sortedarray)-1;i++)
+		{
+			if (sortedarray[i]->GetFloat(sortid) < sortedarray[i+1]->GetFloat(sortid))
+			{
+				var t = sortedarray[i];
+				sortedarray[i] = sortedarray[i+1];
+				sortedarray[i+1] = t;
+				chg++;
+			}
+		}
+	}
+	return sortedarray;
+}
+
+
+// definition of my user area
+class RankingArea : GeUserArea
+{
+	private:
+		var lineheight;
+
+	public:
+		RankingArea(id,dialog);
+		Init();
+		GetUserWidth();
+		GetUserHeight();
+		Draw(x1,y1,x2,y2);
+		InputEvent(msg);
+		Message(msg);
+}
+
+RankingArea::RankingArea(id,dialog)
+{
+	super(id,dialog);
+	lineheight = 20;
+}
+
+RankingArea::Init()
+{
+}
+
+RankingArea::Message(msg)
+{
+	switch (msg->GetId())
+	{
+		case BFM_GETCURSORINFO:
+			{
+				var mx = msg->GetInt(BFM_DRAG_SCREENX);
+				var my = msg->GetInt(BFM_DRAG_SCREENY);
+				mx = Screen2LocalX(mx);
+				my = Screen2LocalY(my);
+
+				var y=0,i,txt="";
+				var showranking = ranking_mode;
+				var table = rankingtable->GetSortedArray(showranking);
+				var ranking_info = showranking==RANK_OPENGL || showranking==RANK_OPENGL_QUALITY ? ranking_info_gl : ranking_info_cpu;
+
+				for (i=0;i<sizeof(table);i++)
+				{
+					var bc = table[i];
+					var val = bc->GetFloat(showranking);
+					if (val==0.0)
+						continue;
+
+					if (my>=y && my<y+lineheight)
+					{
+						if (bc==yourscore)
+							txt += GeLoadString(IDS_CB_RANK_YOURMACHINE)+":||";
+						else if (bc->GetInt(RANK_IDENTICAL))
+							txt += GeLoadString(IDS_CB_RANK_IDENTICALMACHINE)+":||";
+						else
+							txt += GeLoadString(IDS_CB_RANK_COMPAREMACHINE)+":||";
+
+						if (bc->GetFloat(RANK_OPENGL))
+						{
+							txt += GeLoadString1(IDS_CB_RANK_OGL,tostring(bc->GetFloat(RANK_OPENGL),".2f"));
+							if (bc!=yourscore && yourscore->GetFloat(RANK_OPENGL))
+							{
+								if (abs(yourscore->GetFloat(RANK_OPENGL)-bc->GetFloat(RANK_OPENGL))<0.01)
+									txt += " "+GeLoadString(IDS_CB_RANK_SAMESPEED);
+								else if (yourscore->GetFloat(RANK_OPENGL) > bc->GetFloat(RANK_OPENGL))
+									txt += " "+GeLoadString1(IDS_CB_RANK_SLOWER,tostring(yourscore->GetFloat(RANK_OPENGL) / bc->GetFloat(RANK_OPENGL),".2f"));
+								else
+									txt += " "+GeLoadString1(IDS_CB_RANK_FASTER,tostring(bc->GetFloat(RANK_OPENGL) / yourscore->GetFloat(RANK_OPENGL),".2f"));
+							}
+							txt += "|";
+						}
+
+						if (bc->GetFloat(RANK_OPENGL_QUALITY))
+						{
+							txt += GeLoadString1(IDS_CB_RANK_REFMATCH,tostring(bc->GetFloat(RANK_OPENGL_QUALITY),".2f"));
+							txt += "|";
+						}
+
+						if (bc->GetFloat(RANK_CPUx))
+						{
+							txt += GeLoadString1(IDS_CB_RANK_CBCPUMULTICORE,tostring(bc->GetFloat(RANK_CPUx),".0f"));
+							if (bc!=yourscore && yourscore->GetFloat(RANK_CPUx))
+							{
+								if (abs(yourscore->GetFloat(RANK_CPUx)-bc->GetFloat(RANK_CPUx))<0.01)
+									txt += " "+GeLoadString(IDS_CB_RANK_SAMESPEED);
+								else if (yourscore->GetFloat(RANK_CPUx) > bc->GetFloat(RANK_CPUx))
+									txt += " "+GeLoadString1(IDS_CB_RANK_SLOWER,tostring(yourscore->GetFloat(RANK_CPUx) / bc->GetFloat(RANK_CPUx),".2f"));
+								else
+									txt += " "+GeLoadString1(IDS_CB_RANK_FASTER,tostring(bc->GetFloat(RANK_CPUx) / yourscore->GetFloat(RANK_CPUx),".2f"));
+							}
+							txt += "|";
+						}
+
+						if (bc->GetFloat(RANK_CPU1))
+						{
+							txt += GeLoadString1(IDS_CB_RANK_CBCPUSINGLECORE,tostring(bc->GetFloat(RANK_CPU1),".0f"));
+							if (bc!=yourscore && yourscore->GetFloat(RANK_CPU1))
+							{
+								if (abs(yourscore->GetFloat(RANK_CPU1)-bc->GetFloat(RANK_CPU1))<0.01)
+									txt += " "+GeLoadString(IDS_CB_RANK_SAMESPEED);
+								else if (yourscore->GetFloat(RANK_CPU1) > bc->GetFloat(RANK_CPU1))
+									txt += " "+GeLoadString1(IDS_CB_RANK_SLOWER,tostring(yourscore->GetFloat(RANK_CPU1) / bc->GetFloat(RANK_CPU1),".2f"));
+								else
+									txt += " "+GeLoadString1(IDS_CB_RANK_FASTER,tostring(bc->GetFloat(RANK_CPU1) / yourscore->GetFloat(RANK_CPU1),".2f"));
+							}
+							txt += "|";
+						}
+
+						if (bc->GetFloat(RANK_MPRATIO))
+						{
+							txt += GeLoadString1(IDS_CB_RANK_CBRATIO,tostring(bc->GetFloat(RANK_MPRATIO),".2f"));
+							txt += "|";
+						}
+
+						txt += "|";
+						txt += GetCpuCountFromContainer(bc);
+
+						txt += " @ " + tostring(bc->GetFloat(RANK_MHZ)/1000.0,".2f")+" "+GeLoadString(IDS_CB_GHZ)+"|";
+						txt += bc->GetString(RANK_PROCESSOR)+"|";
+						if (sizeof(bc->GetString(RANK_OPENGLVENDOR)) || sizeof(bc->GetString(RANK_OPENGLVERSION)))
+							txt += bc->GetString(RANK_OPENGLVENDOR)+", "+bc->GetString(RANK_OPENGLCARD)+", "+GeLoadString(IDS_CB_OGLVERSION)+": "+bc->GetString(RANK_OPENGLVERSION);
+						else
+							txt += bc->GetString(RANK_OPENGLCARD);
+						if (sizeof(bc->GetString(RANK_OPENGLDRIVERVERSION)))
+							txt += ", "+GeLoadString(IDS_CB_OGLDRIVERVERSION)+": "+bc->GetString(RANK_OPENGLDRIVERVERSION);
+						txt += "|";
+						txt += bc->GetString(RANK_CBVERSION)+"|";
+
+						txt += "|";
+						txt += GeLoadString(IDS_CB_RANK_INFO)+": "+bc->GetString(RANK_C4DINFO)+"|";
+						txt += GeLoadString(IDS_CB_RANK_VERSION)+": "+bc->GetString(RANK_C4DVERSION)+" "+bc->GetString(RANK_C4DBUILDID)+" "+bc->GetString(RANK_OSTYPE)+"|";
+						break;
+					}
+
+					y+=lineheight;
+				}
+
+				var result = new(BaseContainer);
+				result->SetId(1);
+				result->SetData(RESULT_BUBBLEHELP,txt);
+				return result;
+			}
+			break;
+	}
+	return super::Message(msg);
+}
+
+RankingArea::GetUserWidth()
+{
+	return 100;
+}
+
+RankingArea::GetUserHeight()
+{
+	var i,listsize = 0;
+	var showranking = ranking_mode;
+	var table = rankingtable->GetSortedArray(showranking);
+
+	for (i=0;i<sizeof(table);i++)
+	{
+		var bc = table[i];
+
+		var val = bc->GetFloat(showranking);
+		if (val==0.0)
+			continue;
+		
+		listsize++;
+	}
+	return lineheight*listsize;
+}
+
+RankingArea::InputEvent(msg)
+{
+	
+}
+
+RankingArea::Draw(x1,y1,x2,y2)
+{
+	var i;
+	var w = GetWidth()-1;
+	var h = GetHeight()-1;
+	var x = 0;
+	var y = 0;
+	var th = DrawGetFontHeight();
+
+	OffScreenOn();
+	DrawSetPen(COLOR_BG);
+	DrawRectangle(x1,y1,x2,y2);
+
+	var showranking = ranking_mode;
+	var maxval=0.0,table = rankingtable->GetSortedArray(showranking);
+
+	for (i=0;i<sizeof(table);i++)
+	{
+		var bc = table[i];
+		var val = bc->GetFloat(showranking);
+		if (val>maxval) maxval=val;
+	}
+	
+	var ranking_info = showranking==RANK_OPENGL || showranking==RANK_OPENGL_QUALITY ? ranking_info_gl : ranking_info_cpu;
+	
+	for (i=0;i<sizeof(table);i++)
+	{
+		var bc = table[i];
+
+		var val = bc->GetFloat(showranking);
+		if (val==0.0)
+			continue;
+		var p = maxval ? val/maxval*w : 0.0;
+		var txt = "";
+		var score;
+		if (showranking == RANK_CPU1 || showranking == RANK_CPUx)
+			score = val!=0.0 ? tostring(val,".0f") : "";
+		else
+			score = val!=0.0 ? tostring(val,".2f") : "";
+		var tw = DrawGetTextWidth(score);
+
+		if (bc==yourscore)
+			DrawSetPen(COLOR_RANK_MYSCORE);
+		else if (bc->GetInt(RANK_IDENTICAL))
+			DrawSetPen(COLOR_RANK_IDENTICAL);
+		else
+			DrawSetPen(COLOR_RANK_REF);
+
+		var c,cp=-1;
+		for (c=0;c<RANK_MAX_;c++)
+		{
+			if (!ranking_info[c]) continue;
+			if (sizeof(txt)>2 && txt[sizeof(txt)-2]!=',')
+			{
+				if (cp==RANK_CORES) txt += " ";
+				else txt += ", ";
+			}
+			switch (c)
+			{
+				case RANK_CORES:					txt += GetCpuCountFromContainerShort(bc)+" @"; break;
+				case RANK_MHZ:						txt += tostring(bc->GetFloat(RANK_MHZ)/1000.0,".2f")+" "+GeLoadString(IDS_CB_GHZ); break;
+				case RANK_OPENGL_QUALITY:	txt += tostring(bc->GetFloat(RANK_OPENGL_QUALITY),".2f")+" %"; break;
+				case RANK_PROCESSOR:
+				case RANK_OPENGLVENDOR:
+				case RANK_OPENGLCARD:
+				case RANK_OPENGLVERSION:
+				case RANK_OPENGLDRIVERVERSION:
+				case RANK_OSTYPE:
+				case RANK_CBVERSION:
+				case RANK_C4DINFO:			
+				case RANK_C4DVERSION:
+				case RANK_C4DBUILDID:
+					txt += bc->GetString(c); 
+					break;
+			}
+			cp=c;
+		}
+
+		txt = tostring(i+1)+". "+txt;
+		
+		DrawRectangle(0,y+1,p,y+lineheight-2);
+		DrawSetTextPen(COLOR_TEXT,COLOR_TRANS);
+		SetClippingRegion(0,y1,w-tw-4-16,y2);
+		DrawText(txt,4,y+1+(lineheight-th-2)/2);
+		ClearClippingRegion();
+		DrawText(score,w-tw-4,y+1+(lineheight-th-2)/2);
+		y+=lineheight;
+	}
+}
+
+
+
+
+
+
+// definition of my user area
+class RankingLegend : GeUserArea
+{
+	private:
+
+	public:
+		RankingLegend(id,dialog);
+		Init();
+		GetUserWidth();
+		GetUserHeight();
+		Draw(x1,y1,x2,y2);
+}
+
+RankingLegend::RankingLegend(id,dialog)
+{
+	super(id,dialog);
+}
+
+RankingLegend::Init()
+{
+}
+
+RankingLegend::GetUserWidth()
+{
+	return 100;
+}
+
+RankingLegend::GetUserHeight()
+{
+	return DrawGetFontHeight();
+}
+
+RankingLegend::Draw(x1,y1,x2,y2)
+{
+	var i;
+	var w = GetWidth()-1;
+	var h = GetHeight()-1;
+	var x = 0;
+	var y = 0;
+	var th = DrawGetFontHeight();
+
+	OffScreenOn();
+	DrawSetPen(COLOR_BG);
+	DrawRectangle(x1,y1,x2,y2);
+
+	DrawSetPen(COLOR_RANK_MYSCORE);
+	DrawRectangle(x,y,x+14,y+h);
+	x += 14;
+
+	DrawSetTextPen(COLOR_TEXT,COLOR_TRANS);
+	DrawText(GeLoadString(IDS_CB_YOURSCORE),x+4,y);
+
+	x += 4+4+DrawGetTextWidth(GeLoadString(IDS_CB_YOURSCORE));
+
+	DrawSetPen(COLOR_RANK_IDENTICAL);
+	DrawRectangle(x,y,x+14,y+h);
+	x += 14;
+
+	DrawSetTextPen(COLOR_TEXT,COLOR_TRANS);
+	DrawText(GeLoadString(IDS_CB_SAMEMACHINE),x+4,y);
+}
+
+
+
+
+
+
+
+// definition of my user area
+class MyUserArea : GeUserArea
+{
+	private:
+		var bmp;
+		var m_link;
+		
+	public:
+		MyUserArea(id,dialog,f,link);
+		Init();
+		GetUserWidth();
+		GetUserHeight();
+		Draw(x1,y1,x2,y2);
+		InputEvent(msg);
+		Message(msg);
+}
+
+MyUserArea::MyUserArea(id,dialog,f,link)
+{
+	super(id,dialog);
+	bmp = new(BaseBitmap,1,1);
+	m_link = link;
+	if (bmp)
+	{
+		bmp->Load(f);
+	}
+}
+
+MyUserArea::Init()
+{
+}
+
+MyUserArea::Message(msg)
+{
+	switch (msg->GetId())
+	{
+		case BFM_GETCURSORINFO:
+			{
+				var result = new(BaseContainer);
+				result->SetId(1);
+				result->SetData(RESULT_CURSOR,MOUSE_POINT_HAND);
+				return result;
+			}
+			break;
+	}
+	return super::Message(msg);
+}
+
+MyUserArea::GetUserWidth()
+{
+	return bmp->GetWidth();
+}
+
+MyUserArea::GetUserHeight()
+{
+	return bmp->GetHeight();
+}
+
+MyUserArea::InputEvent(msg)
+{
+	if (msg->GetInt(BFM_INPUT_DEVICE)==BFM_INPUT_MOUSE)
+	{
+		if (msg->GetInt(BFM_INPUT_CHANNEL)==BFM_INPUT_MOUSELEFT)
+		{
+			GeOpenHTML(m_link);
+		}
+	}
+}
+
+MyUserArea::Draw(x1,y1,x2,y2)
+{
+	var w = GetWidth()-1;
+	var h = GetHeight()-1;
+
+	DrawSetPen(COLOR_BG);
+	DrawBitmap( bmp, 0, 0, bmp->GetWidth()-1, bmp->GetHeight()-1, 0, 0, GetWidth()-1, GetHeight()-1, BMP_NORMAL|BMP_ALLOWALPHA|BMP_MIRROR_H_FORBID);
+}
+
+
+
+class PrefsDialog : GeModalDialog
+{
+	public:
+		var _tempCpuCnt;
+		
+	public:
+		PrefsDialog();
+
+		CreateLayout();
+		Command(id,msg);
+}
+
+PrefsDialog::PrefsDialog()
+{
+	super();
+	_tempCpuCnt = 1;
+}
+
+PrefsDialog::CreateLayout()
+{
+	LoadDialogResource(IDD_CBPREFS,resource,BFH_FIT|BFV_FIT);
+
+	FreeItems(IDC_CB_LANGUAGE);
+	var extension;
+	var name;
+	var def;
+	var idx=0;
+	while (GeGetLanguage(idx, &extension, &name, &def))
+	{
+		AddItem(IDC_CB_LANGUAGE,idx+100,name);
+		if (def)
+			SetInt(IDC_CB_LANGUAGE,idx+100,0,1000000,1);
+		idx++;
+	}
+
+	var world = GetWorldContainer();
+	_tempCpuCnt = world->GetData(WPREF_CPUCOUNT);
+	SetInt( IDC_CB_CUSTOMRENDERTHREADS, world->GetData(WPREF_CPUCUSTOM), 0, 1, 1);
+	SetInt( IDC_CB_CUSTOMRENDERTHREADS_CNT, GetInt(IDC_CB_CUSTOMRENDERTHREADS) ? _tempCpuCnt : GetCPUCount(), 1, 256, 1);
+	Enable( IDC_CB_CUSTOMRENDERTHREADS_CNT, GetInt(IDC_CB_CUSTOMRENDERTHREADS));
+
+	return TRUE;
+}
+
+PrefsDialog::Command(id,msg)
+{
+	switch (id)
+	{
+		case IDC_CB_CUSTOMRENDERTHREADS:
+			Enable( IDC_CB_CUSTOMRENDERTHREADS_CNT, GetInt(IDC_CB_CUSTOMRENDERTHREADS));
+			SetInt( IDC_CB_CUSTOMRENDERTHREADS_CNT, GetInt(IDC_CB_CUSTOMRENDERTHREADS) ? _tempCpuCnt : GetCPUCount(), 1, 256, 1);
+			break;
+
+		case IDC_CB_CUSTOMRENDERTHREADS_CNT:
+			_tempCpuCnt = GetInt(IDC_CB_CUSTOMRENDERTHREADS_CNT);
+			break;
+			
+		case IDC_OK:
+			{
+				var idx = GetInt(IDC_CB_LANGUAGE)-100;
+				var extension;
+				var name;
+				var def;
+				if (GeGetLanguage(idx, &extension, &name, &def) && !def)
+				{
+					TextDialog(GeLoadString(IDS_CB_RESTART),DLG_OK);
+					GeSetDefaultLanguage(extension,TRUE);
+					SetMousePointer(MOUSE_BUSY);
+				}
+
+				var world = GetWorldContainer();
+				world->SetData(WPREF_CPUCUSTOM, GetInt(IDC_CB_CUSTOMRENDERTHREADS));
+				world->SetData(WPREF_CPUCOUNT , _tempCpuCnt);
+				world = SetWorldContainer(world);
+			}
+			break;
+	}
+}
+
+GetDisclaimerPath()
+{
+	if (!resource) return "";
+	var fn = resource->GetStringPath();
+	println("string resource path: "+fn->GetFullString());
+	fn->AddLast("disclaimer.html");
+	if (!GeFileExist(fn,FALSE))
+	{
+		fn = resourceroot->GetClone();
+		fn->AddLast("res");
+		fn->AddLast("strings_us");
+		fn->AddLast("disclaimer.html");
+		if (!GeFileExist(fn,FALSE))
+			return "";
+	}
+	return fn->GetFullString();
+}
+
+class DisclaimerDialog : GeDialog
+{
+	public:
+		var dontclose;
+
+	public:
+		DisclaimerDialog();
+
+		CreateLayout();
+		Command(id,msg);
+		Init();
+		AskClose();
+}
+
+DisclaimerDialog::DisclaimerDialog()
+{
+	super(123456);
+	dontclose = TRUE;
+}
+
+DisclaimerDialog::CreateLayout()
+{
+	LoadDialogResource(IDD_DISCLAIMER,resource,BFH_FIT|BFV_FIT);
+	dialog->Enable(IDC_MAINGROUP,FALSE);
+	return TRUE;
+}
+
+DisclaimerDialog::Init()
+{
+	SetString(IDC_DISCLAIMER,"file:///"+GetDisclaimerPath(),-1);
+	return TRUE;
+}
+
+DisclaimerDialog::AskClose()
+{
+	return dontclose && !disclaimer_accepted;
+}
+
+DisclaimerDialog::Command(id,msg)
+{
+	switch (id)
+	{
+		case IDC_ACCEPT:
+			disclaimer_accepted = TRUE;
+			{
+				var world = GetWorldContainer();
+				var cbdata = world->GetData(CINEBENCH_PLUGIN_ID);
+				if (!cbdata) cbdata = new(BaseContainer);
+				cbdata->SetData(CINEBENCH_DISCLAIMERACCEPTED,disclaimer_accepted);
+				world->SetData(CINEBENCH_PLUGIN_ID,cbdata);
+				SetWorldContainer(world);
+			}
+			dontclose = FALSE;
+			Close();
+			dialog->Enable(IDC_MAINGROUP,TRUE);
+			break;
+			
+		case IDC_DECLINE:
+			disclaimer_accepted = FALSE;
+			{
+				var world = GetWorldContainer();
+				var cbdata = world->GetData(CINEBENCH_PLUGIN_ID);
+				if (!cbdata) cbdata = new(BaseContainer);
+				cbdata->SetData(CINEBENCH_DISCLAIMERACCEPTED,disclaimer_accepted);
+				world->SetData(CINEBENCH_PLUGIN_ID,cbdata);
+				SetWorldContainer(world);
+			}
+			dontclose = FALSE;
+			Close();
+			dialog->Enable(IDC_MAINGROUP,FALSE);
+			shutdown();
+			break;
+	}
+	return super::Command(id,msg);
+}
+
+
+
+
+
+
+class StatDialog : GeDialog
+{
+	public:
+
+	public:
+		StatDialog();
+
+		CreateLayout();
+}
+
+StatDialog::StatDialog()
+{
+	super(CINEBENCH_PLUGIN_ID_STATWIN);
+}
+
+StatDialog::CreateLayout()
+{
+	AddGroupBeginH(1000,BFH_SCALEFIT|BFV_TOP,1,"",0);
+		AddGroupBorderSpace(8,8,8,8);		
+		AddStaticText(1001,BFH_SCALEFIT,0,12,"",BORDER_WITH_TITLE_BOLD);			
+	AddGroupEnd();
+
+	SetStatusMessage("");
+
+	return TRUE;
+}
+
+
+
+class MyDialog : GeDialog
+{
+	public:
+		var start,rendermode,multi;
+		var rankingua,rankinglegend,maxonlogo1,maxonlogo2;
+
+		CreateDialogGroup();
+
+	public:
+		MyDialog();
+
+		CreateLayout();
+		Command(id,msg);
+		UpdateDialog();
+		Init();
+		CoreMessage(id,msg);
+		Timer(msg);
+		AskClose();
+
+		BringToFront(managerid);
+
+		SetRankingMode(rm);
+		UpdateRanking();
+		Test1();
+		Test2();
+		Test_OGL_HW();
+
+		OptEnable();
+		StartAllTests();
+		SwitchAdvancedMode();
+}
+
+MyDialog::MyDialog()
+{
+	super(CINEBENCH_PLUGIN_ID);
+	rendermode = -1;
+	multi = FALSE;
+}
+
+MyDialog::SetRankingMode(rk)
+{
+	ranking_mode = rk;
+	SetInt(IDC_RANKING_COMBO,ranking_mode,MINLONGl,MAXLONGl,1);
+	UpdateRanking();
+}
+
+MyDialog::BringToFront(managerid)
+{
+	var msg = new(BaseContainer,'show');
+	msg->SetData('id',managerid);
+	SendCoreMessage(0xC0FFEE,msg,0);
+}
+
+MyDialog::AskClose()
+{
+	if (g_scorechanged)
+	{
+		var res = !AUTORUN ? TextDialog(GeLoadString(IDS_CB_SAVESCSORE),DLG_YESNO) : DLG_R_NO;
+		if (res==DLG_R_YES)
+		{
+			WriteRankingFile();
+		}
+//		else if (res==DLG_R_CANCEL)
+//		{
+//			return TRUE;
+//		}
+	}
+}
+
+
+var RENDER_FAC = 40000.0;
+
+MyDialog::CoreMessage(id,msg)
+{
+	if (id==-1003 && rendermode!=100)
+	{
+		var diff = msg->GetInt(BFM_CORE_PAR1);
+		if (diff==-1)
+		{
+			print(PRINTVISSYMBOL+"Rendering aborted\n");
+			showsplash=FALSE;
+		}
+		else
+		{
+			if (rendermode==0)
+			{
+				render_1_time = diff/1000.0;
+				if (diff!=0.0)
+				{
+					render_1_cb = CalcNewCB(render_1_cb,RENDER_FAC / render_1_time);
+					yourscore->SetData(RANK_CPU1,render_1_cb);
+					if (yourscore->GetFloat(RANK_CPU1) && yourscore->GetFloat(RANK_CPUx))
+						yourscore->SetData(RANK_MPRATIO,yourscore->GetFloat(RANK_CPUx)/yourscore->GetFloat(RANK_CPU1));
+					g_scorechanged = TRUE;
+					SetRankingMode(RANK_CPU1);
+				}
+				BringToFront(ID_PICTUREVIEWER);
+				ClearAutoStart();
+//println(tostring(render_1_time,".1f")," sec");
+			}
+			else if (rendermode==1)
+			{
+				render_x_time = diff/1000.0;
+				if (diff!=0.0)
+				{
+					render_x_cb = CalcNewCB(render_x_cb,RENDER_FAC / render_x_time);
+					yourscore->SetData(RANK_CPUx,render_x_cb);
+					if (yourscore->GetFloat(RANK_CPU1) && yourscore->GetFloat(RANK_CPUx))
+						yourscore->SetData(RANK_MPRATIO,yourscore->GetFloat(RANK_CPUx)/yourscore->GetFloat(RANK_CPU1));
+					g_scorechanged = TRUE;
+					SetRankingMode(RANK_CPUx);
+
+					if (GetCPUCount()==1)
+					{
+						render_1_cb = render_x_cb;
+						yourscore->SetData(RANK_CPU1,render_1_cb);
+						yourscore->SetData(RANK_MPRATIO,1.0);
+					}
+				}
+				ClearAutoStart();
+//println(tostring(render_x_time,".1f")," sec");
+			}
+		}
+		var d = GetActiveDocument();
+		KillDocument(d);
+		SetStatusMessage("");
+
+		rendermode = -1;
+		Init();
+		println(" ");
+	}
+}
+
+MyDialog::CreateDialogGroup()
+{
+	AddGroupBeginV(0,BFH_SCALEFIT|BFV_SCALEFIT,1,"",0);
+		AddGroupBorderSpace(4,4,4,4);
+
+		AddGroupSpace(8,8);
+
+		AddGroupBeginV(0,BFH_SCALEFIT,1,"",0);
+			AddGroupBorder(BORDER_GROUP_IN);
+			AddGroupBorderSpace(8,8,8,8);
+			AddGroupSpace(8,8);
+
+			AddUserArea(IDC_MAXONLOGO1,BFH_CENTER,0,0);
+			AddSeparatorH(0);
+
+			AddGroupBeginV(0,BFH_SCALEFIT,advanced_mode ? 4 : 3,"",BFV_GRIDGROUP_EQUALROWS);
+				AddGroupBorderSpace(0,0,0,0);
+				AddGroupSpace(4,4);
+
+				AddStaticText(0,BFH_LEFT|BFV_CENTER,0,0,GeLoadString(IDS_CB_DLG_OGL),BORDER_WITH_TITLE_BOLD);
+				AddStaticText(R_OPENGL_HARD,BFH_SCALEFIT|BFH_RIGHT,100,0,"",BORDER_WITH_TITLE_BOLD);
+				AddButton(B_OPENGL_HW,BFH_FIT|BFV_FIT,0,15,GeLoadString(IDS_CB_DLG_RUN));
+				if (advanced_mode) AddCheckbox(X_OPENGL_HW,BFH_LEFT|BFV_CENTER,0,0,"");
+
+				if (advanced_mode)
+				{
+					AddStaticText(0,BFH_LEFT|BFV_CENTER,0,0,GeLoadString(IDS_CB_DLG_REFMATCH),BORDER_WITH_TITLE_BOLD);
+					AddStaticText(R_OPENGL_QUALITY,BFH_SCALEFIT|BFH_RIGHT,100,0,"",BORDER_WITH_TITLE_BOLD);
+					AddStaticText(0,BFH_LEFT|BFV_CENTER,0,0,"",BORDER_WITH_TITLE_BOLD);
+					AddStaticText(0,BFH_LEFT|BFV_CENTER,0,0,"",BORDER_WITH_TITLE_BOLD);
+				}
+				
+				if (GetCPUCount()>1)
+				{
+					AddStaticText(0,BFH_LEFT|BFV_CENTER,0,0,GeLoadString(IDS_CB_DLG_CPU),BORDER_WITH_TITLE_BOLD);
+					AddStaticText(R_RENDER_M,BFH_SCALEFIT|BFV_CENTER,100,0,"",BORDER_WITH_TITLE_BOLD);
+					AddButton(B_RENDER_M,BFH_FIT|BFV_FIT,0,15,GeLoadString(IDS_CB_DLG_RUN));
+					if (advanced_mode) AddCheckbox(X_RENDER_M,BFH_LEFT|BFV_CENTER,0,0,"");
+
+					if (advanced_mode)
+					{
+						AddStaticText(0,BFH_LEFT|BFV_CENTER,0,0,GeLoadString(IDS_CB_DLG_CPU_SINGLE),BORDER_WITH_TITLE_BOLD);
+						AddStaticText(R_RENDER_1,BFH_SCALEFIT|BFV_CENTER,100,0,"",BORDER_WITH_TITLE_BOLD);
+						AddButton(B_RENDER_1,BFH_FIT|BFV_FIT,0,15,GeLoadString(IDS_CB_DLG_RUN));
+						AddCheckbox(X_RENDER_1,BFH_LEFT|BFV_CENTER,0,0,"");
+
+						AddStaticText(0,BFH_LEFT|BFV_CENTER,0,0,GeLoadString(IDS_CB_DLG_MPRATIO),BORDER_WITH_TITLE_BOLD);
+						AddStaticText(R_GAIN_MP1,BFH_SCALEFIT|BFV_CENTER,100,0,"",BORDER_WITH_TITLE_BOLD);
+						AddStaticText(R_GAIN_MP2,BFH_FIT|BFV_CENTER,0,0,"",BORDER_WITH_TITLE_BOLD);
+						AddStaticText(0,BFH_LEFT|BFV_CENTER,0,0,"",0);
+					}
+				}
+				else
+				{
+					AddStaticText(0,BFH_LEFT|BFV_CENTER,0,0,GeLoadString(IDS_CB_DLG_CPU),BORDER_WITH_TITLE_BOLD);
+					AddStaticText(R_RENDER_M,BFH_SCALEFIT|BFV_CENTER,100,0,"",BORDER_WITH_TITLE_BOLD);
+					AddButton(B_RENDER_M,BFH_FIT|BFV_FIT,0,15,GeLoadString(IDS_CB_DLG_RUN));
+					if (advanced_mode) AddCheckbox(X_RENDER_M,BFH_LEFT|BFV_CENTER,0,0,"");
+				}
+
+			AddGroupEnd();
+
+		AddGroupEnd();
+
+		AddGroupBeginV(0,BFH_SCALEFIT,2,GeLoadString(IDS_CB_DLG_YOURSYSTEM),0);
+			AddGroupBorder(BORDER_GROUP_IN|BORDER_WITH_TITLE);
+			AddGroupBorderSpace(8,8,8,8);
+			AddGroupSpace(4,4);
+
+			AddStaticText(0,BFH_LEFT,0,0,GeLoadString(IDS_CB_DLG_PROC),0);
+			AddEditText(B_INFO_MACH,BFH_SCALEFIT,120,15);
+
+			AddStaticText(0,BFH_LEFT,0,0,GeLoadString(IDS_CB_DLG_CORES),0);
+			AddEditText(B_INFO_CPUCOUNT,BFH_SCALEFIT,120,15);
+
+			AddStaticText(0,BFH_LEFT,0,0,GeLoadString(IDS_CB_DLG_OS),0);
+			AddEditText(B_INFO_OS,BFH_SCALEFIT,120,15);
+
+			AddStaticText(0,BFH_LEFT,0,0,GeLoadString(IDS_CB_DLG_CBVERSION),0);
+			AddEditText(B_INFO_C4D,BFH_SCALEFIT,120,15);
+
+			AddStaticText(0,BFH_LEFT,0,0,GeLoadString(IDS_CB_DLG_GFXBOARD),0);
+			AddEditText(B_INFO_GFX,BFH_SCALEFIT,120,15);
+
+			AddStaticText(0,BFH_LEFT,0,0,GeLoadString(IDS_CB_DLG_INFO),0);
+			AddEditText(B_INFO_USERINFO,BFH_SCALEFIT,120,15);
+
+			Enable(B_INFO_MACH,FALSE);
+			Enable(B_INFO_CPUCOUNT,FALSE);
+			Enable(B_INFO_OS,FALSE);
+			Enable(B_INFO_C4D,FALSE);
+			Enable(B_INFO_GFX,FALSE);
+
+
+		AddGroupEnd();
+
+		AddGroupBeginV(0,BFH_FIT|BFV_SCALEFIT,1,GeLoadString(IDS_CB_DLG_RANKING),0);
+			AddGroupBorder(BORDER_GROUP_IN|BORDER_WITH_TITLE);
+			AddGroupBorderSpace(8,8,8,8);
+			AddGroupSpace(4,4);
+			AddGroupBeginH(0,BFH_SCALEFIT,1,"",0);
+				AddComboBox(IDC_RANKING_COMBO,BFH_LEFT|BFV_CENTER,0,0);
+					AddItem(IDC_RANKING_COMBO,RANK_OPENGL,GeLoadString(IDS_CB_DLG_RANK_OPENGL));
+					if (advanced_mode) AddItem(IDC_RANKING_COMBO,RANK_OPENGL_QUALITY,GeLoadString(IDS_CB_DLG_RANK_OGLMATCH));
+					AddItem(IDC_RANKING_COMBO,RANK_CPUx,GeLoadString(IDS_CB_DLG_RANK_CPU));
+					if (advanced_mode) AddItem(IDC_RANKING_COMBO,RANK_CPU1,GeLoadString(IDS_CB_DLG_RANK_CPU1));
+					if (advanced_mode) AddItem(IDC_RANKING_COMBO,RANK_MPRATIO,GeLoadString(IDS_CB_DLG_RANK_MPRATIO));
+				AddStaticText(0,BFH_SCALEFIT,0,0,"",0);
+				AddStaticText(0,BFH_RIGHT,0,0,GeLoadString(IDS_CB_DLG_RANK_DETAILS),0);
+				AddPopupButton(IDC_RANKING_INFO, BFH_RIGHT|BFV_CENTER, 0, 0);
+			AddGroupEnd();
+
+			AddSeparatorH(0);
+
+			AddScrollGroupBegin(0,BFH_SCALEFIT|BFV_SCALEFIT,SCROLLGROUP_HORIZ|SCROLLGROUP_VERT|SCROLLGROUP_AUTOHORIZ|SCROLLGROUP_AUTOVERT);
+				AddUserArea(IDC_RANKING_UA,BFH_SCALEFIT|BFV_SCALEFIT,0,0);
+			AddScrollGroupEnd();
+
+			AddSeparatorH(0);
+			AddUserArea(IDC_RANKING_LEGEND,BFH_SCALEFIT|BFV_TOP,0,0);
+
+		AddGroupEnd();
+
+		AddGroupBeginV(0,BFH_CENTER,1,"",0);
+			AddGroupBorderSpace(0,0,0,0);
+			AddUserArea(IDC_MAXONLOGO2,BFH_CENTER,0,0);
+		AddGroupEnd();
+
+	AddGroupEnd();
+
+	var f = GeGetStartupPath(); 
+	f->AddLast("plugins"); 
+	f->AddLast("bench"); 
+	f->AddLast("cb2.png");
+	maxonlogo1 = new(MyUserArea,IDC_MAXONLOGO1,this,f,GeLoadString(IDS_CB_LINK1));
+	rankingua = new(RankingArea,IDC_RANKING_UA,this);
+	rankinglegend = new(RankingLegend,IDC_RANKING_LEGEND,this);
+
+	f = GeGetStartupPath(); 
+	f->AddLast("plugins"); 
+	f->AddLast("bench"); 
+	f->AddLast("MAXON 3D.png");
+	maxonlogo2 = new(MyUserArea,IDC_MAXONLOGO2,this,f,GeLoadString(IDS_CB_LINK2));
+}
+
+MyDialog::CreateLayout()
+{
+	SetTimer(1000);
+
+	if (AUTORUN)
+	{
+		autoruntime = time();
+		print(PRINTVISSYMBOL+"CINEBENCH AUTORUN\nPlease wait until all tests are done!\n");
+	}
+
+	AddGroupBeginH(IDC_MAINGROUP,BFH_SCALEFIT|BFV_SCALEFIT,1,"",0);
+
+		CreateDialogGroup();
+		
+	AddGroupEnd();
+
+	return TRUE;
+}
+
+MyDialog::UpdateRanking()
+{
+	var ranking_info = ranking_mode==RANK_OPENGL || ranking_mode==RANK_OPENGL_QUALITY ? ranking_info_gl : ranking_info_cpu;
+	FreeItems(IDC_RANKING_INFO);
+	AddItem(IDC_RANKING_INFO,RANK_CORES,GeLoadString(IDS_CB_DLG_DETAILS_CORES)+(ranking_info[RANK_CORES]?"&c&":""));
+	AddItem(IDC_RANKING_INFO,RANK_MHZ,GeLoadString(IDS_CB_DLG_DETAILS_GHZ)+(ranking_info[RANK_MHZ]?"&c&":""));
+	AddItem(IDC_RANKING_INFO,RANK_PROCESSOR,GeLoadString(IDS_CB_DLG_DETAILS_PROC)+(ranking_info[RANK_PROCESSOR]?"&c&":""));
+	AddItem(IDC_RANKING_INFO,RANK_OPENGLVENDOR,GeLoadString(IDS_CB_DLG_DETAILS_GFXVENDOR)+(ranking_info[RANK_OPENGLVENDOR]?"&c&":""));
+	AddItem(IDC_RANKING_INFO,RANK_OPENGLCARD,GeLoadString(IDS_CB_DLG_DETAILS_GFXBOARD)+(ranking_info[RANK_OPENGLCARD]?"&c&":""));
+	AddItem(IDC_RANKING_INFO,RANK_OPENGLVERSION,GeLoadString(IDS_CB_DLG_DETAILS_GFXOPENGLVERSION)+(ranking_info[RANK_OPENGLVERSION]?"&c&":""));
+	AddItem(IDC_RANKING_INFO,RANK_OPENGLDRIVERVERSION,GeLoadString(IDS_CB_DLG_DETAILS_GFXDRIVERVERSION)+(ranking_info[RANK_OPENGLDRIVERVERSION]?"&c&":""));
+	AddItem(IDC_RANKING_INFO,RANK_CBVERSION,GeLoadString(IDS_CB_DLG_DETAILS_OS)+(ranking_info[RANK_CBVERSION]?"&c&":""));
+	AddItem(IDC_RANKING_INFO,RANK_OSTYPE,GeLoadString(IDS_CB_DLG_DETAILS_CBVERSION)+(ranking_info[RANK_OSTYPE]?"&c&":""));
+	AddItem(IDC_RANKING_INFO,RANK_C4DINFO,GeLoadString(IDS_CB_DLG_DETAILS_CBINFO)+(ranking_info[RANK_C4DINFO]?"&c&":""));
+	//AddItem(IDC_RANKING_INFO,RANK_C4DVERSION,GeLoadString(IDS_CB_DLG_DETAILS_CBVERSIONNUM)+(ranking_info[RANK_C4DVERSION]?"&c&":""));
+	//AddItem(IDC_RANKING_INFO,RANK_C4DBUILDID,GeLoadString(IDS_CB_DLG_DETAILS_CBBUILDID)+(ranking_info[RANK_C4DBUILDID]?"&c&":""));
+	AddItem(IDC_RANKING_INFO,RANK_OPENGL_QUALITY,GeLoadString(IDS_CB_DLG_DETAILS_OGLMATCH)+(ranking_info[RANK_OPENGL_QUALITY]?"&c&":""));
+	LayoutChanged(IDC_RANKING_UA);
+}
+
+MyDialog::Test1()
+{
+	var file = GeGetStartupPath(); file->AddLast("plugins"); file->AddLast("bench"); file->AddLast("cpu"); file->AddLast("cpu.c4d");
+
+	print(PRINTVISSYMBOL+"running Single CPU Render Test...\n");
+
+	rendermode = 100;
+	Init();
+	SetStatusMessage(GeLoadString(IDS_CB_PERFORM_CPU1TEST_PREPARE));
+	PrepareRender(file);
+	rendermode = 0;
+	OptEnable();
+	SetString(R_RENDER_1,GeLoadString(IDS_CB_PERFORM_OGLTEST_RUNBENCH_SHORT),FLAG_ALIGN_RIGHT);
+	SetStatusMessage(GeLoadString(IDS_CB_PERFORM_CPU1TEST_RENDERING));
+	start = DoRender(TRUE);
+}
+
+MyDialog::Test2()
+{
+	var file = GeGetStartupPath(); file->AddLast("plugins"); file->AddLast("bench"); file->AddLast("cpu"); file->AddLast("cpu.c4d");
+
+	print(PRINTVISSYMBOL+"running Multiple CPU Render Test...\n");
+	rendermode = 100;
+	Init();
+	SetStatusMessage(GeLoadString(IDS_CB_PERFORM_CPUxTEST_PREPARE));
+	PrepareRender(file);
+	rendermode = 1;
+	OptEnable();
+	SetString(R_RENDER_M,GeLoadString(IDS_CB_PERFORM_OGLTEST_RUNBENCH_SHORT),FLAG_ALIGN_RIGHT);
+	SetStatusMessage(GeLoadString(IDS_CB_PERFORM_CPUxTEST_RENDERING));
+	start = DoRender(FALSE);
+}
+
+MyDialog::Test_OGL_HW()
+{
+	if (!eoglpossible)
+	{
+		if (!AUTORUN)
+			TextDialog(GeLoadString(IDS_CB_GFX_MINIMUM));
+		else
+			print(PRINTVISSYMBOL+"Your GFX-card doesn't support the neccesary features for this test\n",DLG_OK);
+
+		return FALSE;
+	}
+
+	rendermode = 10;
+	Init();
+
+	print(PRINTVISSYMBOL+"running OpenGL Standard Test...\n");
+	SetOpenGL(4);
+
+	var newcb = DoShade(this);
+	if (newcb!=0.0 && !ogl_hard_quality_failed)
+	{
+		ogl_hard_cb = CalcNewCB(ogl_hard_cb,newcb);
+		g_scorechanged = TRUE;
+		yourscore->SetData(RANK_OPENGL,ogl_hard_cb);
+		SetRankingMode(RANK_OPENGL);
+		showsplash = FALSE;
+	}
+	rendermode = -1;
+	Init();
+	println(" ");
+	BringToFront(ID_PICTUREVIEWER);
+	
+	return newcb!=0.0;
+}
+
+MyDialog::StartAllTests()
+{
+	if (x_ogl_hard)
+	{
+		if (!Test_OGL_HW()) return;
+	}
+	if (x_render_x)
+	{
+		Test2();
+		multi=GetCPUCount()>1;
+	}
+	else if (x_render_1)
+	{
+		multi=FALSE;//GetCPUCount()>1;
+		Test1();
+	}
+}
+
+MyDialog::SwitchAdvancedMode()
+{
+	LayoutFlushGroup(IDC_MAINGROUP);
+	CreateDialogGroup();
+	Init();
+	LayoutChanged(IDC_MAINGROUP);
+}
+
+MyDialog::Command(id,msg)
+{
+	switch (id)
+	{
+		case X_RENDER_1:
+			x_render_1 = msg->GetInt(BFM_ACTION_VALUE);
+			break;
+			
+		case X_RENDER_M:
+			x_render_x = msg->GetInt(BFM_ACTION_VALUE);
+			break;
+
+		case X_OPENGL_HW:
+			x_ogl_hard = msg->GetInt(BFM_ACTION_VALUE);
+			break;
+
+		case IDC_RANKING_SAVE:
+			WriteRankingFile();
+			break;
+			
+		case IDC_RANKING_INFO:
+			{
+				var c = msg->GetInt(BFM_ACTION_VALUE);
+				if (c)
+				{
+					var ranking_info = ranking_mode==RANK_OPENGL || ranking_mode==RANK_OPENGL_QUALITY ? ranking_info_gl : ranking_info_cpu;
+					ranking_info[c]=!ranking_info[c];
+					UpdateRanking();
+				}
+			}
+			break;
+		
+		case IDC_RANKING_COMBO:
+			SetRankingMode(msg->GetData(BFM_ACTION_VALUE));
+			break;
+
+		case B_INFO_USERINFO:
+			{
+				var world = GetWorldContainer();
+				var cbdata = world->GetData(CINEBENCH_PLUGIN_ID);
+				if (!cbdata) cbdata = new(BaseContainer);
+
+				cbdata->SetData(B_INFO_USERINFO,msg->GetString(BFM_ACTION_VALUE));
+				yourscore->SetData(RANK_C4DINFO,msg->GetString(BFM_ACTION_VALUE));
+
+				world->SetData(CINEBENCH_PLUGIN_ID,cbdata);
+				SetWorldContainer(world);
+			}
+			break;
+
+		case B_RENDER_1: 			Test1(); break;
+		case B_RENDER_M: 			Test2(); break;
+		case B_OPENGL_HW:   	Test_OGL_HW(); BringToFront(ID_PICTUREVIEWER); break;
+
+		case B_COMPLETE:
+			StartAllTests();
+			break;
+	}
+}
+
+
+
+
+var splashbitmap = 0;
+
+MyDialog::Timer(msg)
+{
+	if (!splashbitmap)
+	{
+		splashbitmap = TRUE;
+	}
+	if (multi && rendermode==-1)
+	{
+		multi=FALSE;
+		if (x_render_1)
+			Test1();
+	}
+	if (AUTORUN && !autostarted)
+	{
+		if (time()>autoruntime+2000)
+		{
+			autostarted = TRUE;
+
+			if (AUTORUN & AUTORUN_OGLHW)
+			{
+				AUTORUN &= ~AUTORUN_OGLHW;
+				if (!Test_OGL_HW())
+					AUTORUN &= AUTORUN_ACTIVE;
+				ClearAutoStart();
+			}
+			else if (AUTORUN & AUTORUN_RENDERING_MULTI)
+			{
+				AUTORUN &= ~AUTORUN_RENDERING_MULTI;
+				Test2();
+			}
+			else if (AUTORUN & AUTORUN_RENDERING_SINGLE)
+			{
+				AUTORUN &= ~AUTORUN_RENDERING_SINGLE;
+				Test1();
+			}
+			else if (AUTORUN & AUTORUN_SHUTDOWN)
+			{
+				AUTORUN &= ~AUTORUN_SHUTDOWN;
+				shutdown();
+			}
+		}
+		return;
+	}
+}
+
+
+MyDialog::OptEnable()
+{
+	Enable(B_RENDER_1,!AUTORUN && rendermode==-1);
+	Enable(B_RENDER_M,!AUTORUN && rendermode==-1);
+//	Enable(B_OPENGL_SW,!AUTORUN && rendermode==-1);
+	Enable(B_OPENGL_HW,!AUTORUN && rendermode==-1);
+
+	Enable(B_COMPLETE,!AUTORUN && rendermode==-1);
+
+	UpdateRanking();
+}
+
+MyDialog::Init()
+{
+	var world = GetWorldContainer();
+	var cbdata = world->GetData(CINEBENCH_PLUGIN_ID);
+
+	if (cbdata)
+	{
+		SetString(B_INFO_NAME,cbdata->GetString(B_INFO_NAME));
+		SetString(B_INFO_MACH,cbdata->GetString(B_INFO_MACH));
+		SetString(B_INFO_C4D, cbdata->GetString(B_INFO_C4D  ));
+		SetString(B_INFO_OS,  cbdata->GetString(B_INFO_OS  ));
+		SetString(B_INFO_GFX, cbdata->GetString(B_INFO_GFX ));
+		SetString(B_INFO_USERINFO,cbdata->GetString(B_INFO_USERINFO));
+	}
+
+	if (!showsplash)
+	{
+		var file = GeGetStartupPath(); file->AddLast("plugins"); file->AddLast("bench"); file->AddLast("cb.jpg");
+		ShowBitmap(file);
+		showsplash = TRUE;
+	}
+
+	OptEnable();
+
+	if (render_1_cb!=0.0)
+	{
+		var txt = tostring(render_1_cb,".0f")+" "+GeLoadString(IDS_CB_PTS);
+		SetString(R_RENDER_1,txt,FLAG_ALIGN_RIGHT);
+	}
+	else
+		SetString(R_RENDER_1,"---",FLAG_ALIGN_RIGHT);
+
+	if (render_x_cb!=0.0)
+	{
+		var txt = tostring(render_x_cb,".0f")+" "+GeLoadString(IDS_CB_PTS);
+		SetString(R_RENDER_M,txt,FLAG_ALIGN_RIGHT);
+	}
+	else
+		SetString(R_RENDER_M,"---",FLAG_ALIGN_RIGHT);
+
+	if (ogl_hard_cb!=0.0)
+	{
+		var txt = tostring(ogl_hard_cb,".2f")+" "+GeLoadString(IDS_CB_FPS);
+		SetString(R_OPENGL_HARD,txt,FLAG_ALIGN_RIGHT);
+	}
+	else
+		SetString(R_OPENGL_HARD,"---",FLAG_ALIGN_RIGHT);
+
+	if (ogl_hard_quality!=0.0)
+	{
+		var txt = stradd(tostring(ogl_hard_quality,".1f")," %");
+		SetString(R_OPENGL_QUALITY,txt,FLAG_ALIGN_RIGHT);
+	}
+	else
+		SetString(R_OPENGL_QUALITY,"---",FLAG_ALIGN_RIGHT);
+
+	if (render_x_cb!=0.0 && render_1_cb!=0.0)
+	{
+		var txt = tostring(render_x_cb/render_1_cb,".2f");
+		SetString(R_GAIN_MP1,txt,FLAG_ALIGN_RIGHT);
+		SetString(R_GAIN_MP2,"x",0);
+	}
+	else
+	{
+		SetString(R_GAIN_MP1,"---",FLAG_ALIGN_RIGHT);
+		SetString(R_GAIN_MP2,"",0);
+	}
+	
+	SetString(B_INFO_MACH, info_machine);
+	SetString(B_INFO_C4D, info_c4d);
+	SetString(B_INFO_OS, info_os);
+	SetString(B_INFO_GFX, renderer);
+	SetString(B_INFO_CPUCOUNT,GetCpuCountFromContainer(yourscore)+" @ "+tostring(info_mhz/1000.0,".2f")+" "+GeLoadString(IDS_CB_GHZ));
+
+	SetInt(IDC_RANKING_COMBO,ranking_mode,MINLONGl,MAXLONGl,1);
+
+	SetInt(X_RENDER_1,x_render_1,MINLONGl,MAXLONGl,1);
+	SetInt(X_RENDER_M,x_render_x,MINLONGl,MAXLONGl,1);
+	SetInt(X_OPENGL_HW,x_ogl_hard,MINLONGl,MAXLONGl,1);
+}
+
+
+// ************************************************************************
+
+class RunAllTestsCommandPlugin : MenuPlugin
+{
+	public:
+		RunAllTestsCommandPlugin();
+
+		GetID();
+		GetName();
+		GetHelp();
+		Execute(doc);
+		GetState();
+}
+
+RunAllTestsCommandPlugin::RunAllTestsCommandPlugin() { super(); }
+RunAllTestsCommandPlugin::GetID()        { return CINEBENCH_RUNALLTESTS_ID; }
+RunAllTestsCommandPlugin::GetName()      { return GeLoadString(IDS_CB_CMD_RUNALL); }
+RunAllTestsCommandPlugin::GetHelp()      { return GeLoadString(IDS_CB_CMD_RUNALL_HELP); }
+RunAllTestsCommandPlugin::GetState()		 { return disclaimer_accepted ? CMD_ENABLED : 0; }
+
+RunAllTestsCommandPlugin::Execute(doc)
+{
+	if (!dialog) return;
+	if (!advanced_mode)
+	{
+		x_ogl_hard = 1;
+		x_render_1 = 0;
+		x_render_x = 1;
+	}
+	dialog->StartAllTests();
+}
+
+// ************************************************************************
+
+class AdvancedCommandPlugin : MenuPlugin
+{
+	public:
+		AdvancedCommandPlugin();
+
+		GetID();
+		GetName();
+		GetHelp();
+		Execute(doc);
+		GetState();
+}
+
+AdvancedCommandPlugin::AdvancedCommandPlugin() { super(); }
+AdvancedCommandPlugin::GetID()        { return CINEBENCH_ADVANCED_ID; }
+AdvancedCommandPlugin::GetName()      { return GeLoadString(IDS_CB_CMD_ADVANCED); }
+AdvancedCommandPlugin::GetHelp()      { return GeLoadString(IDS_CB_CMD_ADVANCED_HELP); }
+
+AdvancedCommandPlugin::GetState()
+{
+	return CMD_ENABLED | (advanced_mode ? CMD_CHECKED : 0);
+}
+
+AdvancedCommandPlugin::Execute(doc)
+{
+	if (!dialog) return;
+
+	var world = GetWorldContainer();
+	var cbdata = world->GetData(CINEBENCH_PLUGIN_ID);
+	if (!cbdata) cbdata = new(BaseContainer);
+	
+	advanced_mode = !advanced_mode;
+	cbdata->SetData(CINEBENCH_ADVANCED_ID,advanced_mode);
+	
+	world->SetData(CINEBENCH_PLUGIN_ID,cbdata);
+	SetWorldContainer(world);
+
+	dialog->SwitchAdvancedMode();
+}
+
+// ************************************************************************
+
+class KeepBestCommandPlugin : MenuPlugin
+{
+	public:
+		KeepBestCommandPlugin();
+
+		GetID();
+		GetName();
+		GetHelp();
+		Execute(doc);
+		GetState();
+}
+
+KeepBestCommandPlugin::KeepBestCommandPlugin() { super(); }
+KeepBestCommandPlugin::GetID()        { return CINEBENCH_KEEPBEST_ID; }
+KeepBestCommandPlugin::GetName()      { return GeLoadString(IDS_CB_CMD_KEEPBEST); }
+KeepBestCommandPlugin::GetHelp()      { return GeLoadString(IDS_CB_CMD_KEEPBEST_HELP); }
+
+KeepBestCommandPlugin::GetState()
+{
+	return CMD_ENABLED | (calc_maximum ? CMD_CHECKED : 0);
+}
+
+KeepBestCommandPlugin::Execute(doc)
+{
+	if (!dialog) return;
+
+	var world = GetWorldContainer();
+	var cbdata = world->GetData(CINEBENCH_PLUGIN_ID);
+	if (!cbdata) cbdata = new(BaseContainer);
+	
+	calc_maximum = !calc_maximum;
+	cbdata->SetData(CINEBENCH_KEEPBEST_ID,calc_maximum);
+	
+	world->SetData(CINEBENCH_PLUGIN_ID,cbdata);
+	SetWorldContainer(world);
+}
+
+
+// ************************************************************************
+
+class DisclaimerCommandPlugin : MenuPlugin
+{
+	public:
+		DisclaimerCommandPlugin();
+
+		GetID();
+		GetName();
+		GetHelp();
+		Execute(doc);
+		GetState();
+}
+
+DisclaimerCommandPlugin::DisclaimerCommandPlugin() { super(); }
+DisclaimerCommandPlugin::GetID()        { return CINEBENCH_DISCLAIMER; }
+DisclaimerCommandPlugin::GetName()      { return GeLoadString(IDS_CB_CMD_DISCLAIMER); }
+DisclaimerCommandPlugin::GetHelp()      { return GeLoadString(IDS_CB_CMD_DISCLAIMER_HELP); }
+
+DisclaimerCommandPlugin::GetState()
+{
+	return CMD_ENABLED;
+}
+
+DisclaimerCommandPlugin::Execute(doc)
+{
+	//GeOpenHTML("file://"+GetDisclaimerPath());
+
+	if (!disclaimerdlg) 
+		disclaimerdlg = new(DisclaimerDialog);
+	if (!disclaimerdlg) 
+		return;
+	disclaimerdlg->Open(TRUE,-2,-2);
+}
+
+// ************************************************************************
+
+class WebsiteCommandPlugin : MenuPlugin
+{
+	public:
+		WebsiteCommandPlugin();
+
+		GetID();
+		GetName();
+		GetHelp();
+		Execute(doc);
+		GetState();
+}
+
+WebsiteCommandPlugin::WebsiteCommandPlugin() { super(); }
+WebsiteCommandPlugin::GetID()        { return CINEBENCH_WEBSITE; }
+WebsiteCommandPlugin::GetName()      { return GeLoadString(IDS_CB_CMD_WEBSITE); }
+WebsiteCommandPlugin::GetHelp()      { return GeLoadString(IDS_CB_CMD_WEBSITE_HELP); }
+
+WebsiteCommandPlugin::GetState()
+{
+	return CMD_ENABLED;
+}
+
+WebsiteCommandPlugin::Execute(doc)
+{
+	GeOpenHTML(GeLoadString(IDS_CB_LINK1));
+}
+
+// ************************************************************************
+
+class ShowPrefsCommandPlugin : MenuPlugin
+{
+	public:
+		ShowPrefsCommandPlugin();
+
+		GetID();
+		GetName();
+		GetHelp();
+		Execute(doc);
+		GetState();
+}
+
+ShowPrefsCommandPlugin::ShowPrefsCommandPlugin() { super(); }
+ShowPrefsCommandPlugin::GetID()        { return CINEBENCH_SHOWPREFS; }
+ShowPrefsCommandPlugin::GetName()      { return GeLoadString(IDS_CB_CMD_SHOWPREFS); }
+ShowPrefsCommandPlugin::GetHelp()      { return GeLoadString(IDS_CB_CMD_SHOWPREFS_HELP); }
+
+ShowPrefsCommandPlugin::GetState()
+{
+	return CMD_ENABLED;
+}
+
+ShowPrefsCommandPlugin::Execute(doc)
+{
+	var dlg = new(PrefsDialog);
+	if (!dlg) return;
+	dlg->Open(-2,-2);
+}
+
+// ************************************************************************
+
+
+class CBMenuPlugin : MenuPlugin
+{
+	public:
+		CBMenuPlugin();
+
+		GetID();
+		GetName();
+		GetHelp();
+		Execute(doc);
+		RestoreLayout(secret);
+}
+
+CBMenuPlugin::CBMenuPlugin() { super(); }
+CBMenuPlugin::GetID()        { return CINEBENCH_PLUGIN_ID; }
+CBMenuPlugin::GetName()      { return GeLoadString(IDS_CB_CMD_CB); }
+CBMenuPlugin::GetHelp()      { return GeLoadString(IDS_CB_CMD_CB_HELP); }
+
+CBMenuPlugin::Execute(doc)
+{
+	if (!dialog) dialog = new(MyDialog);
+	dialog->Open(TRUE,-1,-1);
+}
+
+CBMenuPlugin::RestoreLayout(secret)
+{
+	if (!dialog) dialog = new(MyDialog);
+	dialog->RestoreLayout(secret);
+}
+
+// ************************************************************************
+
+class StatMenuPlugin : MenuPlugin
+{
+	public:
+		StatMenuPlugin();
+
+		GetID();
+		GetName();
+		GetHelp();
+		Execute(doc);
+		RestoreLayout(secret);
+}
+
+StatMenuPlugin::StatMenuPlugin()	{ super(); }
+StatMenuPlugin::GetID()        		{ return CINEBENCH_PLUGIN_ID_STATWIN; }
+StatMenuPlugin::GetName()      		{ return GeLoadString(IDS_CB_CMD_CB_STAT); }
+StatMenuPlugin::GetHelp()      		{ return GeLoadString(IDS_CB_CMD_CB_STAT_HELP); }
+
+StatMenuPlugin::Execute(doc)
+{
+	if (!statdialog) statdialog = new(StatDialog);
+	statdialog->Open(TRUE,-1,-1);
+}
+
+StatMenuPlugin::RestoreLayout(secret)
+{
+	if (!statdialog) statdialog = new(StatDialog);
+	statdialog->RestoreLayout(secret);
+}
+
+// ************************************************************************
+
+ReadRankingFile(fn)
+{
+	var f = new(BaseFile);
+	if (!f->Open(fn)) return;
+	
+	var bc = new(BaseContainer);
+	
+	while (TRUE)
+	{
+		var s = new(string,0);
+		var add = new(string,1);
+		do
+		{
+			var c = f->ReadChar();
+			if (!c || c=='=') break;
+			add[0] = c;
+			s += add;
+		}
+		while (add[0]!='=');
+		if (!add[0]) break;
+
+		// read line to end
+		var txt = new(string,0);
+		do
+		{
+			var c = f->ReadChar();
+			if (!c || c<' ') break;
+			add[0] = c;
+			txt += add;
+		}
+		while (TRUE);
+
+		if (!strcmp(s,"CORES"))
+		{
+			bc->SetData(RANK_CORES,ievaluate(txt));
+		}
+		else if (!strcmp(s,"LOGICALCORES"))
+		{
+			bc->SetData(RANK_LOGICALPERPACKAGE,ievaluate(txt));
+		}
+		else if (!strcmp(s,"MHZ"))
+		{
+			bc->SetData(RANK_MHZ,evaluate(txt));
+		}
+		else if (!strcmp(s,"PROCESSOR"))
+		{
+			bc->SetData(RANK_PROCESSOR,txt);
+		}
+		else if (!strcmp(s,"C4DINFO"))
+		{
+			bc->SetData(RANK_C4DINFO,txt);
+		}
+		else if (!strcmp(s,"C4DVERSION"))
+		{
+			bc->SetData(RANK_C4DVERSION,txt);
+		}
+		else if (!strcmp(s,"C4DBUILDID"))
+		{
+			bc->SetData(RANK_C4DBUILDID,txt);
+		}
+		else if (!strcmp(s,"OPENGLVENDOR"))
+		{
+			bc->SetData(RANK_OPENGLVENDOR,txt);
+		}
+		else if (!strcmp(s,"OPENGLCARD"))
+		{
+			bc->SetData(RANK_OPENGLCARD,txt);
+		}
+		else if (!strcmp(s,"OPENGLVERSION"))
+		{
+			bc->SetData(RANK_OPENGLVERSION,txt);
+		}
+		else if (!strcmp(s,"OSTYPE"))
+		{
+			bc->SetData(RANK_OPENGLDRIVERVERSION,txt);
+		}
+		else if (!strcmp(s,"CBTYPE") || !strcmp(s,"OSTYPE"))
+		{
+			bc->SetData(RANK_OSTYPE,txt);
+		}
+		else if (!strcmp(s,"OSVERSION") || !strcmp(s,"CBVERSION"))
+		{
+			bc->SetData(RANK_CBVERSION,txt);
+		}
+		else if (!strcmp(s,"CBCPU1"))
+		{
+			bc->SetData(RANK_CPU1,evaluate(txt));
+		}
+		else if (!strcmp(s,"CBCPUX"))
+		{
+			bc->SetData(RANK_CPUx,evaluate(txt));
+		}
+		else if (!strcmp(s,"CBOPENGLQUALITY"))
+		{
+			bc->SetData(RANK_OPENGL_QUALITY,evaluate(txt));
+		}
+		else if (!strcmp(s,"CBOPENGL"))
+		{
+			bc->SetData(RANK_OPENGL,evaluate(txt));
+		}
+
+		if (!add[0]) break;
+		// skip spaces, lineendings
+		var c;
+		do
+		{
+			c = f->ReadChar();
+		}
+		while (c && c<=' ');
+		if (!c) break;
+		f->Seek(f->GetPosition()-1,FALSE);
+	}
+
+	if (bc->GetFloat(RANK_CPU1) && bc->GetFloat(RANK_CPUx))
+		bc->SetData(RANK_MPRATIO,bc->GetFloat(RANK_CPUx)/bc->GetFloat(RANK_CPU1));
+
+	if (yourscore->GetInt(RANK_CORES)==bc->GetInt(RANK_CORES)
+		&& yourscore->GetInt(RANK_LOGICALPERPACKAGE)==bc->GetInt(RANK_LOGICALPERPACKAGE)
+		&& yourscore->GetFloat(RANK_MHZ)==bc->GetFloat(RANK_MHZ)
+		&& yourscore->GetString(RANK_PROCESSOR)==bc->GetString(RANK_PROCESSOR)
+		&& yourscore->GetString(RANK_OPENGLVENDOR)==bc->GetString(RANK_OPENGLVENDOR)
+		&& yourscore->GetString(RANK_OPENGLCARD)==bc->GetString(RANK_OPENGLCARD)
+	//	&& yourscore->GetString(RANK_OSTYPE)==bc->GetString(RANK_OSTYPE)
+		&& yourscore->GetString(RANK_CBVERSION)==bc->GetString(RANK_CBVERSION))
+	{
+		bc->SetData(RANK_IDENTICAL,TRUE);
+	}
+
+	rankingtable->AddEntry(bc);
+	f->Close();
+}
+
+ReadRankingTableRec(fn)
+{
+	var browse = new(BrowseFiles);
+	if (!browse->Init(fn,FALSE)) return;
+
+	while (browse->GetNext())
+	{
+		var ff = fn->GetClone();
+		ff->AddLast(browse->GetName());
+
+		if (browse->IsDir())
+		{
+			ReadRankingTableRec(ff);
+		}
+		else
+		{
+			if (ff->CheckSuffix("txt"))
+			{
+				ReadRankingFile(ff);
+			}
+		}
+	}
+}
+
+ReadRankingTable()
+{
+	var fn = GeGetStartupPath();
+	fn->AddLast("cb_ranking");
+	ReadRankingTableRec(fn);
+
+	fn = GeGetStartupWritePath();
+	fn->AddLast("cb_ranking");
+	ReadRankingTableRec(fn);
+}
+
+
+WriteRankingFile()
+{
+	var fn = GeGetStartupPath();
+	var f = new(BaseFile);
+	var i;
+	fn->AddLast("cb_ranking");
+	
+	for (i=0;i<2;i++)
+	{
+		if (GeFileExist(fn,TRUE) || GeFileCreateDir(fn))
+		{
+			var j,ss,s = yourscore->GetString(RANK_C4DVERSION)+"_"+yourscore->GetString(RANK_C4DBUILDID)+"_"+
+									GetCpuCountFromContainerShort(yourscore)+"_"+tostring(int(yourscore->GetFloat(RANK_MHZ)))+
+									"_"+yourscore->GetString(RANK_PROCESSOR)+"_"+yourscore->GetString(RANK_OPENGLVENDOR)+
+									"_"+yourscore->GetString(RANK_OPENGLCARD)+"_"+yourscore->GetString(RANK_OPENGLVERSION)+
+									"_"+yourscore->GetString(RANK_OSTYPE);//+"_"+yourscore->GetString(RANK_CBVERSION);
+			ss = ConvertFilename(s)+".txt";
+
+			fn->AddLast(ss);
+
+			if (GeFileExist(fn,FALSE))
+			{
+				var res = TextDialog(GeLoadString(IDS_CB_FILEEXISTS),DLG_YESNO);
+				if (res==DLG_R_CANCEL)
+					return;
+				if (res==DLG_R_NO)
+				{
+					for (j=0;TRUE;j++)
+					{
+						ss = s+"_"+tostring(j)+".txt";
+						fn->RemoveLast();
+						fn->AddLast(ss);
+						if (!GeFileExist(fn,FALSE))
+							break;
+					}
+				}
+			}
+
+			if (f->Open(fn,GE_WRITE))
+			{
+				f->WriteString("COMMENT=MAXON CINEBENCH is based on the high performance animation and rendering software MAXON CINEMA 4D."); f->WriteString(GeGetLineEnd());
+				f->WriteString("COMMENT=These are your MAXON CINEBENCH R15 results."); f->WriteString(GeGetLineEnd());
+				f->WriteString("COMMENT="); f->WriteString(GeGetLineEnd());
+				f->WriteString("COMMENT=Results Disclaimer - CINEBENCH results are indicative of overall system performance when using CINEMA 4D,"); f->WriteString(GeGetLineEnd());
+				f->WriteString("COMMENT=and do not necessarily reflect the performance of the tested hardware with other applications."); f->WriteString(GeGetLineEnd());
+				f->WriteString("COMMENT=Performance of each component (processor, graphics card) does rely somewhat on other components in the system."); f->WriteString(GeGetLineEnd());
+				f->WriteString("COMMENT=Results provided are typical, although not derived from specific testing procedures."); f->WriteString(GeGetLineEnd());
+				f->WriteString("COMMENT="); f->WriteString(GeGetLineEnd());
+				f->WriteString("CORES="); f->WriteString(tostring(yourscore->GetInt(RANK_CORES))); f->WriteString(GeGetLineEnd());
+				f->WriteString("LOGICALCORES="); f->WriteString(tostring(yourscore->GetInt(RANK_LOGICALPERPACKAGE))); f->WriteString(GeGetLineEnd());
+				f->WriteString("MHZ="); f->WriteString(tostring(yourscore->GetFloat(RANK_MHZ))); f->WriteString(GeGetLineEnd());
+				f->WriteString("PROCESSOR="); f->WriteString(yourscore->GetString(RANK_PROCESSOR)); f->WriteString(GeGetLineEnd());
+				f->WriteString("OPENGLVENDOR="); f->WriteString(yourscore->GetString(RANK_OPENGLVENDOR)); f->WriteString(GeGetLineEnd());
+				f->WriteString("OPENGLCARD="); f->WriteString(yourscore->GetString(RANK_OPENGLCARD)); f->WriteString(GeGetLineEnd());
+				f->WriteString("OPENGLVERSION="); f->WriteString(yourscore->GetString(RANK_OPENGLVERSION)); f->WriteString(GeGetLineEnd());
+				f->WriteString("DRIVERVERSION="); f->WriteString(yourscore->GetString(RANK_OPENGLDRIVERVERSION)); f->WriteString(GeGetLineEnd());
+				f->WriteString("CBTYPE="); f->WriteString(yourscore->GetString(RANK_OSTYPE)); f->WriteString(GeGetLineEnd());
+				f->WriteString("OSVERSION="); f->WriteString(yourscore->GetString(RANK_CBVERSION)); f->WriteString(GeGetLineEnd());
+				f->WriteString("CBCPU1="); f->WriteString(tostring(yourscore->GetFloat(RANK_CPU1))); f->WriteString(GeGetLineEnd());
+				f->WriteString("CBCPUX="); f->WriteString(tostring(yourscore->GetFloat(RANK_CPUx))); f->WriteString(GeGetLineEnd());
+				f->WriteString("CBOPENGL="); f->WriteString(tostring(yourscore->GetFloat(RANK_OPENGL))); f->WriteString(GeGetLineEnd());
+				f->WriteString("CBOPENGLQUALITY="); f->WriteString(tostring(yourscore->GetFloat(RANK_OPENGL_QUALITY))); f->WriteString(GeGetLineEnd());
+				f->WriteString("C4DINFO="); f->WriteString(yourscore->GetString(RANK_C4DINFO)); f->WriteString(GeGetLineEnd());
+				f->WriteString("C4DVERSION="); f->WriteString(yourscore->GetString(RANK_C4DVERSION)); f->WriteString(GeGetLineEnd());
+				f->WriteString("C4DBUILDID="); f->WriteString(yourscore->GetString(RANK_C4DBUILDID)); f->WriteString(GeGetLineEnd());
+
+				f->Close();
+				return TRUE;
+			}
+
+			fn = GeGetStartupWritePath();
+			fn->AddLast("cb_ranking");
+		}
+	}
+	TextDialog(GeLoadString(IDS_CB_FILEERROR));
+	return FALSE;		
+}
+
+
+class CommandLineMessagePlugin : MessagePlugin
+{
+	public:
+		CommandLineMessagePlugin();
+		GetID();
+		Message(msg);
+}
+
+CommandLineMessagePlugin::CommandLineMessagePlugin()
+{
+	super();
+}
+
+CommandLineMessagePlugin::GetID()
+{
+	return CINEBENCH_MESSAGEPLUGIN;
+}
+
+CommandLineMessagePlugin::Message(msg)
+{
+	if (!disclaimer_accepted)
+	{
+		disclaimerdlg = new(DisclaimerDialog);
+		if (!disclaimerdlg) return;
+		disclaimerdlg->Open(TRUE,-2,-2);
+	}
+	
+	switch (msg->GetId())
+	{
+		case C4DPL_COMMANDLINEARGS:
+			{
+				var printvissymbol = " ";
+				printvissymbol[0] = 1;
+
+				var i, dummy;
+				for (i=0; TRUE; i++)
+				{
+					var id = msg->GetIndexId(i);
+					if (id==NOTOK) break;
+
+					var data = msg->GetIndexData(i);
+					if (typeof(data)==DT_STRING)
+					{
+						if (data=="--help")
+						{
+							print(printvissymbol+"CINEBENCH commandline option:"+GeGetLineEnd());
+							print(printvissymbol+"-cb_cpu1            ... run single core cpu benchmark"+GeGetLineEnd());
+							print(printvissymbol+"-cb_cpux            ... run multi core cpu benchmark"+GeGetLineEnd());
+							print(printvissymbol+"-cb_opengl          ... run opengl benchmark"+GeGetLineEnd());
+							print(printvissymbol+"-cb_all             ... run all tests"+GeGetLineEnd());
+							print(printvissymbol+"-cb_autoshutdown    ... automatically close CINEBENCH after all tests are done"+GeGetLineEnd());
+							print(printvissymbol+"-cb_countprimitives ... counts the drawn primitives for the complete test"+GeGetLineEnd());
+							print(printvissymbol+"-cb_framestep=xx    ... Sets the framestep to xx. xx must be within [0.025, 5]"+GeGetLineEnd());
+							//print(printvissymbol+"-cb_rebuildoglref ... rebuild the opengl reference image"+GeGetLineEnd());
+							//print(printvissymbol+"-cb_opengl_noref  ... suppress the reference image test"+GeGetLineEnd());
+						}
+						if (data=="-cb_cpu1")
+						{
+							msg->SetData(id,dummy);
+							AUTORUN |= AUTORUN_RENDERING_SINGLE|AUTORUN_ACTIVE;
+						}
+						if (data=="-cb_cpux")
+						{
+							msg->SetData(id,dummy);
+							AUTORUN |= AUTORUN_RENDERING_MULTI|AUTORUN_ACTIVE;
+						}
+						if (data=="-cb_opengl")
+						{
+							msg->SetData(id,dummy);
+							AUTORUN |= AUTORUN_OGLHW|AUTORUN_ACTIVE;
+						}
+						if (data=="-cb_all")
+						{
+							msg->SetData(id,dummy);
+							AUTORUN |= AUTORUN_RENDERING_SINGLE|AUTORUN_RENDERING_MULTI|AUTORUN_OGLHW|AUTORUN_ACTIVE;
+						}
+						if (data=="-cb_rebuildoglref")
+						{
+							msg->SetData(id,dummy);
+							MergeReferenceImages(compareframe);
+						}
+						if (data=="-cb_opengl_noref")
+						{
+							msg->SetData(id,dummy);
+							suppressqualitytest=1;
+						}
+						if (data=="-cb_autoshutdown")
+						{
+							msg->SetData(id,dummy);
+							AUTORUN |= AUTORUN_SHUTDOWN;
+						}
+						if (data=="-cb_countprimitives")
+						{
+							msg->SetData(id,dummy);
+							countprimitives=1;
+						}
+						if (strmid(data, 0, 14) == "-cb_framestep=")
+						{
+							msg->SetData(id,dummy);
+							data = strmid(data, 14, sizeof(data) - 14);
+							fixed_framestep = evaluate(data);
+						}
+					}
+				}
+				if (AUTORUN)
+				{
+					print(printvissymbol+"CINEBENCH started"+GeGetLineEnd());
+					PRINTVISSYMBOL = printvissymbol;
+				}
+			}
+			break;
+	}
+	return TRUE;
+}
+
+main()
+{
+	resourceroot = GeGetRootFilename();
+	resourceroot->RemoveLast();
+	resourceroot->AddLast("bench");
+	resource = new(GeResource,resourceroot);
+	if (!resource) return;
+	
+	PRINTVISSYMBOL = "";
+	
+	var world = GetWorldContainer();
+	
+	var cbdata = world->GetData(CINEBENCH_PLUGIN_ID);
+	
+	if (cbdata)
+	{
+		calc_maximum = cbdata->GetInt(CINEBENCH_KEEPBEST_ID,0);
+		advanced_mode = cbdata->GetInt(CINEBENCH_ADVANCED_ID);
+		disclaimer_accepted = cbdata->GetInt(CINEBENCH_DISCLAIMERACCEPTED);
+	}
+
+	rankingtable = new(RankingTable);
+	if (!rankingtable) return;
+
+	var msg = new (BaseContainer, COREMSG_CINEMA_GETMACHINEFEATURES);
+	var bc = SendCoreMessage(COREMSG_CINEMA,msg,0);
+
+	yourscore = new(BaseContainer);
+	yourscore->SetData(RANK_CORES,GetCPUCount());
+
+	if (bc)
+	{
+		renderer     = bc->GetString(OPENGL_RENDERER_NAME);
+		info_machine = bc->GetString(MACHINEINFO_PROCESSORNAME);
+		info_c4d     = bc->GetString(MACHINEINFO_C4DTYPE);
+		info_os      = bc->GetString(MACHINEINFO_OSVERSION);
+		info_mhz     = bc->GetData(2009); //MACHINEINFO_PROCESSORSPEED_MHZ
+		hasOGLExt    = bc->GetInt(OPENGL_SUPPORT_ENHANCED);
+
+		var logical = bc->GetInt(MACHINEINFO_PROCESSORHTCOUNT);
+
+		yourscore->SetData(RANK_LOGICALPERPACKAGE,logical);
+		if (logical)
+			yourscore->SetData(RANK_CORES,GetCPUCount()/logical);
+
+		yourscore->SetData(RANK_PROCESSOR,info_machine);
+		yourscore->SetData(RANK_MHZ,info_mhz);
+		yourscore->SetData(RANK_OPENGLVENDOR,bc->GetString(OPENGL_VENDOR_NAME));
+		yourscore->SetData(RANK_OPENGLCARD,renderer);
+		yourscore->SetData(RANK_OPENGLVERSION,bc->GetString(OPENGL_VERSION_STRING));
+		yourscore->SetData(RANK_OPENGLDRIVERVERSION,bc->GetString(OPENGL_DRIVER_VERSION_STRING));
+		yourscore->SetData(RANK_OSTYPE,bc->GetString(MACHINEINFO_C4DTYPE));
+		yourscore->SetData(RANK_CBVERSION,bc->GetString(MACHINEINFO_OSVERSION));
+		yourscore->SetData(RANK_C4DBUILDID,bc->GetString(2010)); //MACHINEINFO_C4DBUILDID
+
+		eoglpossible = bc->GetInt(OPENGL_SUPPORT_ENHANCED) && 
+									bc->GetInt(OPENGL_MAX_VP_INSTRUCTIONS)>=512 &&
+									bc->GetInt(OPENGL_MAX_FP_INSTRUCTIONS)>=512 &&
+									bc->GetInt(OPENGL_MAX_TEXTURE_INDIRECTIONS)>=10;
+	}
+
+
+	yourscore->SetData(RANK_C4DVERSION,tostring(GetC4DVersion()/1000.0,".3f"));
+	yourscore->SetData(RANK_C4DINFO,"");
+	if (cbdata)
+		yourscore->SetData(RANK_C4DINFO,cbdata->GetString(B_INFO_USERINFO));
+	
+	yourscore->SetData(RANK_CPU1,0.0);
+	yourscore->SetData(RANK_CPUx,0.0);
+	yourscore->SetData(RANK_OPENGL,0.0);
+	yourscore->SetData(RANK_OPENGL_QUALITY,0.0);
+	yourscore->SetData(RANK_MPRATIO,0.0);
+	rankingtable->AddEntry(yourscore);
+
+	ReadRankingTable();
+
+	ogl_hard_cb = 0.0;
+	ogl_hard_quality = 0.0;
+	render_1_cb  = 0.0;
+	render_x_cb = 0.0;
+
+	ranking_mode = RANK_CPUx;
+	ranking_info_cpu = new(array,RANK_MAX_);
+	ranking_info_gl = new(array,RANK_MAX_);
+
+	var i;
+	for (i=0;i<RANK_MAX_;i++)
+	{
+		ranking_info_cpu[i]=0;
+		ranking_info_gl[i]=0;
+	}
+	ranking_info_gl[RANK_OPENGLCARD]=TRUE;
+	ranking_info_gl[RANK_MHZ]=TRUE;
+	ranking_info_gl[RANK_CORES]=TRUE;
+
+	ranking_info_cpu[RANK_PROCESSOR]=TRUE;
+	ranking_info_cpu[RANK_MHZ]=TRUE;
+	ranking_info_cpu[RANK_CORES]=TRUE;
+
+	COLOR_RANK_REF = COLOR_SB_BG1;
+	COLOR_RANK_IDENTICAL = COLOR_SB_BG2;
+	COLOR_RANK_MYSCORE = COLOR_SB_TEXTHG1;
+
+	Register(CBMenuPlugin);
+	Register(StatMenuPlugin);
+	Register(AdvancedCommandPlugin);
+	Register(KeepBestCommandPlugin);
+	Register(RunAllTestsCommandPlugin);
+	Register(CommandLineMessagePlugin);
+	Register(DisclaimerCommandPlugin);
+	Register(WebsiteCommandPlugin);
+	Register(ShowPrefsCommandPlugin);
+}
+

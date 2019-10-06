@@ -1,0 +1,10 @@
+STRINGTABLE Osplinecogwheel
+{
+	Osplinecogwheel "Cog Wheel Object";
+
+	PRIM_COGWHEEL_TEETH				"Teeth";
+	PRIM_COGWHEEL_IRAD				"Inner Radius";
+	PRIM_COGWHEEL_MRAD				"Middle Radius";
+	PRIM_COGWHEEL_ORAD				"Outer Radius";
+	PRIM_COGWHEEL_BEVEL				"Bevel";
+}

@@ -1,0 +1,7 @@
+STRINGTABLE XskyshaderVolume
+{
+  XskyshaderVolume                        "Sky Shader Volume";
+
+  SKY_VOL_MATERIAL_PAGE_PROPERTIES        "Properties";
+  SKY_VOL_MATERIAL_SKY_TAG                "Use Sky Object";
+}

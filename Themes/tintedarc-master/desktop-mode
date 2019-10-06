@@ -1,0 +1,279 @@
+#!/usr/bin/env bash
+
+# hai there ~ @nizarmah
+
+args=("$@")
+
+function setup() {
+	dmscript="$PWD/desktop-mode"
+		udmscript="/usr/bin/desktop-mode"
+	dmfiles="$PWD/.desktop-modes/"
+		udmfiles="/home/$SUDO_USER/.desktop-modes/"
+
+	shadow="$PWD/OSX-Arc-Shadow/"
+		ushadow="/usr/share/themes/OSX-Arc-Shadow/"
+	white="$PWD/OSX-Arc-White/"
+		uwhite="/usr/share/themes/OSX-Arc-White/"
+
+	papirus="$PWD/.desktop-modes/Papirus/"
+		upapirus="/usr/share/icons/Papirus/"
+	papirusdark="$PWD/.desktop-modes/Papirus-Dark/"
+		upapirusdark="/usr/share/icons/Papirus-Dark/"
+
+	apapirus=false
+	apapirusdark=false
+
+	if [ ! -f $udmscript ]; then
+		if [ -f $dmscript ]; then
+			mv $dmscript /usr/bin/
+			echo "Moved Desktop Mode script"
+		else
+			echo "Couldn't find Desktop Mode script"
+		fi
+	else
+		if [ -f $dmscript ]; then
+			rm -R $dmscript
+		fi
+		echo "Desktop Mode script already present"
+	fi
+
+	if [ ! -d $udmfiles ]; then
+		if [ -d $dmfiles ]; then
+			mv $dmfiles /home/$SUDO_USER/
+			echo "Moved Desktop Mode files"
+		else
+			echo "Couldn't find Desktop Mode files"
+		fi
+	else
+		if [ -d $dmfiles ]; then
+			rm -R $dmfiles
+		fi
+		echo "Desktop Mode files already present"
+	fi
+
+	if [ ! -d $ushadow ]; then
+		if [ -d $shadow ]; then
+			mv $shadow /usr/share/themes/
+			echo "Moved OSX-Arc-Shadow"
+		else
+			echo "Couldn't find OSX-Arc-Shadow"
+		fi
+	else
+		if [ -d $shadow ]; then
+			rm -R $shadow
+		fi
+		echo "OSX-Arc-Shadow already present"
+	fi
+
+	if [ ! -d $uwhite ]; then
+		if [ -d $white ]; then
+			mv $white /usr/share/themes/
+			echo "Moved OSX-Arc-White"
+		else
+			echo "Couldn't find OSX-Arc-White"
+		fi
+	else
+		if [ -d $white ]; then
+			rm -R $white
+		fi
+		echo "OSX-Arc-White already present"
+	fi
+
+	if [ ! -d $upapirus ]; then
+		apapirus=true
+		echo "Papirus is missing"
+	else
+		echo "Papirus already present"
+	fi
+
+	if [ ! -d $upapirusdark ]; then
+		apapirusdark=true
+		echo "Papirus-Dark is missing"
+	else
+		echo "Papirus-Dark already present"
+	fi
+
+	if [ $apapirus = true ] || [ $apapirusdark = true ]; then
+		read -p "Install the missing icons ? (y/n) " answer
+
+		if [ $answer = "y" ] || [ $answer = "Y" ] || [ $answer = "" ]; then
+			mkdir papirus
+			git clone https://github.com/PapirusDevelopmentTeam/papirus-icon-theme.git $PWD/papirus
+
+			if [ $apapirus = true ]; then
+				mv $PWD/papirus/Papirus/ /usr/share/icons/
+				echo "Installed Papirus"
+			fi
+
+			if [ $apapirusdark = true ]; then
+				mv $PWD/papirus/Papirus-Dark/ /usr/share/icons/
+				echo "Installed Papirus-Dark"
+			fi
+
+			rm -R $PWD/papirus
+		fi
+	fi
+
+	if [ ! -f "/usr/share/fonts/OTF/SanFranciscoDisplay-Regular.otf" ]; then
+		echo "San Francisco Display is missing"
+
+		read -p "Install the missing font ? (y/n) " answer
+
+		if [ $answer = "y" ] || [ $answer = "Y" ] || [ $answer = "" ]; then
+			mkdir sanfranfont
+			git clone https://github.com/AppleDesignResources/SanFranciscoFont.git $PWD/sanfranfont
+
+			mv $PWD/sanfranfont/* /usr/share/fonts/OTF/
+			echo "Installed San Francisco Display"
+
+			rm -R $PWD/sanfranfont
+		fi
+	else
+		echo "San Francisco Display already present"
+	fi
+}
+
+function uninstall() {
+	papirus=("Papirus" "Papirus-Dark")
+	arcs=("OSX-Arc-Shadow" "OSX-Arc-White")
+	sanfran=("SanFranciscoDisplay-Bold.otf" "SanFranciscoDisplay-Heavy.otf" "SanFranciscoDisplay-Light.otf" "SanFranciscoDisplay-Medium.otf" "SanFranciscoDisplay-Regular.otf" "SanFranciscoDisplay-Semibold.otf" "SanFranciscoDisplay-Thin.otf" "SanFranciscoDisplay-Ultralight.otf" "SanFranciscoText-Bold.otf" "SanFranciscoText-BoldItalic.otf" "SanFranciscoText-Heavy.otf" "SanFranciscoText-HeavyItalic.otf" "SanFranciscoText-Light.otf" "SanFranciscoText-LightItalic.otf" "SanFranciscoText-Medium.otf" "SanFranciscoText-MediumItalic.otf" "SanFranciscoText-Regular.otf" "SanFranciscoText-RegularItalic.otf" "SanFranciscoText-Semibold.otf" "SanFranciscoText-SemiboldItalic.otf")
+
+	dmscript="/usr/bin/desktop-mode"
+	dmfiles="/home/$SUDO_USER/.desktop-modes/"
+
+	ushadow="/usr/share/themes/OSX-Arc-Shadow/"
+	uwhite="/usr/share/themes/OSX-Arc-White/"
+
+	upapirus="/usr/share/icons/Papirus/"
+	upapirusdark="/usr/share/icons/Papirus-Dark/"
+
+	if [ ! -f "/usr/share/fonts/OTF/SanFranciscoDisplay-Regular.otf" ]; then
+		echo "San Francisco Display already uninstalled"
+	else
+		for i in "${!sanfran[@]}"; do
+			rm /usr/share/fonts/OTF/${sanfran[$i]}
+
+			if [ $((i+1)) -eq ${#sanfran[@]} ]; then
+				echo "Removed San Francisco Display"
+			fi
+		done
+	fi
+
+	if [ ! -d $upapirus ]; then
+		echo "Papirus is already uninstalled"
+	else
+		rm -rf /usr/share/icons/${papirus[0]}
+
+		echo "Removed ${papirus[0]}"
+	fi
+
+	if [ ! -d $upapirusdark ]; then
+		echo "Papirus-Dark is already uninstalled"
+	else
+		rm -rf /usr/share/icons/${papirus[1]}
+
+		echo "Removed ${papirus[1]}"
+	fi
+
+	if [ ! -d $ushadow ]; then
+		echo "OSX-Arc-Shadow is already uninstalled"
+	else
+		rm -rf /usr/share/themes/${arcs[0]}
+
+		echo "Removed ${arcs[0]}"
+	fi
+
+	if [ ! -d $uwhite ]; then
+		echo "OSX-Arc-White is already uninstalled"
+	else
+		rm -rf /usr/share/themes/${arcs[1]}
+
+		echo "Removed ${arcs[1]}"
+	fi
+
+	if [ ! -d dmfiles ]; then
+		echo "Desktop Mode files already uninstalled"
+	else
+		rm -rf $dmfiles
+
+		echo "Removed Desktop Mode files"
+	fi
+
+	if [ ! -f $dmscript ]; then
+		echo "Desktop Mode script already uninstalled"
+	else
+		rm $dmscript
+
+		echo "Removed Desktop Mode script"
+	fi
+}
+
+function setmode() {
+	cmode=$(</home/$USER/.desktop-modes/mode.txt)
+
+	tint2="/home/$USER/.config/tint2/tint2rc"
+	xfceterminal="/home/$USER/.config/xfce4/terminal/terminalrc"
+
+	if [ $1 = $cmode ]; then
+		echo "$1 already activated"
+	else
+		sed -i "s/$cmode/$1/g" /home/$USER/.desktop-modes/mode.txt
+		
+		mode=()
+
+		case $1 in
+			day) mode+=("Papirus" "OSX-Arc-White");;
+			night) mode+=("Papirus-Dark" "OSX-Arc-Shadow")
+		esac
+
+		xfconf-query -c xsettings -p /Net/IconThemeName -s "${mode[0]}"
+		xfconf-query -c xsettings -p /Net/ThemeName -s "${mode[1]}"
+		xfconf-query -c xfwm4 -p /general/theme -s "${mode[1]}"
+
+		if [ -f $tint2 ]; then
+			cat "/home/$USER/.desktop-modes/tint2/$1-mode.tint2rc" > $tint2
+			killall -SIGUSR1 tint2
+		fi
+
+		if [ -f $xfceterminal ]; then
+			cat "/home/$USER/.desktop-modes/xfce4/$1-mode" > $xfceterminal
+		fi
+
+		echo "$1 mode activated"
+	fi
+}
+
+if [ ${#args[@]} -eq 1 ]; then
+	if [ ${args[0]} = "-h" ] || [ ${args[0]} = "--help" ]; then
+		echo "Help Options:"
+		echo "  -h, --help            Show help options"
+		echo ""
+		echo "Setup Options:"
+		echo "  -S, --setup           Setup required resources"
+		echo "  -R, --remove          Remove all required resources"
+		echo ""
+		echo "Desktop Modes:"
+		echo "  -D, --day             Enable day desktop mode"
+		echo "  -N, --night           Enable night desktop mode"
+	elif [ ${args[0]} = "-D" ] ||  [ ${args[0]} = "--day" ]; then
+		setmode "day"
+	elif [ ${args[0]} = "-N" ] || [ ${args[0]} = "--night" ]; then
+		setmode "night"
+	elif [ ${args[0]} = "-S" ] || [ ${args[0]} = "--setup" ]; then
+		if [ $USER = "root" ]; then
+			setup
+		else
+			echo "run this as root"
+		fi
+	elif [ ${args[0]} = "-R" ] || [ ${args[0]} = "--remove" ]; then
+		if [ $USER = "root" ]; then
+			uninstall
+		else
+			echo "run this as root"
+		fi
+	else 
+		echo "command not found"
+	fi
+else
+	echo "command not found"
+fi

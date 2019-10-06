@@ -1,0 +1,38 @@
+STRINGTABLE CKvalue
+{
+	CKvalue				  "Value Key";
+
+	ID_VKEY_TIME    "Key Time";
+	ID_VKEY_MUTE     "Mute";
+	ID_VKEY_PROPERTIES "Key Properties";
+
+	ID_CKEY_VALUE		  "Key Value";
+
+	ID_CKEY_TIME_LEFT	  "Left  Time";
+	ID_CKEY_VALUE_LEFT	  "Left  Value";
+	ID_CKEY_TIME_RIGHT	  "Right Time";
+	ID_CKEY_VALUE_RIGHT	  "Right Value";
+
+	ID_CKEY_BREAK         "Break Tangents";
+	ID_CKEY_LOCK_O		  "Lock Tangent Angles";
+	ID_CKEY_LOCK_L		  "Lock Tangent Lengths";
+	ID_VKEY_LOCK_T		  "Lock Time";
+	ID_CKEY_LOCK_V		  "Lock Value";
+
+	ID_CKEY_AUTO		    "Auto Tangents";
+
+// 	ID_CKEY_ZERO_O		  "Zero Angle";
+// 	ID_CKEY_ZERO_L		  "Zero Length";
+
+	ID_CKEY_CLAMP       "Clamp";
+
+	ID_CKEY_INTER		"Interpolation";
+		ID_CKEY_SPLINE    "Spline";
+		ID_CKEY_LINEAR    "Linear";
+		ID_CKEY_STEP      "Step";
+
+	ID_VKEY_BREAKDOWN   "Make Relative";
+	ID_CKEY_KEEPVISUALANGLE	"Keep Visual Angle";
+
+}
+

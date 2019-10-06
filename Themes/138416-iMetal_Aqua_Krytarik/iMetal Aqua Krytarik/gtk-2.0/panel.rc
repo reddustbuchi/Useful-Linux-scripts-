@@ -1,0 +1,159 @@
+################################################################################
+# PANEL
+################################################################################
+style "panel1"
+{
+   xthickness			= 0
+   ythickness			= 0	#1	changed by Krytarik
+
+   fg[NORMAL] = "#CCCCCC"		#"#000000" changed by Krytarik, panel text color
+
+   bg_pixmap[NORMAL]		= "Panel/panel-bg.png"
+   bg_pixmap[SELECTED]		= "Panel/panel-bg.png"
+   bg_pixmap[INSENSITIVE]	= "Panel/panel-bg.png"
+   bg_pixmap[PRELIGHT]		= "Panel/panel-bg.png"
+}
+
+#style "panel2" #= "panel1"
+#{
+#   xthickness			= 0
+#   ythickness			= 0	#1	changed by Krytarik
+#
+#   #fg[NORMAL] = "#CCCCCC"		#"#000000" changed by Krytarik, panel text color
+#
+#   engine "pixmap"
+#   {
+#
+#		image
+#		{
+#			function	= BOX
+#			file		= "Panel/panel-bg.png"
+#			border		= { 0, 0, 0, 0 }
+#			stretch		= TRUE		#FALSE	changed by Krytarik
+#  		}
+#
+#  }
+#}
+widget		"*PanelApplet*" 		style "panel1"
+widget		"*PanelWidget*" 		style "panel1"
+widget		"*TrayIcon*" 			style "panel1"
+widget		"*fast-user-switch*"		style "panel1"
+class		"PanelApp*"			style "panel1"
+class 		"*PanelToplevel*" 		style "panel1"
+widget_class 	"*PanelToplevel*" 		style "panel1"
+widget_class 	"*notif*" 			style "panel1"
+widget_class 	"*Notif*" 			style "panel1"
+widget_class 	"*Tray*" 			style "panel1"
+widget_class 	"*tray*" 			style "panel1"
+widget		"*Xfce*Panel*"			style "panel1"
+class 		"*Xfce*Panel*" 			style "panel1"
+widget_class 	"*Xfce*Panel*" 			style "panel1"
+
+###################################################################################################
+
+#### remove panel menu arrow
+style "panel-arrow-remove"
+
+{
+engine "pixmap"
+	{
+
+	image
+	{
+		function	= ARROW
+	}
+
+	}
+}
+
+widget_class "*PanelToplevel*" 			style "panel-arrow-remove"
+
+##################### PANEL BUTTONS ###############################
+style "handle" 
+{
+    engine "pixmap"
+    {
+    
+        image
+        {
+            function 	= HANDLE
+        }
+
+    }
+}
+
+style "panelbuttons" = "default"
+{
+
+    xthickness            		= 1	#2
+    ythickness            		= 1
+
+   fg[NORMAL] = "#CCCCCC"		#"#000000" changed by Krytarik, panel text color
+
+	engine "pixmap" 
+    	{
+      
+		image
+		{
+			function       			= BOX
+			recolorable     		= TRUE
+			state				= NORMAL
+			file            		= "Others/transparent.png"
+			border          		= { 0, 0, 0, 0 }
+			stretch         		= TRUE
+		}
+
+		image
+		{
+			function        		= BOX
+			recolorable     		= TRUE
+			state				= PRELIGHT
+			#file            		= "Panel/panelbutton-prelight.png"	# disabled by Krytarik
+			file            		= "Panel/panelbutton-pressed.png"	# added by Krytarik
+			border          		= { 1, 1, 1, 1 }
+			stretch         		= TRUE
+		}
+                
+		image
+		{
+			function       			= BOX
+			recolorable     		= TRUE
+			state				= ACTIVE
+			file            		= "Panel/panelbutton-pressed.png"
+			border          		= { 1, 1, 1, 1 }
+			stretch         		= TRUE
+		}  
+
+	}
+}
+
+class "PanelAppletFrame" style "handle"
+
+widget 		"*PanelWidget*"				style "panelbuttons"
+widget 		"*PanelApplet*"				style "panelbuttons"
+widget_class 	"*PanelButton*."			style "panelbuttons"
+widget_class 	"*Panel*Menu*"				style "panelbuttons"
+widget_class 	"*Panel*MenuBar*"			style "panelbuttons"
+widget_class	"*Panel*<GtkMenuBar>*"			style "panelbuttons"
+widget_class	"*Panel*GtkButton"			style "panelbuttons"
+widget_class	"*Panel*GtkToggleButton"		style "panelbuttons"
+
+widget		"*task*"				style "panelbuttons"
+widget 		"*.tasklist-button"			style "panelbuttons"
+widget 		"*PanelApplet*TaskTitle*"		style "panelbuttons"
+widget_class 	"*PanelToplevel*Button"			style "panelbuttons"
+widget_class 	"*Xfce*Panel*.GtkToggleButton"		style "panelbuttons"
+widget_class 	"*Xfce*NetkTasklist*GtkToggleButton"	style "panelbuttons"
+
+################### grey menu text fixes ###################
+
+style "grey-fix"
+
+{
+
+   fg[NORMAL] = "#000000"
+
+}
+
+widget 		"*TrayIcon*" 			style "grey-fix"
+

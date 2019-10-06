@@ -1,0 +1,48 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <_ProjectFileVersion>10.0.40219.1</_ProjectFileVersion>
+    <OutDir>$(ProjectDir)</OutDir>
+    <IntDir>$(SolutionDir)obj\$(ProjectName)\$(PlatformName)_$(Configuration)\</IntDir>
+    <IgnoreImportLibrary>true</IgnoreImportLibrary>
+    <LinkIncremental>true</LinkIncremental>
+    <GenerateManifest>false</GenerateManifest>
+    <TargetExt>.cdl</TargetExt>
+  </PropertyGroup>
+  <ItemDefinitionGroup>
+    <Bscmake>
+      <OutputFile>$(IntDir)$(TargetFileName).bsc</OutputFile>
+    </Bscmake>
+    <ClCompile>
+      <AdditionalOptions>/vmg /vms /w44263 /we4264 %(AdditionalOptions)</AdditionalOptions>
+      <Optimization>Disabled</Optimization>
+      <UseFullPaths>true</UseFullPaths>
+      <AdditionalIncludeDirectories>.\source;.\res;.\res\description;$(C4D_API_PATH)\_api;$(C4D_API_PATH)\_api\c4d_preview;$(C4D_API_PATH)\_api\c4d_customgui;$(C4D_API_PATH)\_api\c4d_libs;$(C4D_API_PATH)\_api\c4d_gv;$(C4D_API_PATH)\modules\Modeling\res\description;$(C4D_API_PATH)\res\description;$(C4D_API_PATH)\modules\objects\res\description;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <MultiProcessorCompilation>true</MultiProcessorCompilation>
+      <PreprocessorDefinitions>WIN32;__PC;_DEBUG;_WINDOWS;_CRT_SECURE_NO_WARNINGS;PSAPI_VERSION=1;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <ExceptionHandling>false</ExceptionHandling>
+      <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
+      <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <TreatWChar_tAsBuiltInType>false</TreatWChar_tAsBuiltInType>
+      <PrecompiledHeaderOutputFile>$(IntDir)headers.pch</PrecompiledHeaderOutputFile>
+      <AssemblerListingLocation>$(IntDir)asm\</AssemblerListingLocation>
+      <ObjectFileName>$(IntDir)obj\</ObjectFileName>
+      <WarningLevel>Level4</WarningLevel>
+      <DisableSpecificWarnings>4062;4100;4127;4131;4201;4210;4242;4244;4245;4305;4310;4324;4355;4365;4389;4505;4512;4611;4706;4718;4740;4748;4996;%(DisableSpecificWarnings)</DisableSpecificWarnings>
+      <DebugInformationFormat>EditAndContinue</DebugInformationFormat>
+      <CompileAs>Default</CompileAs>
+      <MinimalRebuild>false</MinimalRebuild>
+      <OpenMPSupport>false</OpenMPSupport>
+    </ClCompile>
+    <Link>
+      <IgnoreSpecificDefaultLibraries>LIBCD;%(IgnoreSpecificDefaultLibraries)</IgnoreSpecificDefaultLibraries>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <ProgramDatabaseFile>$(SolutionDir)obj\$(TargetName)_$(Platform)_$(Configuration).pdb</ProgramDatabaseFile>
+      <ImportLibrary>$(IntDir)$(TargetFileName).lib</ImportLibrary>
+      <TargetMachine>MachineX86</TargetMachine>
+      <OutputFile>$(ProjectDir)$(ProjectName).cdl</OutputFile>
+      <ImageHasSafeExceptionHandlers />
+    </Link>
+  </ItemDefinitionGroup>
+</Project>

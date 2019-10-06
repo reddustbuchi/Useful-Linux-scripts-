@@ -1,0 +1,521 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|Win32">
+      <Configuration>Debug</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Debug|x64">
+      <Configuration>Debug</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Intel|Win32">
+      <Configuration>Intel</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Intel|x64">
+      <Configuration>Intel</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|Win32">
+      <Configuration>Release</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|x64">
+      <Configuration>Release</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <ProjectGuid>{B3E105E9-09BB-4DCA-B58D-3432EB8E88E5}</ProjectGuid>
+    <RootNamespace>_api</RootNamespace>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Intel|Win32'" Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <PlatformToolset>Intel C++ Compiler XE 13.0</PlatformToolset>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <PlatformToolset>v110</PlatformToolset>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <PlatformToolset>v110</PlatformToolset>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Intel|x64'" Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <PlatformToolset>Intel C++ Compiler XE 13.0</PlatformToolset>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <PlatformToolset>v110</PlatformToolset>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <PlatformToolset>v110</PlatformToolset>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Intel|Win32'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+    <Import Project="IntelWin32.props" />
+    <Import Project="projectsettings.props" />
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+    <Import Project="DebugWin32.props" />
+    <Import Project="projectsettings.props" />
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+    <Import Project="ReleaseWin32.props" />
+    <Import Project="projectsettings.props" />
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Intel|x64'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+    <Import Project="IntelWin64.props" />
+    <Import Project="projectsettings.props" />
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+    <Import Project="DebugWin64.props" />
+    <Import Project="projectsettings.props" />
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+    <Import Project="ReleaseWin64.props" />
+    <Import Project="projectsettings.props" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup>
+    <_ProjectFileVersion>10.0.40219.1</_ProjectFileVersion>
+    <IntDir Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(SolutionDir)obj\$(ProjectName)\$(Platform)_$(Configuration)\</IntDir>
+    <IntDir Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(SolutionDir)obj\$(ProjectName)\$(Platform)_$(Configuration)\</IntDir>
+    <IntDir Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(SolutionDir)obj\$(ProjectName)\$(Platform)_$(Configuration)\</IntDir>
+    <IntDir Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(SolutionDir)obj\$(ProjectName)\$(Platform)_$(Configuration)\</IntDir>
+    <IntDir Condition="'$(Configuration)|$(Platform)'=='Intel|Win32'">$(SolutionDir)obj\$(ProjectName)\$(Platform)_$(Configuration)\</IntDir>
+    <IntDir Condition="'$(Configuration)|$(Platform)'=='Intel|x64'">$(SolutionDir)obj\$(ProjectName)\$(Platform)_$(Configuration)\</IntDir>
+    <OutDir Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(SolutionDir)obj\$(ProjectName)\$(Platform)_$(Configuration)\</OutDir>
+    <TargetName Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">_api_$(Platform)_$(Configuration)</TargetName>
+    <TargetExt Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">.lib</TargetExt>
+    <OutDir Condition="'$(Configuration)|$(Platform)'=='Intel|Win32'">$(SolutionDir)obj\$(ProjectName)\$(Platform)_$(Configuration)\</OutDir>
+    <TargetName Condition="'$(Configuration)|$(Platform)'=='Intel|Win32'">_api_$(Platform)_$(Configuration)</TargetName>
+    <TargetExt Condition="'$(Configuration)|$(Platform)'=='Intel|Win32'">.lib</TargetExt>
+    <OutDir Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(SolutionDir)obj\$(ProjectName)\$(Platform)_$(Configuration)\</OutDir>
+    <TargetName Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">_api_$(Platform)_$(Configuration)</TargetName>
+    <TargetExt Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">.lib</TargetExt>
+    <OutDir Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(SolutionDir)obj\$(ProjectName)\$(Platform)_$(Configuration)\</OutDir>
+    <TargetName Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">_api_$(Platform)_$(Configuration)</TargetName>
+    <TargetExt Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">.lib</TargetExt>
+    <OutDir Condition="'$(Configuration)|$(Platform)'=='Intel|x64'">$(SolutionDir)obj\$(ProjectName)\$(Platform)_$(Configuration)\</OutDir>
+    <TargetName Condition="'$(Configuration)|$(Platform)'=='Intel|x64'">_api_$(Platform)_$(Configuration)</TargetName>
+    <TargetExt Condition="'$(Configuration)|$(Platform)'=='Intel|x64'">.lib</TargetExt>
+    <OutDir Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(SolutionDir)obj\$(ProjectName)\$(Platform)_$(Configuration)\</OutDir>
+    <TargetName Condition="'$(Configuration)|$(Platform)'=='Release|x64'">_api_$(Platform)_$(Configuration)</TargetName>
+    <TargetExt Condition="'$(Configuration)|$(Platform)'=='Release|x64'">.lib</TargetExt>
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <ClCompile>
+      <AdditionalIncludeDirectories>..\_api;..\_api\c4d_preview;..\_api\c4d_customgui;..\_api\c4d_libs;..\_api\c4d_gv;..\modules\Modeling\res\description;..\res\description;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ClCompile>
+    <Lib>
+      <OutputFile>$(OutDir)$(TargetName)$(TargetExt)</OutputFile>
+    </Lib>
+    <PostBuildEvent>
+      <Command>"$(ProjectDir)copynatvis.bat" "$(VisualStudioDir)\Visualizers" "$(ProjectDir)"</Command>
+    </PostBuildEvent>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <ClCompile>
+      <AdditionalIncludeDirectories>..\_api;..\_api\c4d_preview;..\_api\c4d_customgui;..\_api\c4d_libs;..\_api\c4d_gv;..\modules\Modeling\res\description;..\res\description;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ClCompile>
+    <Lib>
+      <OutputFile>$(OutDir)$(TargetName)$(TargetExt)</OutputFile>
+    </Lib>
+    <PostBuildEvent>
+      <Command>"$(ProjectDir)copynatvis.bat" "$(VisualStudioDir)\Visualizers" "$(ProjectDir)"</Command>
+    </PostBuildEvent>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <ClCompile>
+      <AdditionalIncludeDirectories>..\_api;..\_api\c4d_preview;..\_api\c4d_customgui;..\_api\c4d_libs;..\_api\c4d_gv;..\modules\Modeling\res\description;..\res\description;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ClCompile>
+    <Lib>
+      <OutputFile>$(OutDir)$(TargetName)$(TargetExt)</OutputFile>
+    </Lib>
+    <PostBuildEvent>
+      <Command>"$(ProjectDir)copynatvis.bat" "$(VisualStudioDir)\Visualizers" "$(ProjectDir)"</Command>
+    </PostBuildEvent>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <ClCompile>
+      <AdditionalIncludeDirectories>..\_api;..\_api\c4d_preview;..\_api\c4d_customgui;..\_api\c4d_libs;..\_api\c4d_gv;..\modules\Modeling\res\description;..\res\description;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ClCompile>
+    <Lib>
+      <OutputFile>$(OutDir)$(TargetName)$(TargetExt)</OutputFile>
+    </Lib>
+    <PostBuildEvent>
+      <Command>"$(ProjectDir)copynatvis.bat" "$(VisualStudioDir)\Visualizers" "$(ProjectDir)"</Command>
+    </PostBuildEvent>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Intel|Win32'">
+    <ClCompile>
+      <AdditionalIncludeDirectories>..\_api;..\_api\c4d_preview;..\_api\c4d_customgui;..\_api\c4d_libs;..\_api\c4d_gv;..\modules\Modeling\res\description;..\res\description;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ClCompile>
+    <Lib>
+      <OutputFile>$(OutDir)$(TargetName)$(TargetExt)</OutputFile>
+    </Lib>
+    <PostBuildEvent>
+      <Command>"$(ProjectDir)copynatvis.bat" "$(VisualStudioDir)\Visualizers" "$(ProjectDir)"</Command>
+    </PostBuildEvent>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Intel|x64'">
+    <ClCompile>
+      <AdditionalIncludeDirectories>..\_api;..\_api\c4d_preview;..\_api\c4d_customgui;..\_api\c4d_libs;..\_api\c4d_gv;..\modules\Modeling\res\description;..\res\description;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ClCompile>
+    <Lib>
+      <OutputFile>$(OutDir)$(TargetName)$(TargetExt)</OutputFile>
+    </Lib>
+    <PostBuildEvent>
+      <Command>"$(ProjectDir)copynatvis.bat" "$(VisualStudioDir)\Visualizers" "$(ProjectDir)"</Command>
+    </PostBuildEvent>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <ClCompile Include="..\_api\c4d_basebitmap.cpp" />
+    <ClCompile Include="..\_api\c4d_basechannel.cpp" />
+    <ClCompile Include="..\_api\c4d_basecontainer.cpp" />
+    <ClCompile Include="..\_api\c4d_basedocument.cpp" />
+    <ClCompile Include="..\_api\c4d_basedraw.cpp" />
+    <ClCompile Include="..\_api\c4d_baseeffectorplugin.cpp" />
+    <ClCompile Include="..\_api\c4d_baselist.cpp" />
+    <ClCompile Include="..\_api\c4d_basematerial.cpp" />
+    <ClCompile Include="..\_api\c4d_baseobject.cpp" />
+    <ClCompile Include="..\_api\c4d_baseplugin.cpp" />
+    <ClCompile Include="..\_api\c4d_baseselect.cpp" />
+    <ClCompile Include="..\_api\c4d_basesound.cpp" />
+    <ClCompile Include="..\_api\c4d_basetag.cpp" />
+    <ClCompile Include="..\_api\c4d_basetime.cpp" />
+    <ClCompile Include="..\_api\c4d_bitmapfilter.cpp" />
+    <ClCompile Include="..\_api\c4d_canimation.cpp" />
+    <ClCompile Include="..\_api\c4d_coffee.cpp" />
+    <ClCompile Include="..\_api\c4d_commandplugin.cpp" />
+    <ClCompile Include="..\_api\c4d_ctrackplugin.cpp" />
+    <ClCompile Include="..\_api\c4d_customdatatype.cpp" />
+    <ClCompile Include="..\_api\c4d_customguidata.cpp" />
+    <ClCompile Include="..\_api\c4d_customguiplugin.cpp" />
+    <ClCompile Include="..\_api\c4d_customgui\customgui_kerning.cpp" />
+    <ClCompile Include="..\_api\c4d_descriptiondialog.cpp" />
+    <ClCompile Include="..\_api\c4d_falloffplugin.cpp" />
+    <ClCompile Include="..\_api\c4d_file.cpp" />
+    <ClCompile Include="..\_api\c4d_filterplugin.cpp" />
+    <ClCompile Include="..\_api\c4d_gedata.cpp" />
+    <ClCompile Include="..\_api\c4d_general.cpp" />
+    <ClCompile Include="..\_api\c4d_gl.cpp" />
+    <ClCompile Include="..\_api\c4d_gui.cpp" />
+    <ClCompile Include="..\_api\c4d_library.cpp" />
+    <ClCompile Include="..\_api\c4d_libs\lib_big_integer.cpp" />
+    <ClCompile Include="..\_api\c4d_libs\lib_intersect.cpp" />
+    <ClCompile Include="..\_api\c4d_libs\lib_net.cpp" />
+    <ClCompile Include="..\_api\c4d_libs\lib_sculpt.cpp" />
+    <ClCompile Include="..\_api\c4d_libs\lib_sculptbrush.cpp" />
+    <ClCompile Include="..\_api\c4d_libs\lib_secure_random.cpp" />
+    <ClCompile Include="..\_api\c4d_listview.cpp" />
+    <ClCompile Include="..\_api\c4d_materialplugin.cpp" />
+    <ClCompile Include="..\_api\c4d_memory.cpp" />
+    <ClCompile Include="..\_api\c4d_messageplugin.cpp" />
+    <ClCompile Include="..\_api\c4d_misc\memory\debugglobals.cpp" />
+    <ClCompile Include="..\_api\c4d_misc\memory\defaultallocator.cpp" />
+    <ClCompile Include="..\_api\c4d_network.cpp" />
+    <ClCompile Include="..\_api\c4d_nodeplugin.cpp" />
+    <ClCompile Include="..\_api\c4d_objectplugin.cpp" />
+    <ClCompile Include="..\_api\c4d_painter.cpp" />
+    <ClCompile Include="..\_api\c4d_particleobject.cpp" />
+    <ClCompile Include="..\_api\c4d_pmain.cpp" />
+    <ClCompile Include="..\_api\c4d_quaternion.cpp" />
+    <ClCompile Include="..\_api\c4d_resource.cpp" />
+    <ClCompile Include="..\_api\c4d_scenehookplugin.cpp" />
+    <ClCompile Include="..\_api\c4d_shaderplugin.cpp" />
+    <ClCompile Include="..\_api\c4d_snapplugin.cpp" />
+    <ClCompile Include="..\_api\c4d_string.cpp" />
+    <ClCompile Include="..\_api\c4d_tagplugin.cpp" />
+    <ClCompile Include="..\_api\c4d_thread.cpp" />
+    <ClCompile Include="..\_api\c4d_thread_keys.cpp" />
+    <ClCompile Include="..\_api\c4d_toolplugin.cpp" />
+    <ClCompile Include="..\_api\c4d_tools.cpp" />
+    <ClCompile Include="..\_api\c4d_uuid.cpp" />
+    <ClCompile Include="..\_api\c4d_videopost.cpp" />
+    <ClCompile Include="..\_api\c4d_videopostplugin.cpp" />
+    <ClCompile Include="..\_api\ge_ieee.cpp" />
+    <ClCompile Include="..\_api\ge_sort.cpp" />
+    <ClCompile Include="..\_api\operatingsystem.cpp" />
+    <ClCompile Include="..\_api\c4d_customgui\customgui_base.cpp" />
+    <ClCompile Include="..\_api\c4d_customgui\customgui_bitmapbutton.cpp" />
+    <ClCompile Include="..\_api\c4d_customgui\customgui_datetime.cpp" />
+    <ClCompile Include="..\_api\c4d_customgui\customgui_descproperty.cpp" />
+    <ClCompile Include="..\_api\c4d_customgui\customgui_description.cpp" />
+    <ClCompile Include="..\_api\c4d_customgui\customgui_fontchooser.cpp" />
+    <ClCompile Include="..\_api\c4d_customgui\customgui_gradient.cpp" />
+    <ClCompile Include="..\_api\c4d_customgui\customgui_htmlviewer.cpp" />
+    <ClCompile Include="..\_api\c4d_customgui\customgui_hyperlink.cpp" />
+    <ClCompile Include="..\_api\c4d_customgui\customgui_inexclude.cpp" />
+    <ClCompile Include="..\_api\c4d_customgui\customgui_linkbox.cpp" />
+    <ClCompile Include="..\_api\c4d_customgui\customgui_listview.cpp" />
+    <ClCompile Include="..\_api\c4d_customgui\customgui_listview2.cpp" />
+    <ClCompile Include="..\_api\c4d_customgui\customgui_matassign.cpp" />
+    <ClCompile Include="..\_api\c4d_customgui\customgui_matpreview.cpp" />
+    <ClCompile Include="..\_api\c4d_customgui\customgui_movieview.cpp" />
+    <ClCompile Include="..\_api\c4d_customgui\customgui_pla.cpp" />
+    <ClCompile Include="..\_api\c4d_customgui\customgui_priority.cpp" />
+    <ClCompile Include="..\_api\c4d_customgui\customgui_quicktab.cpp" />
+    <ClCompile Include="..\_api\c4d_customgui\customgui_splinecontrol.cpp" />
+    <ClCompile Include="..\_api\c4d_customgui\customgui_texbox.cpp" />
+    <ClCompile Include="..\_api\c4d_customgui\customgui_texturemanager.cpp" />
+    <ClCompile Include="..\_api\c4d_customgui\customgui_unitscale.cpp" />
+    <ClCompile Include="..\_api\c4d_libs\lib_activeobjectmanager.cpp" />
+    <ClCompile Include="..\_api\c4d_libs\lib_aes.cpp" />
+    <ClCompile Include="..\_api\c4d_libs\lib_batchrender.cpp" />
+    <ClCompile Include="..\_api\c4d_libs\lib_browser.cpp" />
+    <ClCompile Include="..\_api\c4d_libs\lib_ca.cpp" />
+    <ClCompile Include="..\_api\c4d_libs\lib_clipmap.cpp" />
+    <ClCompile Include="..\_api\c4d_libs\lib_cloud.cpp" />
+    <ClCompile Include="..\_api\c4d_libs\lib_collider.cpp" />
+    <ClCompile Include="..\_api\c4d_libs\lib_datetimeparser.cpp" />
+    <ClCompile Include="..\_api\c4d_libs\lib_description.cpp" />
+    <ClCompile Include="..\_api\c4d_libs\lib_dwgobjects.cpp" />
+    <ClCompile Include="..\_api\c4d_libs\lib_editortools.cpp" />
+    <ClCompile Include="..\_api\c4d_libs\lib_filtertree.cpp" />
+    <ClCompile Include="..\_api\c4d_libs\lib_hair.cpp" />
+    <ClCompile Include="..\_api\c4d_libs\lib_iconcollection.cpp" />
+    <ClCompile Include="..\_api\c4d_libs\lib_layershader.cpp" />
+    <ClCompile Include="..\_api\c4d_libs\lib_modeling.cpp" />
+    <ClCompile Include="..\_api\c4d_libs\lib_ngon.cpp" />
+    <ClCompile Include="..\_api\c4d_libs\lib_noise.cpp" />
+    <ClCompile Include="..\_api\c4d_libs\lib_pictureviewer.cpp" />
+    <ClCompile Include="..\_api\c4d_libs\lib_prefs.cpp" />
+    <ClCompile Include="..\_api\c4d_libs\lib_py.cpp" />
+    <ClCompile Include="..\_api\c4d_libs\lib_regexpr.cpp" />
+    <ClCompile Include="..\_api\c4d_libs\lib_sds.cpp" />
+    <ClCompile Include="..\_api\c4d_libs\lib_selectionchanger.cpp" />
+    <ClCompile Include="..\_api\c4d_libs\lib_sn.cpp" />
+    <ClCompile Include="..\_api\c4d_libs\lib_snd.cpp" />
+    <ClCompile Include="..\_api\c4d_libs\lib_splinehelp.cpp" />
+    <ClCompile Include="..\_api\c4d_libs\lib_tlmarker.cpp" />
+    <ClCompile Include="..\_api\c4d_libs\lib_viewport.cpp" />
+    <ClCompile Include="..\_api\c4d_libs\lib_zipfile.cpp" />
+    <ClCompile Include="..\_api\c4d_preview\filter_prefs.cpp" />
+    <ClCompile Include="..\_api\c4d_preview\filterpreview.cpp" />
+    <ClCompile Include="..\_api\c4d_preview\filterthread.cpp" />
+    <ClCompile Include="..\_api\c4d_preview\linefetchutil.cpp" />
+    <ClCompile Include="..\_api\c4d_preview\matrixrotate.cpp" />
+    <ClCompile Include="..\_api\c4d_preview\matrixutil.cpp" />
+    <ClCompile Include="..\_api\c4d_preview\matrixwrapper.cpp" />
+    <ClCompile Include="..\_api\c4d_preview\pixelfetchutil.cpp" />
+    <ClCompile Include="..\_api\c4d_scaling\mergelin.cpp" />
+    <ClCompile Include="..\_api\c4d_scaling\miniblt.cpp" />
+    <ClCompile Include="..\_api\c4d_scaling\scale.cpp" />
+    <ClCompile Include="..\_api\c4d_scaling\scaleitf.cpp" />
+    <ClCompile Include="..\_api\c4d_scaling\scalelin.cpp" />
+    <ClCompile Include="..\_api\c4d_gv\c4d_graphview.cpp" />
+    <ClCompile Include="..\_api\c4d_gv\c4d_operatorplugin.cpp" />
+    <ClCompile Include="..\_api\c4d_gv\c4d_particles.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\_api\c4d_basebitmap.h" />
+    <ClInclude Include="..\_api\c4d_basechannel.h" />
+    <ClInclude Include="..\_api\c4d_basecontainer.h" />
+    <ClInclude Include="..\_api\c4d_basedata.h" />
+    <ClInclude Include="..\_api\c4d_basedocument.h" />
+    <ClInclude Include="..\_api\c4d_basedraw.h" />
+    <ClInclude Include="..\_api\c4d_baseeffectordata.h" />
+    <ClInclude Include="..\_api\c4d_baseeffectorplugin.h" />
+    <ClInclude Include="..\_api\c4d_baselist.h" />
+    <ClInclude Include="..\_api\c4d_basematerial.h" />
+    <ClInclude Include="..\_api\c4d_baseobject.h" />
+    <ClInclude Include="..\_api\c4d_baseplugin.h" />
+    <ClInclude Include="..\_api\c4d_baseselect.h" />
+    <ClInclude Include="..\_api\c4d_basesound.h" />
+    <ClInclude Include="..\_api\c4d_basetag.h" />
+    <ClInclude Include="..\_api\c4d_basetime.h" />
+    <ClInclude Include="..\_api\c4d_bitmapfilter.h" />
+    <ClInclude Include="..\_api\c4d_bitmapfilterstruct.h" />
+    <ClInclude Include="..\_api\c4d_canimation.h" />
+    <ClInclude Include="..\_api\c4d_coffee.h" />
+    <ClInclude Include="..\_api\c4d_commanddata.h" />
+    <ClInclude Include="..\_api\c4d_commandplugin.h" />
+    <ClInclude Include="..\_api\c4d_ctrackdata.h" />
+    <ClInclude Include="..\_api\c4d_ctrackplugin.h" />
+    <ClInclude Include="..\_api\c4d_customdatatype.h" />
+    <ClInclude Include="..\_api\c4d_customdatatypeplugin.h" />
+    <ClInclude Include="..\_api\c4d_customguidata.h" />
+    <ClInclude Include="..\_api\c4d_customguiplugin.h" />
+    <ClInclude Include="..\_api\c4d_customgui\customgui_kerning.h" />
+    <ClInclude Include="..\_api\c4d_descriptiondialog.h" />
+    <ClInclude Include="..\_api\c4d_falloffdata.h" />
+    <ClInclude Include="..\_api\c4d_falloffplugin.h" />
+    <ClInclude Include="..\_api\c4d_file.h" />
+    <ClInclude Include="..\_api\c4d_filterdata.h" />
+    <ClInclude Include="..\_api\c4d_filterplugin.h" />
+    <ClInclude Include="..\_api\c4d_gedata.h" />
+    <ClInclude Include="..\_api\c4d_general.h" />
+    <ClInclude Include="..\_api\c4d_gl.h" />
+    <ClInclude Include="..\_api\c4d_gui.h" />
+    <ClInclude Include="..\_api\c4d_library.h" />
+    <ClInclude Include="..\_api\c4d_libs\lib_big_integer.h" />
+    <ClInclude Include="..\_api\c4d_libs\lib_intersect.h" />
+    <ClInclude Include="..\_api\c4d_libs\lib_net.h" />
+    <ClInclude Include="..\_api\c4d_libs\lib_sculpt.h" />
+    <ClInclude Include="..\_api\c4d_libs\lib_sculptbrush.h" />
+    <ClInclude Include="..\_api\c4d_libs\lib_secure_random.h" />
+    <ClInclude Include="..\_api\c4d_listview.h" />
+    <ClInclude Include="..\_api\c4d_materialdata.h" />
+    <ClInclude Include="..\_api\c4d_materialplugin.h" />
+    <ClInclude Include="..\_api\c4d_memory.h" />
+    <ClInclude Include="..\_api\c4d_messagedata.h" />
+    <ClInclude Include="..\_api\c4d_messageplugin.h" />
+    <ClInclude Include="..\_api\c4d_misc.h" />
+    <ClInclude Include="..\_api\c4d_misc\datastructures\autoiterator.h" />
+    <ClInclude Include="..\_api\c4d_misc\datastructures\baselist.h" />
+    <ClInclude Include="..\_api\c4d_misc\datastructures\blockarray.h" />
+    <ClInclude Include="..\_api\c4d_misc\datastructures\collection.h" />
+    <ClInclude Include="..\_api\c4d_misc\datastructures\hashcode.h" />
+    <ClInclude Include="..\_api\c4d_misc\datastructures\hashmap.h" />
+    <ClInclude Include="..\_api\c4d_misc\datastructures\pointerarray.h" />
+    <ClInclude Include="..\_api\c4d_misc\datastructures\basearray.h" />
+    <ClInclude Include="..\_api\c4d_misc\datastructures\sort.h" />
+    <ClInclude Include="..\_api\c4d_misc\datastructures\sortedarray.h" />
+    <ClInclude Include="..\_api\c4d_misc\general.h" />
+    <ClInclude Include="..\_api\c4d_misc\memory\debugglobals.h" />
+    <ClInclude Include="..\_api\c4d_misc\memory\defaultallocator.h" />
+    <ClInclude Include="..\_api\c4d_network.h" />
+    <ClInclude Include="..\_api\c4d_nodedata.h" />
+    <ClInclude Include="..\_api\c4d_nodeplugin.h" />
+    <ClInclude Include="..\_api\c4d_objectdata.h" />
+    <ClInclude Include="..\_api\c4d_objectplugin.h" />
+    <ClInclude Include="..\_api\c4d_painter.h" />
+    <ClInclude Include="..\_api\c4d_particleobject.h" />
+    <ClInclude Include="..\_api\c4d_plugin.h" />
+    <ClInclude Include="..\_api\c4d_quaternion.h" />
+    <ClInclude Include="..\_api\c4d_raytrace.h" />
+    <ClInclude Include="..\_api\c4d_resource.h" />
+    <ClInclude Include="..\_api\c4d_scenehookdata.h" />
+    <ClInclude Include="..\_api\c4d_scenehookplugin.h" />
+    <ClInclude Include="..\_api\c4d_shader.h" />
+    <ClInclude Include="..\_api\c4d_shaderdata.h" />
+    <ClInclude Include="..\_api\c4d_shaderplugin.h" />
+    <ClInclude Include="..\_api\c4d_snapdata.h" />
+    <ClInclude Include="..\_api\c4d_snapplugin.h" />
+    <ClInclude Include="..\_api\c4d_string.h" />
+    <ClInclude Include="..\_api\c4d_tagdata.h" />
+    <ClInclude Include="..\_api\c4d_tagplugin.h" />
+    <ClInclude Include="..\_api\c4d_thread.h" />
+    <ClInclude Include="..\_api\c4d_thread_keys.h" />
+    <ClInclude Include="..\_api\c4d_tooldata.h" />
+    <ClInclude Include="..\_api\c4d_toolplugin.h" />
+    <ClInclude Include="..\_api\c4d_tools.h" />
+    <ClInclude Include="..\_api\c4d_uuid.h" />
+    <ClInclude Include="..\_api\c4d_videopost.h" />
+    <ClInclude Include="..\_api\c4d_videopostdata.h" />
+    <ClInclude Include="..\_api\c4d_videopostplugin.h" />
+    <ClInclude Include="..\_api\ge_autoptr.h" />
+    <ClInclude Include="..\_api\ge_dynamicarray.h" />
+    <ClInclude Include="..\_api\ge_lmatrix.h" />
+    <ClInclude Include="..\_api\ge_lvector.h" />
+    <ClInclude Include="..\_api\ge_mac_flags.h" />
+    <ClInclude Include="..\_api\ge_math.h" />
+    <ClInclude Include="..\_api\ge_matrix.h" />
+    <ClInclude Include="..\_api\ge_prepass.h" />
+    <ClInclude Include="..\_api\ge_sort.h" />
+    <ClInclude Include="..\_api\ge_sys_math.h" />
+    <ClInclude Include="..\_api\ge_vector.h" />
+    <ClInclude Include="..\_api\gui.h" />
+    <ClInclude Include="..\_api\matrix4.h" />
+    <ClInclude Include="..\_api\operatingsystem.h" />
+    <ClInclude Include="..\_api\vector4.h" />
+    <ClInclude Include="..\_api\x4d_colors.h" />
+    <ClInclude Include="..\_api\x4d_filter.h" />
+    <ClInclude Include="..\_api\x4d_macros.h" />
+    <ClInclude Include="..\_api\c4d_customgui\customgui_base.h" />
+    <ClInclude Include="..\_api\c4d_customgui\customgui_bitmapbool.h" />
+    <ClInclude Include="..\_api\c4d_customgui\customgui_bitmapbutton.h" />
+    <ClInclude Include="..\_api\c4d_customgui\customgui_datetime.h" />
+    <ClInclude Include="..\_api\c4d_customgui\customgui_descproperty.h" />
+    <ClInclude Include="..\_api\c4d_customgui\customgui_description.h" />
+    <ClInclude Include="..\_api\c4d_customgui\customgui_filename.h" />
+    <ClInclude Include="..\_api\c4d_customgui\customgui_fontchooser.h" />
+    <ClInclude Include="..\_api\c4d_customgui\customgui_gradient.h" />
+    <ClInclude Include="..\_api\c4d_customgui\customgui_htmlviewer.h" />
+    <ClInclude Include="..\_api\c4d_customgui\customgui_hyperlink.h" />
+    <ClInclude Include="..\_api\c4d_customgui\customgui_inexclude.h" />
+    <ClInclude Include="..\_api\c4d_customgui\customgui_lensglow.h" />
+    <ClInclude Include="..\_api\c4d_customgui\customgui_linkbox.h" />
+    <ClInclude Include="..\_api\c4d_customgui\customgui_listview.h" />
+    <ClInclude Include="..\_api\c4d_customgui\customgui_listview2.h" />
+    <ClInclude Include="..\_api\c4d_customgui\customgui_longlat.h" />
+    <ClInclude Include="..\_api\c4d_customgui\customgui_matassign.h" />
+    <ClInclude Include="..\_api\c4d_customgui\customgui_matpreview.h" />
+    <ClInclude Include="..\_api\c4d_customgui\customgui_movieview.h" />
+    <ClInclude Include="..\_api\c4d_customgui\customgui_pla.h" />
+    <ClInclude Include="..\_api\c4d_customgui\customgui_priority.h" />
+    <ClInclude Include="..\_api\c4d_customgui\customgui_quicktab.h" />
+    <ClInclude Include="..\_api\c4d_customgui\customgui_splinecontrol.h" />
+    <ClInclude Include="..\_api\c4d_customgui\customgui_texbox.h" />
+    <ClInclude Include="..\_api\c4d_customgui\customgui_texturemanager.h" />
+    <ClInclude Include="..\_api\c4d_customgui\customgui_texturename.h" />
+    <ClInclude Include="..\_api\c4d_customgui\customgui_unitscale.h" />
+    <ClInclude Include="..\_api\c4d_libs\lib_activeobjectmanager.h" />
+    <ClInclude Include="..\_api\c4d_libs\lib_aes.h" />
+    <ClInclude Include="..\_api\c4d_libs\lib_batchrender.h" />
+    <ClInclude Include="..\_api\c4d_libs\lib_browser.h" />
+    <ClInclude Include="..\_api\c4d_libs\lib_ca.h" />
+    <ClInclude Include="..\_api\c4d_libs\lib_clipmap.h" />
+    <ClInclude Include="..\_api\c4d_libs\lib_cloud.h" />
+    <ClInclude Include="..\_api\c4d_libs\lib_collider.h" />
+    <ClInclude Include="..\_api\c4d_libs\lib_datetimeparser.h" />
+    <ClInclude Include="..\_api\c4d_libs\lib_description.h" />
+    <ClInclude Include="..\_api\c4d_libs\lib_dwgobjects.h" />
+    <ClInclude Include="..\_api\c4d_libs\lib_editortools.h" />
+    <ClInclude Include="..\_api\c4d_libs\lib_filtertree.h" />
+    <ClInclude Include="..\_api\c4d_libs\lib_hair.h" />
+    <ClInclude Include="..\_api\c4d_libs\lib_iconcollection.h" />
+    <ClInclude Include="..\_api\c4d_libs\lib_layershader.h" />
+    <ClInclude Include="..\_api\c4d_libs\lib_modeling.h" />
+    <ClInclude Include="..\_api\c4d_libs\lib_ngon.h" />
+    <ClInclude Include="..\_api\c4d_libs\lib_noise.h" />
+    <ClInclude Include="..\_api\c4d_libs\lib_pictureviewer.h" />
+    <ClInclude Include="..\_api\c4d_libs\lib_prefs.h" />
+    <ClInclude Include="..\_api\c4d_libs\lib_py.h" />
+    <ClInclude Include="..\_api\c4d_libs\lib_regexpr.h" />
+    <ClInclude Include="..\_api\c4d_libs\lib_sds.h" />
+    <ClInclude Include="..\_api\c4d_libs\lib_selectionchanger.h" />
+    <ClInclude Include="..\_api\c4d_libs\lib_sn.h" />
+    <ClInclude Include="..\_api\c4d_libs\lib_snd.h" />
+    <ClInclude Include="..\_api\c4d_libs\lib_splinehelp.h" />
+    <ClInclude Include="..\_api\c4d_libs\lib_tlmarker.h" />
+    <ClInclude Include="..\_api\c4d_libs\lib_viewport.h" />
+    <ClInclude Include="..\_api\c4d_libs\lib_zipfile.h" />
+    <ClInclude Include="..\_api\c4d_preview\filter_prefs.h" />
+    <ClInclude Include="..\_api\c4d_preview\filter_private_id.h" />
+    <ClInclude Include="..\_api\c4d_preview\filterpreview.h" />
+    <ClInclude Include="..\_api\c4d_preview\filterthread.h" />
+    <ClInclude Include="..\_api\c4d_preview\linefetchutil.h" />
+    <ClInclude Include="..\_api\c4d_preview\matrixrotate.h" />
+    <ClInclude Include="..\_api\c4d_preview\matrixutil.h" />
+    <ClInclude Include="..\_api\c4d_preview\matrixwrapper.h" />
+    <ClInclude Include="..\_api\c4d_preview\pixelfetchutil.h" />
+    <ClInclude Include="..\_api\c4d_scaling\mergelin.h" />
+    <ClInclude Include="..\_api\c4d_scaling\miniblt.h" />
+    <ClInclude Include="..\_api\c4d_scaling\scale.h" />
+    <ClInclude Include="..\_api\c4d_scaling\scaleblt.h" />
+    <ClInclude Include="..\_api\c4d_scaling\scaleitf.h" />
+    <ClInclude Include="..\_api\c4d_scaling\scalelin.h" />
+    <ClInclude Include="..\_api\c4d_gv\c4d_graphview.h" />
+    <ClInclude Include="..\_api\c4d_gv\c4d_operatordata.h" />
+    <ClInclude Include="..\_api\c4d_gv\c4d_operatorplugin.h" />
+    <ClInclude Include="..\_api\c4d_gv\c4d_particles.h" />
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>

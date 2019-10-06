@@ -1,0 +1,18 @@
+STRINGTABLE TLWorld
+{
+	TLWorld				"Key Interpolation";
+	TLWORLD_OVERDUB		"Overdub";
+	TLWORLD_LOCKV		"Lock Value";
+	TLWORLD_LOCKT		"Lock Time";
+	TLWORLD_LOCKTA		"Lock Tangent Angles";
+	TLWORLD_LOCKTL		"Lock Tangent Lengths";
+	TLWORLD_AUTO		"Auto Tangents";
+	TLWORLD_CLAMP		"Clamp";
+	TLWORLD_BREAK		"Break Tangents";
+	TLWORLD_KEEPVISUALANGLE "Keep Visual Angle";
+	TLWORLD_INTER		"Interpolation";
+	TLWORLD_INTER_SP		"Spline";
+	TLWORLD_INTER_LI		"Linear";
+	TLWORLD_INTER_ST		"Step";
+	
+}

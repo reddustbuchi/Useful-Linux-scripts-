@@ -1,0 +1,7 @@
+STRINGTABLE VPfadeout
+{
+	VPfadeout																"Fade Out";
+
+	VPFADEOUT_TRANSPARENCY								"Alpha";
+	VPFADEOUT_FILENAME									"Filename";
+}

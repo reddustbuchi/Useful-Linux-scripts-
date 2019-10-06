@@ -1,0 +1,417 @@
+# Fedora Nodoka gtkrc, based on Aqualooks
+#
+# Authors:
+# Daniel Geiger <dgeiger_343@yahoo.com>
+# Martin Sourada <martin.sourada@seznam.cz>
+#
+# Uses the Nodoka theme engine, forked from Murrine theme engine
+
+include "Scrollbars/scrollbar.rc"
+#Icon Sizes
+#gtk-icon-sizes ="gtk-small-toolbar=15,15:gtk-large-toolbar=23,23:gtk-button=20,20"        
+#gtk-toolbar-icon-size = GTK_ICON_SIZE_SMALL_TOOLBAR
+#default color scheme
+gtk_color_scheme = "fg_color:#131313\nbg_color:#BCBCBC\nbase_color:#ffffff\ntext_color:#1A1A1A\nselected_bg_color:#3C9ADE\nselected_fg_color:#ffffff"
+
+gtk-button-images = 0
+gtk-menu-images = 1
+
+style "fedora-default"
+{
+
+	GtkButton::default_border	= { 1, 1, 1, 1 }
+	GtkButton::child-displacement-x	= 0
+	GtkButton::child-displacement-y	= 1
+
+	GtkRange::trough_border		= 2
+	GtkRange::slider_width		= 12
+	GtkRange::stepper_size		= 3
+  	GtkRange::stepper_spacing	= 0
+
+	GtkScale::slider-length		= 11
+        GtkScale::slider-width          = 11
+        GtkScale::trough-side-details   = 0
+
+	GtkPaned::handle_size		= 8
+        GtkEntry::honors-transparent-bg-hint = 1
+
+	GtkScrollbar::min_slider_length	= 30
+	GtkCheckButton::indicator_size	= 15
+  	GtkRadioButton::indicator_size	= 15
+	GtkMenuBar::internal-padding	= 0
+	GtkTreeView::expander_size	= 10 #15
+	GtkExpander::expander_size	= 10 #17
+
+        GtkWidget::link-color           = "#0062dc" # blue
+        GtkWidget::visited-link-color   = "#8c00dc" #purple
+   
+        WnckTasklist::fade-overlay-rect = 0
+        WnckTasklist::fade-loop-time    = 5.0 # 5 seconds
+        WnckTasklist::fade-opacity      = 0.5 # final opacity
+
+	xthickness			= 1
+	ythickness			= 1
+
+ #makes menu only overlap border
+#  GtkMenu::horizontal-offset = -1
+
+  #removes extra padding at top and bottom of menus.  Makes menuitem overlap border
+  #GtkMenu::vertical-padding = 0
+
+  #set to the same as roundness, used for better hotspot selection of tabs
+  GtkNotebook::tab-curvature = 3
+  GtkNotebook::tab-overlap = 4
+
+  GtkMenuItem::arrow-spacing = 10
+  #Spacing between edge with indicator and text
+  GtkOptionMenu  ::indicator-size = {11, 5}
+  #GtkOptionMenu  ::indicator-spacing = {6, 5, 4, 4}
+
+  GtkCheckButton ::indicator-size = 15
+  GtkCheckButton ::indicator-spacing = 1
+  GtkRadioButton ::indicator-size = 15
+
+  GtkTreeView::horizontal_separator = 2
+  GtkTreeView::odd_row_color = "#e4ebf5"
+  GtkTreeView::even_row_color = "#ffffff"
+  GtkTreeView::odd_col_color = "#ffffff"
+  GtkTreeView::even_col_color = "#e4ebf5"
+
+  GtkToolbar	 ::shadow-type      = GTK_SHADOW_NONE
+  GtkMenuBar	 ::shadow_type      = GTK_SHADOW_NONE
+
+  xthickness = 1
+  ythickness = 1
+
+	fg[NORMAL]       	=  @fg_color
+	fg[ACTIVE]       	=  @fg_color
+	fg[PRELIGHT]     	=  @fg_color
+	fg[SELECTED]     	=  @selected_fg_color
+	fg[INSENSITIVE]  	=  shade (3.0,@fg_color)
+
+	bg[NORMAL]       	=  @bg_color
+	bg[ACTIVE]        	=  shade (1.0233,@bg_color)
+	bg[PRELIGHT]      	=  mix(0.90, shade (1.1,@bg_color), @selected_bg_color)
+	bg[SELECTED]      	=  @selected_bg_color
+	bg[INSENSITIVE]  	=  shade (1.03,@bg_color)
+
+	base[NORMAL]     	=  @base_color
+	base[ACTIVE]     	=  shade (0.65,@base_color)
+	base[PRELIGHT]   	=  @base_color
+	base[SELECTED]    	=  @selected_bg_color
+	base[INSENSITIVE]	=  shade (1.025,@bg_color)
+	
+	text[NORMAL]     	=  @text_color
+	text[ACTIVE]      	=  shade (0.95,@base_color)
+	text[PRELIGHT]   	=  @text_color
+	text[SELECTED]   	=  @selected_fg_color
+	text[INSENSITIVE]	=  mix (0.675,shade (0.95,@bg_color),@fg_color)
+
+	engine "nodoka"
+	{
+		style			= MODERN
+#		scrollbar_color		= shade (1.040897799, "#008DD7")
+		animation		= TRUE # FALSE = disabled, TRUE = enabled
+#		contrast		= 1.0
+#		gradients		= FALSE
+#		hilight_ratio		= 0.909090909
+		listviewheaderstyle	= 1 # 0 = flat, 1 = gradient, 2 = raised
+		listviewstyle		= 1 # 0 = nothing, 1 = dotted
+		menubarstyle		= 3 # 0 # 0 = flat, 1 = gradient, 2 = normal lowered gradient, 3 = menubar gradient
+		toolbarstyle		= 2 # 0 = flat, 1 = gradient, 2 = normal lowered gradient, 3 = menubar gradient
+		roundness		= 3 # 0 = squared, 1 = old default, more will increase roundness
+		scrollbarstyle		= 1 # 0 = nothing, 1 = circles, 2 = bars
+		stripes			= TRUE # enable or disable stripes in progressbars
+		bullet_color		= "#0c90c7"
+		focus_fill		= TRUE # enable or disable focus overlay fill
+		focus_inner		= FALSE	# TRUE = secondary focus ring inside, FALSE = secondary focus ring outside widgets
+		progressbar_style	= 1
+	}
+
+}
+
+# Evolution (and some deprecated widgets) use bg and fg for its listview instead of 
+# base and text like they should, so we override it.
+style "evolution-hack" = "fedora-default"
+{	
+	bg[ACTIVE]	= @bg_color
+}
+
+style "evolution-hack-tree" = "fedora-default"
+{	
+	bg[ACTIVE]	= shade (0.8, @bg_color)
+	bg[SELECTED]	= shade (1.040897799, @selected_bg_color)
+	fg[ACTIVE]	= @text_color
+	fg[SELECTED]	= @selected_fg_color
+}
+
+style "fedora-wide" = "fedora-default"
+{
+	xthickness	= 2
+	ythickness	= 2
+}
+
+style "fedora-wider" = "fedora-default"
+{
+	xthickness	= 3
+	ythickness	= 3
+}
+
+style "fedora-button" = "fedora-wider"
+{
+	bg[NORMAL]   =  shade (1.3,@bg_color)
+        bg[ACTIVE]   =  shade (0.85,@bg_color)
+        bg[PRELIGHT] =  shade(1.3,@selected_bg_color)#shade (0.95,@bg_color)
+}
+
+style "fedora-notebook" = "fedora-wide"
+{
+	bg[NORMAL] =  shade (1.08,@bg_color)
+	fg[ACTIVE] =  shade (0.30, @bg_color)
+	bg[ACTIVE] =  shade (0.92,@bg_color)
+}
+
+style "fedora-menubar" = "fedora-default"
+{
+#	bg[NORMAL]	= mix (0.8, lighter(@bg_color), shade(1.040897799, @selected_bg_color))
+	fg[PRELIGHT] 	 =  @selected_fg_color
+	text[PRELIGHT] =  @selected_fg_color
+}
+
+style "fedora-panel-menubar" = "fedora-menubar"
+{
+	fg[PRELIGHT]	= @selected_fg_color
+	text[PRELIGHT]	= @selected_fg_color
+}
+
+style "fedora-menu" = "fedora-default"
+{
+ 	xthickness = 0
+	ythickness = 5
+
+	text[PRELIGHT] = "#ffffff"
+	text[NORMAL]   = "#000000"
+	text[ACTIVE]   = "#ffffff"
+	fg[PRELIGHT] = "#ffffff"
+	fg[NORMAL]   = "#000000"
+	fg[ACTIVE]   = "#ffffff"
+
+	engine "pixmap"
+	{
+		image
+		{
+		    function 		= BOX
+		    recolorable 	= TRUE
+		    detail 			= "menu"
+		    file 			= "Menu/menu.png"
+		    border 			= { 6, 6, 6, 6 }
+		    stretch 		= TRUE
+		}
+	}
+
+	#bg[NORMAL] = shade (1.15,@bg_color)
+}
+
+style "fedora-menu-item" = "fedora-menu"
+{
+        xthickness = 3
+        ythickness = 2
+
+       fg[PRELIGHT] 	=  @selected_fg_color
+       text[PRELIGHT]   =  @selected_fg_color
+       fg[NORMAL]   		= "#000000"
+       fg[ACTIVE]   		= "#ffffff"
+}
+
+style "fedora-tree" = "fedora-wide"
+{
+        xthickness = 2
+        ythickness = 2
+
+        GtkWidget::focus-padding = 0
+        GtkTreeView::even_row_color = "#D5D9E2"
+
+	bg[NORMAL]   =  shade (1.10,@bg_color)
+ 	bg[PRELIGHT] = shade (1.30,@bg_color)
+ 	bg[ACTIVE]   =  mix(0.85,  shade (1.05,@bg_color), @selected_bg_color)
+}
+
+style "fedora-frame-title" = "fedora-default"
+{
+	fg[NORMAL]	= lighter (@fg_color)
+}
+
+style "fedora-tooltips"
+{
+	xthickness	= 4
+	ythickness	= 4
+
+	bg[NORMAL]   =  shade(1.3,@bg_color)#shade (0.4,@bg_color)
+        bg[SELECTED] =  @bg_color
+        fg[NORMAL]   =  @fg_color
+        #bg[NORMAL]   =  shade (0.4,@bg_color)
+        #bg[SELECTED] =  @selected_bg_color
+        #fg[NORMAL]   =  @selected_fg_color
+}
+
+style "fedora-progressbar" = "fedora-wide"
+{
+  	fg[PRELIGHT]= @selected_fg_color
+}
+
+style "fedora-combo" = "fedora-button" { 
+  GtkButton::inner-border = { 0, 1, 0, 0 }
+}
+
+style "theme-combo-arrow" = "theme-button"
+{
+  xthickness = 1
+  ythickness = 1
+}
+
+style "fedora-entry" = "fedora-button"
+{
+	GtkWidget	::focus-line-width	= 2
+	GtkEntry	::shadow-type		= GTK_SHADOW_IN
+}
+
+style "fedora-scrollbar" = "fedora-button"
+{
+	text[NORMAL]		= shade (0.2, @bg_color)
+	text[PRELIGHT]		= shade (0.2, @bg_color)
+	text[ACTIVE]		= @text_color
+}
+
+style "fedora-scale" = "fedora-button"
+{
+
+	GtkRange	::trough-side-details	= 0
+	GtkRange	::slider_width		= 16
+
+	bg[SELECTED]    = shade (1.1, @selected_bg_color)
+	fg[PRELIGHT]	= shade(1.1946, @selected_fg_color)
+}
+
+style "fedora-checkbutton" = "fedora-button"
+{
+}
+
+style "fedora-spin-button" = "fedora-entry"
+{
+}
+
+# widget styles
+class "GtkWidget"	style "fedora-default"
+class "GtkButton"	style "fedora-button"
+class "GtkCombo"	style "fedora-combo"
+class "GtkRange"	style "fedora-wide"
+class "GtkFrame"	style "fedora-wide"
+class "GtkMenu"		style "fedora-menu"
+class "GtkEntry"	style "fedora-entry"
+class "GtkMenuItem"	style "fedora-menu-item"
+class "GtkNotebook"	style "fedora-notebook"
+class "GtkProgressBar"	style "fedora-progressbar"
+class "GtkMenuBar"	style "fedora-menubar"
+class "GtkStatusbar"	style "fedora-status"
+class "GtkScrollbar"	style "fedora-scrollbar"
+class "GtkHBox"		style "fedora-wider"
+class "GtkScale"	style "fedora-scale"
+class "GtkCheckButton"	style "fedora-checkbutton"
+class "GtkSpinButton"	style "fedora-spin-button"
+
+widget_class "*MenuItem.*"		style "fedora-menu-item"
+
+# combobox stuff
+widget_class "*.GtkComboBoxEntry*" style "fedora-combo"
+widget_class "*.GtkCombo.GtkButton"    style "fedora-combo"
+
+# tooltips stuff
+widget "gtk-tooltips*"  style "theme-tooltips"
+widget "gtk-tooltip*"  style "theme-tooltips"
+
+widget_class "*.GtkNotebook.*GtkEventBox" style "theme-notebook"
+widget_class "*.GtkNotebook.*GtkViewport" style "theme-notebook"
+widget_class "*.GtkNotebook.GtkLabel*" style "theme-notebook" #for tabs
+
+# treeview stuff
+widget_class "*.<GtkTreeView>.GtkButton" style "theme-tree"
+widget_class "*.GtkCTree.GtkButton" 	style "theme-tree"
+widget_class "*.GtkList.GtkButton" 	style "theme-tree"
+widget_class "*.GtkCList.GtkButton" 	style "theme-tree"
+widget_class "*.ETree*" 	style "theme-tree" #evolution
+
+# notebook stuff
+widget_class "*.GtkNotebook.*.GtkEventBox"	style "fedora-notebook"
+widget_class "*.GtkNotebook.*.GtkViewport"	style "fedora-notebook"
+widget_class "*<GtkNotebook>*<GtkDrawingArea>"  style "fedora-notebook"
+widget_class "*<GtkNotebook>*<GtkLayout>"       style "fedora-notebook"
+
+# these should really use base and text colors instead
+widget_class "*GtkCTree*"	style "evolution-hack-tree"
+widget_class "*GtkList*"	style "evolution-hack-tree"
+widget_class "*GtkCList*"	style "evolution-hack-tree"
+widget_class "*.ETree.*"	style "evolution-hack-tree"
+widget_class "*EInfoLabel*"	style "evolution-hack"
+
+#For arrow bg
+widget_class "*.<GtkTreeView>.GtkButton.*GtkArrow" style "theme-tree-arrow"
+widget_class "*.GtkCTree.GtkButton.*GtkArrow" 	style "theme-tree-arrow"
+widget_class "*.GtkList.GtkButton.*GtkArrow" 	style "theme-tree-arrow"
+
+style "panelbuttons" = "theme-button"
+{
+  # as buttons are draw lower this helps center text
+  ythickness = 3
+}
+
+widget_class "*Panel*GtkToggleButton*" style "panelbuttons"
+widget_class "*Panel*GtkButton*"       style "panelbuttons"
+
+#widget_class "*GtkCTree*" style "evolution-hack"
+#widget_class "*GtkList*" style "evolution-hack"
+#widget_class "*GtkCList*" style "evolution-hack"
+#widget_class "*.ETree.*" style "evolution-hack"
+
+style "panel1" = "default"
+{
+   xthickness			= 0
+   ythickness			= 1
+
+   text[NORMAL] = "#000000"
+   text[PRELIGHT] = "#DDE4FF"
+   bg_pixmap[NORMAL]					= "Panel/panel-bg.png"
+   bg_pixmap[SELECTED]					= "Panel/panel-bg.png"
+   bg_pixmap[INSENSITIVE]				= "Panel/panel-bg.png"
+   bg_pixmap[PRELIGHT]					= "Panel/panel-bg.png"
+}
+
+style "panel2" = "panel1"
+{
+   engine "pixmap"
+   {
+
+		image
+		{
+			function	= BOX
+			file		= "Panel/panel-bg.png"
+			border	= { 0, 0, 0, 0 }
+			stretch	= FALSE
+  		}
+
+
+  }
+}
+
+class "*Panel*" style "panel-buttons"
+class "*notif*" style "panel-buttons"
+class "*Notif*" style "panel-buttons"
+class "*Tray*" style "panel-buttons"
+class "*tray*" style "panel-buttons"
+widget_class "*Panel*" style "panel-buttons"
+widget_class "*Panel*Menu*" style "panel-buttons"
+widget "PanelDItemEditor" style "panel-buttons"
+
+widget_class "*Mail*" style "panel-buttons"
+widget_class "*applet*" style "panel-buttons"
+widget_class "*manager*" style "panel-buttons"
+widget_class "*nm-applet*" style "panel-buttons"

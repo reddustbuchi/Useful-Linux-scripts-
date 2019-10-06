@@ -1,0 +1,18 @@
+/* XPM */
+static char *grabbar_active_left_png[] = {
+/* columns rows colors chars-per-pixel */
+"5 5 7 1",
+"  c #B1B1B1",
+". c gray78",
+"X c #EEEEEE",
+"o c #FDFDFD",
+"O c #FEFEFE",
+"+ c gray100",
+"@ c None",
+/* pixels */
+"OoX.O",
+"+oXXo",
+"+oXXX",
+"+X...",
+"@    "
+};

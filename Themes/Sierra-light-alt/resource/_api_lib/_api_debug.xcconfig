@@ -1,0 +1,12 @@
+#include "_apibase_debug"
+EXECUTABLE_EXTENSION = dylib
+USER_HEADER_SEARCH_PATHS = $(C4D_ROOTDIR)/resource/_api/** $(C4D_ROOTDIR)/resource/res/** res/** $(C4D_ROOTDIR)/resource/modules/objects/res/description $(C4D_ROOTDIR)/modules/advanced\ render/advanced\ render/res/description $(C4D_ROOTDIR)/modules/thinking\ particles/thinking\ particles/res/description $(C4D_ROOTDIR)/modules/dynamics/res/description $(C4D_ROOTDIR)/resource/modules/modeling/res/description
+LIBRARY_SEARCH_PATHS = $(C4D_ROOTDIR)/resource/_api_lib
+EXPORTED_SYMBOLS_FILE = $(C4D_ROOTDIR)/resource/_api_lib/export.txt
+GCC_PREFIX_HEADER = $(C4D_ROOTDIR)/resource/_api/ge_mac_debug_flags.h
+OTHER_LDFLAGS = $(OTHER_LDFLAGS) $(C4D_ROOTDIR)/resource/_api_lib/lib_api_debug.a
+
+SEPARATE_SYMBOL_EDIT = NO
+
+
+

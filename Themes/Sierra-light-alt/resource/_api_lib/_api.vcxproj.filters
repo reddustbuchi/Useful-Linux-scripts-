@@ -1,0 +1,1024 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{5df8fe1f-42f4-4fb5-8141-b3036c90f69f}</UniqueIdentifier>
+      <Extensions>cpp;c;cxx;rc;def;r;odl;idl;hpj;bat</Extensions>
+    </Filter>
+    <Filter Include="Source Files\c4d_customgui">
+      <UniqueIdentifier>{a75f41d4-2d04-462a-a73d-fd6896d4dadd}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\c4d_libs">
+      <UniqueIdentifier>{36d094f2-ab56-4507-9334-953e5c336910}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\c4d_preview">
+      <UniqueIdentifier>{23c2e7d7-0a21-4aec-9e67-139d1db218d5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\c4d_scaling">
+      <UniqueIdentifier>{d0a431ed-004e-4f2e-9695-38481c8946e6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\c4d_gv">
+      <UniqueIdentifier>{56f5acfa-c902-4549-882d-d3189efbe431}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\c4d_misc">
+      <UniqueIdentifier>{c2a97162-5a4c-4b22-9368-0f30254c096b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\c4d_misc\datastructures">
+      <UniqueIdentifier>{6140b43a-b34a-4a45-bce5-f990e8c10608}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\c4d_misc\memory">
+      <UniqueIdentifier>{0ae6944a-afeb-4222-ad5b-8111d4fabea2}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="..\_api\c4d_basebitmap.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\_api\c4d_basechannel.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\_api\c4d_basecontainer.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\_api\c4d_basedocument.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\_api\c4d_basedraw.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\_api\c4d_baseeffectorplugin.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\_api\c4d_baselist.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\_api\c4d_basematerial.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\_api\c4d_baseobject.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\_api\c4d_baseplugin.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\_api\c4d_baseselect.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\_api\c4d_basesound.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\_api\c4d_basetag.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\_api\c4d_basetime.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\_api\c4d_bitmapfilter.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\_api\c4d_canimation.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\_api\c4d_coffee.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\_api\c4d_commandplugin.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\_api\c4d_ctrackplugin.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\_api\c4d_customdatatype.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\_api\c4d_customguidata.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\_api\c4d_customguiplugin.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\_api\c4d_descriptiondialog.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\_api\c4d_falloffplugin.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\_api\c4d_file.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\_api\c4d_filterplugin.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\_api\c4d_gedata.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\_api\c4d_general.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\_api\c4d_gl.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\_api\c4d_gui.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\_api\c4d_library.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\_api\c4d_listview.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\_api\c4d_materialplugin.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\_api\c4d_memory.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\_api\c4d_messageplugin.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\_api\c4d_nodeplugin.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\_api\c4d_objectplugin.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\_api\c4d_painter.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\_api\c4d_particleobject.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\_api\c4d_pmain.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\_api\c4d_quaternion.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\_api\c4d_resource.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\_api\c4d_scenehookplugin.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\_api\c4d_shaderplugin.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\_api\c4d_string.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\_api\c4d_tagplugin.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\_api\c4d_thread.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\_api\c4d_thread_keys.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\_api\c4d_toolplugin.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\_api\c4d_tools.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\_api\c4d_videopost.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\_api\c4d_videopostplugin.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\_api\ge_ieee.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\_api\ge_sort.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\_api\operatingsystem.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\_api\c4d_customgui\customgui_base.cpp">
+      <Filter>Source Files\c4d_customgui</Filter>
+    </ClCompile>
+    <ClCompile Include="..\_api\c4d_customgui\customgui_bitmapbutton.cpp">
+      <Filter>Source Files\c4d_customgui</Filter>
+    </ClCompile>
+    <ClCompile Include="..\_api\c4d_customgui\customgui_datetime.cpp">
+      <Filter>Source Files\c4d_customgui</Filter>
+    </ClCompile>
+    <ClCompile Include="..\_api\c4d_customgui\customgui_descproperty.cpp">
+      <Filter>Source Files\c4d_customgui</Filter>
+    </ClCompile>
+    <ClCompile Include="..\_api\c4d_customgui\customgui_description.cpp">
+      <Filter>Source Files\c4d_customgui</Filter>
+    </ClCompile>
+    <ClCompile Include="..\_api\c4d_customgui\customgui_fontchooser.cpp">
+      <Filter>Source Files\c4d_customgui</Filter>
+    </ClCompile>
+    <ClCompile Include="..\_api\c4d_customgui\customgui_gradient.cpp">
+      <Filter>Source Files\c4d_customgui</Filter>
+    </ClCompile>
+    <ClCompile Include="..\_api\c4d_customgui\customgui_htmlviewer.cpp">
+      <Filter>Source Files\c4d_customgui</Filter>
+    </ClCompile>
+    <ClCompile Include="..\_api\c4d_customgui\customgui_hyperlink.cpp">
+      <Filter>Source Files\c4d_customgui</Filter>
+    </ClCompile>
+    <ClCompile Include="..\_api\c4d_customgui\customgui_inexclude.cpp">
+      <Filter>Source Files\c4d_customgui</Filter>
+    </ClCompile>
+    <ClCompile Include="..\_api\c4d_customgui\customgui_linkbox.cpp">
+      <Filter>Source Files\c4d_customgui</Filter>
+    </ClCompile>
+    <ClCompile Include="..\_api\c4d_customgui\customgui_listview.cpp">
+      <Filter>Source Files\c4d_customgui</Filter>
+    </ClCompile>
+    <ClCompile Include="..\_api\c4d_customgui\customgui_listview2.cpp">
+      <Filter>Source Files\c4d_customgui</Filter>
+    </ClCompile>
+    <ClCompile Include="..\_api\c4d_customgui\customgui_matassign.cpp">
+      <Filter>Source Files\c4d_customgui</Filter>
+    </ClCompile>
+    <ClCompile Include="..\_api\c4d_customgui\customgui_matpreview.cpp">
+      <Filter>Source Files\c4d_customgui</Filter>
+    </ClCompile>
+    <ClCompile Include="..\_api\c4d_customgui\customgui_movieview.cpp">
+      <Filter>Source Files\c4d_customgui</Filter>
+    </ClCompile>
+    <ClCompile Include="..\_api\c4d_customgui\customgui_pla.cpp">
+      <Filter>Source Files\c4d_customgui</Filter>
+    </ClCompile>
+    <ClCompile Include="..\_api\c4d_customgui\customgui_priority.cpp">
+      <Filter>Source Files\c4d_customgui</Filter>
+    </ClCompile>
+    <ClCompile Include="..\_api\c4d_customgui\customgui_quicktab.cpp">
+      <Filter>Source Files\c4d_customgui</Filter>
+    </ClCompile>
+    <ClCompile Include="..\_api\c4d_customgui\customgui_splinecontrol.cpp">
+      <Filter>Source Files\c4d_customgui</Filter>
+    </ClCompile>
+    <ClCompile Include="..\_api\c4d_customgui\customgui_texbox.cpp">
+      <Filter>Source Files\c4d_customgui</Filter>
+    </ClCompile>
+    <ClCompile Include="..\_api\c4d_customgui\customgui_texturemanager.cpp">
+      <Filter>Source Files\c4d_customgui</Filter>
+    </ClCompile>
+    <ClCompile Include="..\_api\c4d_customgui\customgui_unitscale.cpp">
+      <Filter>Source Files\c4d_customgui</Filter>
+    </ClCompile>
+    <ClCompile Include="..\_api\c4d_libs\lib_activeobjectmanager.cpp">
+      <Filter>Source Files\c4d_libs</Filter>
+    </ClCompile>
+    <ClCompile Include="..\_api\c4d_libs\lib_aes.cpp">
+      <Filter>Source Files\c4d_libs</Filter>
+    </ClCompile>
+    <ClCompile Include="..\_api\c4d_libs\lib_batchrender.cpp">
+      <Filter>Source Files\c4d_libs</Filter>
+    </ClCompile>
+    <ClCompile Include="..\_api\c4d_libs\lib_browser.cpp">
+      <Filter>Source Files\c4d_libs</Filter>
+    </ClCompile>
+    <ClCompile Include="..\_api\c4d_libs\lib_ca.cpp">
+      <Filter>Source Files\c4d_libs</Filter>
+    </ClCompile>
+    <ClCompile Include="..\_api\c4d_libs\lib_clipmap.cpp">
+      <Filter>Source Files\c4d_libs</Filter>
+    </ClCompile>
+    <ClCompile Include="..\_api\c4d_libs\lib_cloud.cpp">
+      <Filter>Source Files\c4d_libs</Filter>
+    </ClCompile>
+    <ClCompile Include="..\_api\c4d_libs\lib_collider.cpp">
+      <Filter>Source Files\c4d_libs</Filter>
+    </ClCompile>
+    <ClCompile Include="..\_api\c4d_libs\lib_datetimeparser.cpp">
+      <Filter>Source Files\c4d_libs</Filter>
+    </ClCompile>
+    <ClCompile Include="..\_api\c4d_libs\lib_description.cpp">
+      <Filter>Source Files\c4d_libs</Filter>
+    </ClCompile>
+    <ClCompile Include="..\_api\c4d_libs\lib_dwgobjects.cpp">
+      <Filter>Source Files\c4d_libs</Filter>
+    </ClCompile>
+    <ClCompile Include="..\_api\c4d_libs\lib_editortools.cpp">
+      <Filter>Source Files\c4d_libs</Filter>
+    </ClCompile>
+    <ClCompile Include="..\_api\c4d_libs\lib_filtertree.cpp">
+      <Filter>Source Files\c4d_libs</Filter>
+    </ClCompile>
+    <ClCompile Include="..\_api\c4d_libs\lib_hair.cpp">
+      <Filter>Source Files\c4d_libs</Filter>
+    </ClCompile>
+    <ClCompile Include="..\_api\c4d_libs\lib_iconcollection.cpp">
+      <Filter>Source Files\c4d_libs</Filter>
+    </ClCompile>
+    <ClCompile Include="..\_api\c4d_libs\lib_layershader.cpp">
+      <Filter>Source Files\c4d_libs</Filter>
+    </ClCompile>
+    <ClCompile Include="..\_api\c4d_libs\lib_modeling.cpp">
+      <Filter>Source Files\c4d_libs</Filter>
+    </ClCompile>
+    <ClCompile Include="..\_api\c4d_libs\lib_ngon.cpp">
+      <Filter>Source Files\c4d_libs</Filter>
+    </ClCompile>
+    <ClCompile Include="..\_api\c4d_libs\lib_noise.cpp">
+      <Filter>Source Files\c4d_libs</Filter>
+    </ClCompile>
+    <ClCompile Include="..\_api\c4d_libs\lib_pictureviewer.cpp">
+      <Filter>Source Files\c4d_libs</Filter>
+    </ClCompile>
+    <ClCompile Include="..\_api\c4d_libs\lib_prefs.cpp">
+      <Filter>Source Files\c4d_libs</Filter>
+    </ClCompile>
+    <ClCompile Include="..\_api\c4d_libs\lib_py.cpp">
+      <Filter>Source Files\c4d_libs</Filter>
+    </ClCompile>
+    <ClCompile Include="..\_api\c4d_libs\lib_regexpr.cpp">
+      <Filter>Source Files\c4d_libs</Filter>
+    </ClCompile>
+    <ClCompile Include="..\_api\c4d_libs\lib_sds.cpp">
+      <Filter>Source Files\c4d_libs</Filter>
+    </ClCompile>
+    <ClCompile Include="..\_api\c4d_libs\lib_selectionchanger.cpp">
+      <Filter>Source Files\c4d_libs</Filter>
+    </ClCompile>
+    <ClCompile Include="..\_api\c4d_libs\lib_sn.cpp">
+      <Filter>Source Files\c4d_libs</Filter>
+    </ClCompile>
+    <ClCompile Include="..\_api\c4d_libs\lib_snd.cpp">
+      <Filter>Source Files\c4d_libs</Filter>
+    </ClCompile>
+    <ClCompile Include="..\_api\c4d_libs\lib_splinehelp.cpp">
+      <Filter>Source Files\c4d_libs</Filter>
+    </ClCompile>
+    <ClCompile Include="..\_api\c4d_libs\lib_tlmarker.cpp">
+      <Filter>Source Files\c4d_libs</Filter>
+    </ClCompile>
+    <ClCompile Include="..\_api\c4d_libs\lib_viewport.cpp">
+      <Filter>Source Files\c4d_libs</Filter>
+    </ClCompile>
+    <ClCompile Include="..\_api\c4d_libs\lib_zipfile.cpp">
+      <Filter>Source Files\c4d_libs</Filter>
+    </ClCompile>
+    <ClCompile Include="..\_api\c4d_preview\filter_prefs.cpp">
+      <Filter>Source Files\c4d_preview</Filter>
+    </ClCompile>
+    <ClCompile Include="..\_api\c4d_preview\filterpreview.cpp">
+      <Filter>Source Files\c4d_preview</Filter>
+    </ClCompile>
+    <ClCompile Include="..\_api\c4d_preview\filterthread.cpp">
+      <Filter>Source Files\c4d_preview</Filter>
+    </ClCompile>
+    <ClCompile Include="..\_api\c4d_preview\linefetchutil.cpp">
+      <Filter>Source Files\c4d_preview</Filter>
+    </ClCompile>
+    <ClCompile Include="..\_api\c4d_preview\matrixrotate.cpp">
+      <Filter>Source Files\c4d_preview</Filter>
+    </ClCompile>
+    <ClCompile Include="..\_api\c4d_preview\matrixutil.cpp">
+      <Filter>Source Files\c4d_preview</Filter>
+    </ClCompile>
+    <ClCompile Include="..\_api\c4d_preview\matrixwrapper.cpp">
+      <Filter>Source Files\c4d_preview</Filter>
+    </ClCompile>
+    <ClCompile Include="..\_api\c4d_preview\pixelfetchutil.cpp">
+      <Filter>Source Files\c4d_preview</Filter>
+    </ClCompile>
+    <ClCompile Include="..\_api\c4d_scaling\mergelin.cpp">
+      <Filter>Source Files\c4d_scaling</Filter>
+    </ClCompile>
+    <ClCompile Include="..\_api\c4d_scaling\miniblt.cpp">
+      <Filter>Source Files\c4d_scaling</Filter>
+    </ClCompile>
+    <ClCompile Include="..\_api\c4d_scaling\scale.cpp">
+      <Filter>Source Files\c4d_scaling</Filter>
+    </ClCompile>
+    <ClCompile Include="..\_api\c4d_scaling\scaleitf.cpp">
+      <Filter>Source Files\c4d_scaling</Filter>
+    </ClCompile>
+    <ClCompile Include="..\_api\c4d_scaling\scalelin.cpp">
+      <Filter>Source Files\c4d_scaling</Filter>
+    </ClCompile>
+    <ClCompile Include="..\_api\c4d_gv\c4d_graphview.cpp">
+      <Filter>Source Files\c4d_gv</Filter>
+    </ClCompile>
+    <ClCompile Include="..\_api\c4d_gv\c4d_operatorplugin.cpp">
+      <Filter>Source Files\c4d_gv</Filter>
+    </ClCompile>
+    <ClCompile Include="..\_api\c4d_gv\c4d_particles.cpp">
+      <Filter>Source Files\c4d_gv</Filter>
+    </ClCompile>
+    <ClCompile Include="..\_api\c4d_misc\memory\debugglobals.cpp">
+      <Filter>Source Files\c4d_misc\memory</Filter>
+    </ClCompile>
+    <ClCompile Include="..\_api\c4d_libs\lib_sculpt.cpp">
+      <Filter>Source Files\c4d_libs</Filter>
+    </ClCompile>
+    <ClCompile Include="..\_api\c4d_snapplugin.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\_api\c4d_customgui\customgui_kerning.cpp">
+      <Filter>Source Files\c4d_customgui</Filter>
+    </ClCompile>
+    <ClCompile Include="..\_api\c4d_libs\lib_sculptbrush.cpp">
+      <Filter>Source Files\c4d_libs</Filter>
+    </ClCompile>
+    <ClCompile Include="..\_api\c4d_network.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\_api\c4d_libs\lib_net.cpp">
+      <Filter>Source Files\c4d_libs</Filter>
+    </ClCompile>
+    <ClCompile Include="..\_api\c4d_uuid.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\_api\c4d_libs\lib_secure_random.cpp">
+      <Filter>Source Files\c4d_libs</Filter>
+    </ClCompile>
+    <ClCompile Include="..\_api\c4d_libs\lib_big_integer.cpp">
+      <Filter>Source Files\c4d_libs</Filter>
+    </ClCompile>
+    <ClCompile Include="..\_api\c4d_libs\lib_intersect.cpp">
+      <Filter>Source Files\c4d_libs</Filter>
+    </ClCompile>
+    <ClCompile Include="..\_api\c4d_misc\memory\defaultallocator.cpp">
+      <Filter>Source Files\c4d_misc\memory</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\_api\c4d_basebitmap.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\_api\c4d_basechannel.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\_api\c4d_basecontainer.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\_api\c4d_basedata.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\_api\c4d_basedocument.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\_api\c4d_basedraw.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\_api\c4d_baseeffectordata.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\_api\c4d_baseeffectorplugin.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\_api\c4d_baselist.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\_api\c4d_basematerial.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\_api\c4d_baseobject.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\_api\c4d_baseplugin.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\_api\c4d_baseselect.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\_api\c4d_basesound.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\_api\c4d_basetag.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\_api\c4d_basetime.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\_api\c4d_bitmapfilter.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\_api\c4d_bitmapfilterstruct.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\_api\c4d_canimation.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\_api\c4d_coffee.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\_api\c4d_commanddata.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\_api\c4d_commandplugin.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\_api\c4d_ctrackdata.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\_api\c4d_ctrackplugin.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\_api\c4d_customdatatype.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\_api\c4d_customdatatypeplugin.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\_api\c4d_customguidata.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\_api\c4d_customguiplugin.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\_api\c4d_descriptiondialog.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\_api\c4d_falloffdata.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\_api\c4d_falloffplugin.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\_api\c4d_file.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\_api\c4d_filterdata.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\_api\c4d_filterplugin.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\_api\c4d_gedata.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\_api\c4d_general.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\_api\c4d_gl.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\_api\c4d_gui.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\_api\c4d_library.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\_api\c4d_listview.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\_api\c4d_materialdata.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\_api\c4d_materialplugin.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\_api\c4d_memory.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\_api\c4d_messagedata.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\_api\c4d_messageplugin.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\_api\c4d_nodedata.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\_api\c4d_nodeplugin.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\_api\c4d_objectdata.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\_api\c4d_objectplugin.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\_api\c4d_painter.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\_api\c4d_particleobject.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\_api\c4d_plugin.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\_api\c4d_quaternion.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\_api\c4d_raytrace.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\_api\c4d_resource.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\_api\c4d_scenehookdata.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\_api\c4d_scenehookplugin.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\_api\c4d_shader.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\_api\c4d_shaderdata.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\_api\c4d_shaderplugin.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\_api\c4d_string.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\_api\c4d_tagdata.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\_api\c4d_tagplugin.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\_api\c4d_thread.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\_api\c4d_thread_keys.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\_api\c4d_tooldata.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\_api\c4d_toolplugin.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\_api\c4d_tools.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\_api\c4d_videopost.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\_api\c4d_videopostdata.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\_api\c4d_videopostplugin.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\_api\ge_autoptr.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\_api\ge_dynamicarray.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\_api\ge_lmatrix.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\_api\ge_lvector.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\_api\ge_mac_flags.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\_api\ge_math.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\_api\ge_matrix.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\_api\ge_prepass.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\_api\ge_sort.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\_api\ge_vector.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\_api\gui.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\_api\matrix4.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\_api\operatingsystem.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\_api\vector4.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\_api\x4d_colors.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\_api\x4d_filter.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\_api\x4d_macros.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\_api\c4d_customgui\customgui_base.h">
+      <Filter>Source Files\c4d_customgui</Filter>
+    </ClInclude>
+    <ClInclude Include="..\_api\c4d_customgui\customgui_bitmapbool.h">
+      <Filter>Source Files\c4d_customgui</Filter>
+    </ClInclude>
+    <ClInclude Include="..\_api\c4d_customgui\customgui_bitmapbutton.h">
+      <Filter>Source Files\c4d_customgui</Filter>
+    </ClInclude>
+    <ClInclude Include="..\_api\c4d_customgui\customgui_datetime.h">
+      <Filter>Source Files\c4d_customgui</Filter>
+    </ClInclude>
+    <ClInclude Include="..\_api\c4d_customgui\customgui_descproperty.h">
+      <Filter>Source Files\c4d_customgui</Filter>
+    </ClInclude>
+    <ClInclude Include="..\_api\c4d_customgui\customgui_description.h">
+      <Filter>Source Files\c4d_customgui</Filter>
+    </ClInclude>
+    <ClInclude Include="..\_api\c4d_customgui\customgui_filename.h">
+      <Filter>Source Files\c4d_customgui</Filter>
+    </ClInclude>
+    <ClInclude Include="..\_api\c4d_customgui\customgui_fontchooser.h">
+      <Filter>Source Files\c4d_customgui</Filter>
+    </ClInclude>
+    <ClInclude Include="..\_api\c4d_customgui\customgui_gradient.h">
+      <Filter>Source Files\c4d_customgui</Filter>
+    </ClInclude>
+    <ClInclude Include="..\_api\c4d_customgui\customgui_htmlviewer.h">
+      <Filter>Source Files\c4d_customgui</Filter>
+    </ClInclude>
+    <ClInclude Include="..\_api\c4d_customgui\customgui_hyperlink.h">
+      <Filter>Source Files\c4d_customgui</Filter>
+    </ClInclude>
+    <ClInclude Include="..\_api\c4d_customgui\customgui_inexclude.h">
+      <Filter>Source Files\c4d_customgui</Filter>
+    </ClInclude>
+    <ClInclude Include="..\_api\c4d_customgui\customgui_lensglow.h">
+      <Filter>Source Files\c4d_customgui</Filter>
+    </ClInclude>
+    <ClInclude Include="..\_api\c4d_customgui\customgui_linkbox.h">
+      <Filter>Source Files\c4d_customgui</Filter>
+    </ClInclude>
+    <ClInclude Include="..\_api\c4d_customgui\customgui_listview.h">
+      <Filter>Source Files\c4d_customgui</Filter>
+    </ClInclude>
+    <ClInclude Include="..\_api\c4d_customgui\customgui_listview2.h">
+      <Filter>Source Files\c4d_customgui</Filter>
+    </ClInclude>
+    <ClInclude Include="..\_api\c4d_customgui\customgui_longlat.h">
+      <Filter>Source Files\c4d_customgui</Filter>
+    </ClInclude>
+    <ClInclude Include="..\_api\c4d_customgui\customgui_matassign.h">
+      <Filter>Source Files\c4d_customgui</Filter>
+    </ClInclude>
+    <ClInclude Include="..\_api\c4d_customgui\customgui_matpreview.h">
+      <Filter>Source Files\c4d_customgui</Filter>
+    </ClInclude>
+    <ClInclude Include="..\_api\c4d_customgui\customgui_movieview.h">
+      <Filter>Source Files\c4d_customgui</Filter>
+    </ClInclude>
+    <ClInclude Include="..\_api\c4d_customgui\customgui_pla.h">
+      <Filter>Source Files\c4d_customgui</Filter>
+    </ClInclude>
+    <ClInclude Include="..\_api\c4d_customgui\customgui_priority.h">
+      <Filter>Source Files\c4d_customgui</Filter>
+    </ClInclude>
+    <ClInclude Include="..\_api\c4d_customgui\customgui_quicktab.h">
+      <Filter>Source Files\c4d_customgui</Filter>
+    </ClInclude>
+    <ClInclude Include="..\_api\c4d_customgui\customgui_splinecontrol.h">
+      <Filter>Source Files\c4d_customgui</Filter>
+    </ClInclude>
+    <ClInclude Include="..\_api\c4d_customgui\customgui_texbox.h">
+      <Filter>Source Files\c4d_customgui</Filter>
+    </ClInclude>
+    <ClInclude Include="..\_api\c4d_customgui\customgui_texturemanager.h">
+      <Filter>Source Files\c4d_customgui</Filter>
+    </ClInclude>
+    <ClInclude Include="..\_api\c4d_customgui\customgui_texturename.h">
+      <Filter>Source Files\c4d_customgui</Filter>
+    </ClInclude>
+    <ClInclude Include="..\_api\c4d_customgui\customgui_unitscale.h">
+      <Filter>Source Files\c4d_customgui</Filter>
+    </ClInclude>
+    <ClInclude Include="..\_api\c4d_libs\lib_activeobjectmanager.h">
+      <Filter>Source Files\c4d_libs</Filter>
+    </ClInclude>
+    <ClInclude Include="..\_api\c4d_libs\lib_aes.h">
+      <Filter>Source Files\c4d_libs</Filter>
+    </ClInclude>
+    <ClInclude Include="..\_api\c4d_libs\lib_batchrender.h">
+      <Filter>Source Files\c4d_libs</Filter>
+    </ClInclude>
+    <ClInclude Include="..\_api\c4d_libs\lib_browser.h">
+      <Filter>Source Files\c4d_libs</Filter>
+    </ClInclude>
+    <ClInclude Include="..\_api\c4d_libs\lib_ca.h">
+      <Filter>Source Files\c4d_libs</Filter>
+    </ClInclude>
+    <ClInclude Include="..\_api\c4d_libs\lib_clipmap.h">
+      <Filter>Source Files\c4d_libs</Filter>
+    </ClInclude>
+    <ClInclude Include="..\_api\c4d_libs\lib_cloud.h">
+      <Filter>Source Files\c4d_libs</Filter>
+    </ClInclude>
+    <ClInclude Include="..\_api\c4d_libs\lib_collider.h">
+      <Filter>Source Files\c4d_libs</Filter>
+    </ClInclude>
+    <ClInclude Include="..\_api\c4d_libs\lib_datetimeparser.h">
+      <Filter>Source Files\c4d_libs</Filter>
+    </ClInclude>
+    <ClInclude Include="..\_api\c4d_libs\lib_description.h">
+      <Filter>Source Files\c4d_libs</Filter>
+    </ClInclude>
+    <ClInclude Include="..\_api\c4d_libs\lib_dwgobjects.h">
+      <Filter>Source Files\c4d_libs</Filter>
+    </ClInclude>
+    <ClInclude Include="..\_api\c4d_libs\lib_editortools.h">
+      <Filter>Source Files\c4d_libs</Filter>
+    </ClInclude>
+    <ClInclude Include="..\_api\c4d_libs\lib_filtertree.h">
+      <Filter>Source Files\c4d_libs</Filter>
+    </ClInclude>
+    <ClInclude Include="..\_api\c4d_libs\lib_hair.h">
+      <Filter>Source Files\c4d_libs</Filter>
+    </ClInclude>
+    <ClInclude Include="..\_api\c4d_libs\lib_iconcollection.h">
+      <Filter>Source Files\c4d_libs</Filter>
+    </ClInclude>
+    <ClInclude Include="..\_api\c4d_libs\lib_layershader.h">
+      <Filter>Source Files\c4d_libs</Filter>
+    </ClInclude>
+    <ClInclude Include="..\_api\c4d_libs\lib_modeling.h">
+      <Filter>Source Files\c4d_libs</Filter>
+    </ClInclude>
+    <ClInclude Include="..\_api\c4d_libs\lib_ngon.h">
+      <Filter>Source Files\c4d_libs</Filter>
+    </ClInclude>
+    <ClInclude Include="..\_api\c4d_libs\lib_noise.h">
+      <Filter>Source Files\c4d_libs</Filter>
+    </ClInclude>
+    <ClInclude Include="..\_api\c4d_libs\lib_pictureviewer.h">
+      <Filter>Source Files\c4d_libs</Filter>
+    </ClInclude>
+    <ClInclude Include="..\_api\c4d_libs\lib_prefs.h">
+      <Filter>Source Files\c4d_libs</Filter>
+    </ClInclude>
+    <ClInclude Include="..\_api\c4d_libs\lib_py.h">
+      <Filter>Source Files\c4d_libs</Filter>
+    </ClInclude>
+    <ClInclude Include="..\_api\c4d_libs\lib_regexpr.h">
+      <Filter>Source Files\c4d_libs</Filter>
+    </ClInclude>
+    <ClInclude Include="..\_api\c4d_libs\lib_sds.h">
+      <Filter>Source Files\c4d_libs</Filter>
+    </ClInclude>
+    <ClInclude Include="..\_api\c4d_libs\lib_selectionchanger.h">
+      <Filter>Source Files\c4d_libs</Filter>
+    </ClInclude>
+    <ClInclude Include="..\_api\c4d_libs\lib_sn.h">
+      <Filter>Source Files\c4d_libs</Filter>
+    </ClInclude>
+    <ClInclude Include="..\_api\c4d_libs\lib_snd.h">
+      <Filter>Source Files\c4d_libs</Filter>
+    </ClInclude>
+    <ClInclude Include="..\_api\c4d_libs\lib_splinehelp.h">
+      <Filter>Source Files\c4d_libs</Filter>
+    </ClInclude>
+    <ClInclude Include="..\_api\c4d_libs\lib_tlmarker.h">
+      <Filter>Source Files\c4d_libs</Filter>
+    </ClInclude>
+    <ClInclude Include="..\_api\c4d_libs\lib_viewport.h">
+      <Filter>Source Files\c4d_libs</Filter>
+    </ClInclude>
+    <ClInclude Include="..\_api\c4d_libs\lib_zipfile.h">
+      <Filter>Source Files\c4d_libs</Filter>
+    </ClInclude>
+    <ClInclude Include="..\_api\c4d_preview\filter_prefs.h">
+      <Filter>Source Files\c4d_preview</Filter>
+    </ClInclude>
+    <ClInclude Include="..\_api\c4d_preview\filter_private_id.h">
+      <Filter>Source Files\c4d_preview</Filter>
+    </ClInclude>
+    <ClInclude Include="..\_api\c4d_preview\filterpreview.h">
+      <Filter>Source Files\c4d_preview</Filter>
+    </ClInclude>
+    <ClInclude Include="..\_api\c4d_preview\filterthread.h">
+      <Filter>Source Files\c4d_preview</Filter>
+    </ClInclude>
+    <ClInclude Include="..\_api\c4d_preview\linefetchutil.h">
+      <Filter>Source Files\c4d_preview</Filter>
+    </ClInclude>
+    <ClInclude Include="..\_api\c4d_preview\matrixrotate.h">
+      <Filter>Source Files\c4d_preview</Filter>
+    </ClInclude>
+    <ClInclude Include="..\_api\c4d_preview\matrixutil.h">
+      <Filter>Source Files\c4d_preview</Filter>
+    </ClInclude>
+    <ClInclude Include="..\_api\c4d_preview\matrixwrapper.h">
+      <Filter>Source Files\c4d_preview</Filter>
+    </ClInclude>
+    <ClInclude Include="..\_api\c4d_preview\pixelfetchutil.h">
+      <Filter>Source Files\c4d_preview</Filter>
+    </ClInclude>
+    <ClInclude Include="..\_api\c4d_scaling\mergelin.h">
+      <Filter>Source Files\c4d_scaling</Filter>
+    </ClInclude>
+    <ClInclude Include="..\_api\c4d_scaling\miniblt.h">
+      <Filter>Source Files\c4d_scaling</Filter>
+    </ClInclude>
+    <ClInclude Include="..\_api\c4d_scaling\scale.h">
+      <Filter>Source Files\c4d_scaling</Filter>
+    </ClInclude>
+    <ClInclude Include="..\_api\c4d_scaling\scaleblt.h">
+      <Filter>Source Files\c4d_scaling</Filter>
+    </ClInclude>
+    <ClInclude Include="..\_api\c4d_scaling\scaleitf.h">
+      <Filter>Source Files\c4d_scaling</Filter>
+    </ClInclude>
+    <ClInclude Include="..\_api\c4d_scaling\scalelin.h">
+      <Filter>Source Files\c4d_scaling</Filter>
+    </ClInclude>
+    <ClInclude Include="..\_api\c4d_gv\c4d_graphview.h">
+      <Filter>Source Files\c4d_gv</Filter>
+    </ClInclude>
+    <ClInclude Include="..\_api\c4d_gv\c4d_operatordata.h">
+      <Filter>Source Files\c4d_gv</Filter>
+    </ClInclude>
+    <ClInclude Include="..\_api\c4d_gv\c4d_operatorplugin.h">
+      <Filter>Source Files\c4d_gv</Filter>
+    </ClInclude>
+    <ClInclude Include="..\_api\c4d_gv\c4d_particles.h">
+      <Filter>Source Files\c4d_gv</Filter>
+    </ClInclude>
+    <ClInclude Include="..\_api\c4d_misc\general.h">
+      <Filter>Source Files\c4d_misc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\_api\c4d_misc\datastructures\blockarray.h">
+      <Filter>Source Files\c4d_misc\datastructures</Filter>
+    </ClInclude>
+    <ClInclude Include="..\_api\c4d_misc\datastructures\pointerarray.h">
+      <Filter>Source Files\c4d_misc\datastructures</Filter>
+    </ClInclude>
+    <ClInclude Include="..\_api\c4d_misc\memory\debugglobals.h">
+      <Filter>Source Files\c4d_misc\memory</Filter>
+    </ClInclude>
+    <ClInclude Include="..\_api\c4d_misc\memory\defaultallocator.h">
+      <Filter>Source Files\c4d_misc\memory</Filter>
+    </ClInclude>
+    <ClInclude Include="..\_api\c4d_misc\datastructures\basearray.h">
+      <Filter>Source Files\c4d_misc\datastructures</Filter>
+    </ClInclude>
+    <ClInclude Include="..\_api\c4d_misc\datastructures\baselist.h">
+      <Filter>Source Files\c4d_misc\datastructures</Filter>
+    </ClInclude>
+    <ClInclude Include="..\_api\c4d_misc\datastructures\autoiterator.h">
+      <Filter>Source Files\c4d_misc\datastructures</Filter>
+    </ClInclude>
+    <ClInclude Include="..\_api\c4d_misc\datastructures\sort.h">
+      <Filter>Source Files\c4d_misc\datastructures</Filter>
+    </ClInclude>
+    <ClInclude Include="..\_api\c4d_misc\datastructures\sortedarray.h">
+      <Filter>Source Files\c4d_misc\datastructures</Filter>
+    </ClInclude>
+    <ClInclude Include="..\_api\c4d_misc.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\_api\c4d_libs\lib_sculpt.h">
+      <Filter>Source Files\c4d_libs</Filter>
+    </ClInclude>
+    <ClInclude Include="..\_api\c4d_snapplugin.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\_api\c4d_snapdata.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\_api\c4d_misc\datastructures\collection.h">
+      <Filter>Source Files\c4d_misc\datastructures</Filter>
+    </ClInclude>
+    <ClInclude Include="..\_api\c4d_misc\datastructures\hashcode.h">
+      <Filter>Source Files\c4d_misc\datastructures</Filter>
+    </ClInclude>
+    <ClInclude Include="..\_api\c4d_misc\datastructures\hashmap.h">
+      <Filter>Source Files\c4d_misc\datastructures</Filter>
+    </ClInclude>
+    <ClInclude Include="..\_api\c4d_customgui\customgui_kerning.h">
+      <Filter>Source Files\c4d_customgui</Filter>
+    </ClInclude>
+    <ClInclude Include="..\_api\c4d_libs\lib_sculptbrush.h">
+      <Filter>Source Files\c4d_libs</Filter>
+    </ClInclude>
+    <ClInclude Include="..\_api\c4d_network.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\_api\c4d_libs\lib_net.h">
+      <Filter>Source Files\c4d_libs</Filter>
+    </ClInclude>
+    <ClInclude Include="..\_api\c4d_uuid.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\_api\c4d_libs\lib_secure_random.h">
+      <Filter>Source Files\c4d_libs</Filter>
+    </ClInclude>
+    <ClInclude Include="..\_api\c4d_libs\lib_big_integer.h">
+      <Filter>Source Files\c4d_libs</Filter>
+    </ClInclude>
+    <ClInclude Include="..\_api\ge_sys_math.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\_api\c4d_libs\lib_intersect.h">
+      <Filter>Source Files\c4d_libs</Filter>
+    </ClInclude>
+  </ItemGroup>
+</Project>

@@ -1,0 +1,14 @@
+#include "_apibase_release"
+
+// limit symbol visibilty to imported and exported global symbols
+STRIP_STYLE = non-global
+
+EXECUTABLE_EXTENSION = dylib
+USER_HEADER_SEARCH_PATHS = $(C4D_ROOTDIR)/resource/_api/** $(C4D_ROOTDIR)/resource/res/** res/** $(C4D_ROOTDIR)/resource/modules/objects/res/description $(C4D_ROOTDIR)/modules/advanced\ render/advanced\ render/res/description $(C4D_ROOTDIR)/modules/thinking\ particles/thinking\ particles/res/description $(C4D_ROOTDIR)/modules/dynamics/res/description $(C4D_ROOTDIR)/resource/modules/modeling/res/description
+LIBRARY_SEARCH_PATHS = $(C4D_ROOTDIR)/resource/_api_lib
+EXPORTED_SYMBOLS_FILE = $(C4D_ROOTDIR)/resource/_api_lib/export.txt
+GCC_PREFIX_HEADER = $(C4D_ROOTDIR)/resource/_api/ge_mac_flags.h
+OTHER_LDFLAGS = $(C4D_ROOTDIR)/resource/_api_lib/lib_api_release.a
+
+// strip symbols during linking to avoid errors in strip ("symbols referenced by relocation entries that can't be stripped in")
+SEPARATE_SYMBOL_EDIT = NO

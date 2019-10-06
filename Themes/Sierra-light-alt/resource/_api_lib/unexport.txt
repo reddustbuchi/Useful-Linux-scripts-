@@ -1,0 +1,11 @@
+__ZnwmRKSt9nothrow_t
+__ZnwmRKSt9nothrow_tiPKc
+__ZnwmRKSt9nothrow_tiPKci
+
+__ZnamRKSt9nothrow_t
+__ZnamRKSt9nothrow_tiPKc
+__ZnamRKSt9nothrow_tiPKci
+
+__ZdlPvRKSt9nothrow_t
+__ZdaPvRKSt9nothrow_t
+

@@ -1,0 +1,24 @@
+toolbarbutton[observes=button_delete] .toolbarbutton-icon {
+  list-style-image: url("moz-icon://stock/stock_delete?size=button")!important;
+}
+
+toolbarbutton[observes=button_delete][disabled="true"] .toolbarbutton-icon {
+  list-style-image: url("moz-icon://stock/stock_delete?size=button&state=disabled")!important;
+}
+
+toolbarbutton[id=button-save] .toolbarbutton-icon {
+  list-style-image: url("moz-icon://stock/stock_save?size=button")!important;
+}
+
+toolbarbutton[id=button-save][disabled="true"] .toolbarbutton-icon {
+  list-style-image: url("moz-icon://stock/stock_save?size=button&state=disabled")!important;
+}
+
+toolbarbutton[id=button-print] .toolbarbutton-icon {
+  list-style-image: url("moz-icon://stock/stock_print?size=button")!important;
+}
+
+toolbarbutton[id=button-print][disabled="true"] .toolbarbutton-icon {
+  list-style-image: url("moz-icon://stock/stock_print?size=button&state=disabled")!important;
+}
+

@@ -1,0 +1,7 @@
+STRINGTABLE Twww
+{
+	Twww "URL Address";
+
+	WWWTAG_URL             "URL";
+	WWWTAG_INFO            "Info";
+}

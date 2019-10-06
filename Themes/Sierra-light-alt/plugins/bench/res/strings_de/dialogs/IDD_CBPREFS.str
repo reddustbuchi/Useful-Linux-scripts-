@@ -1,0 +1,9 @@
+// C4D-DialogResource
+
+DIALOGSTRINGS IDD_CBPREFS
+{
+  IDS_CHECK    "Benutzerdefinierte Anzahl Render Threads";
+  IDS_DIALOG   "MAXON CINEBENCH-Einstellungen";
+  IDS_STATIC   "Sprache";
+  IDS_STATIC1  "Render Threads";
+}

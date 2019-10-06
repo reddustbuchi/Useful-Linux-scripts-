@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <_ProjectFileVersion>10.0.40219.1</_ProjectFileVersion>
+    <OutDir>$(ProjectDir)</OutDir>
+    <IntDir>$(SolutionDir)obj\$(ProjectName)\$(PlatformName)_$(Configuration)\</IntDir>
+    <IgnoreImportLibrary>true</IgnoreImportLibrary>
+    <GenerateManifest>false</GenerateManifest>
+    <LinkIncremental />
+    <TargetExt>.cdl64</TargetExt>
+  </PropertyGroup>
+  <ItemDefinitionGroup>
+    <Bscmake>
+      <OutputFile>$(IntDir)$(TargetFileName).bsc</OutputFile>
+    </Bscmake>
+    <ClCompile>
+      <AdditionalOptions>/vmg /vms /debug:inline-debug-info /Qfp-speculationsafe /Qunroll /Qsox- /Qdiag-error:589,1125,2407 /Qdiag-disable:vec,cpu-dispatch /Qdiag-disable:9,111,280,310,327,442,734,869,1684,1786,1899,2157,2259,2492,2557,13000 %(AdditionalOptions)</AdditionalOptions>
+      <Optimization>MaxSpeedHighLevel</Optimization>
+      <UseFullPaths>true</UseFullPaths>
+      <AdditionalIncludeDirectories>.\source;.\res;.\res\description;$(C4D_API_PATH)\_api;$(C4D_API_PATH)\_api;$(C4D_API_PATH)\_api\c4d_preview;$(C4D_API_PATH)\_api\c4d_customgui;$(C4D_API_PATH)\_api\c4d_libs;$(C4D_API_PATH)\_api\c4d_gv;$(C4D_API_PATH)\modules\Modeling\res\description;$(C4D_API_PATH)\res\description;$(C4D_API_PATH)\modules\objects\res\description;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>_USE_INTEL_COMPILER;WIN64;__PC;NDEBUG;_WINDOWS;__C4D_64BIT;_CRT_SECURE_NO_WARNINGS;PSAPI_VERSION=1;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <MultiProcessorCompilation>true</MultiProcessorCompilation>
+      <ExceptionHandling>false</ExceptionHandling>
+      <BasicRuntimeChecks>Default</BasicRuntimeChecks>
+      <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
+      <FunctionLevelLinking>false</FunctionLevelLinking>
+      <TreatWChar_tAsBuiltInType>false</TreatWChar_tAsBuiltInType>
+      <PrecompiledHeaderOutputFile>$(IntDir)headers.pch</PrecompiledHeaderOutputFile>
+      <AssemblerListingLocation>$(IntDir)asm\</AssemblerListingLocation>
+      <ObjectFileName>$(IntDir)obj\</ObjectFileName>
+      <WarningLevel>Level4</WarningLevel>
+      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+      <CompileAs>Default</CompileAs>
+      <OpenMPSupport>false</OpenMPSupport>
+      <Cpp0xSupport>true</Cpp0xSupport>
+      <InlineFunctionExpansion>AnySuitable</InlineFunctionExpansion>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <FavorSizeOrSpeed>Speed</FavorSizeOrSpeed>
+      <StringPooling>true</StringPooling>
+      <MinimalRebuild>false</MinimalRebuild>
+      <BufferSecurityCheck>false</BufferSecurityCheck>
+      <EnableEnhancedInstructionSet>StreamingSIMDExtensions3</EnableEnhancedInstructionSet>
+    </ClCompile>
+    <Link>
+      <IgnoreSpecificDefaultLibraries>LIBCD;%(IgnoreSpecificDefaultLibraries)</IgnoreSpecificDefaultLibraries>
+      <AdditionalDependencies>%(AdditionalDependencies)</AdditionalDependencies>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <ProgramDatabaseFile>$(SolutionDir)obj\$(TargetName)_$(Platform)_$(Configuration).pdb</ProgramDatabaseFile>
+      <ImportLibrary>$(IntDir)$(TargetFileName).lib</ImportLibrary>
+      <TargetMachine>MachineX64</TargetMachine>
+      <OptimizeReferences>true</OptimizeReferences>
+      <OutputFile>$(ProjectDir)$(ProjectName).cdl64</OutputFile>
+    </Link>
+    <PostBuildEvent>
+      <Command>if EXIST $(C4D_BUILDSERVER_DIR)\builds\sign.bat ($(C4D_BUILDSERVER_DIR)\builds\sign.bat "$(TARGETPATH)")</Command>
+    </PostBuildEvent>
+  </ItemDefinitionGroup>
+</Project>

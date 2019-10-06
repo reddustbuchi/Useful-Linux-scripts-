@@ -1,0 +1,5 @@
+STRINGTABLE Fobjexport
+{
+	Fobjexport	"Wavefront Export";
+	OBJEXPORTFILTER_SCALE	"Scale";
+}

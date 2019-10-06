@@ -1,0 +1,21 @@
+# THEME: Gray Revenge GTK 3.4 Suite by alecive
+# AUTHOR: Minteastwood http://minteastwood.deviantart.com
+# DATE: May 2012
+# WEBSITE: http://alecive.deviantart.com
+# LICENSE: GPL
+
+active_text_color=#686868
+active_text_shadow_color=#ececec
+inactive_text_color=#bbbbbb
+title_shadow_active=false
+title_shadow_inactive=false
+full_width_title=true
+title_vertical_offset_active=2
+title_vertical_offset_inactive=2
+button_offset=5
+button_spacing=0
+shadow_delta_height=2
+shadow_delta_width=0
+shadow_delta_x=0
+shadow_delta_y=-10
+shadow_opacity=50

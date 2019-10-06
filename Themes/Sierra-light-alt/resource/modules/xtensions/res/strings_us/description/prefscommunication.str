@@ -1,0 +1,25 @@
+STRINGTABLE Prefscommunication
+{
+	Prefscommunication													"Communication";
+	
+	PREF_COMMUNICATION_UPDATEGROUP							"Updates";
+	PREF_COMMUNICATION_PROXYGROUP								"Proxy Settings";
+	PREF_COMMUNICATION_BUGREPORTS								"Allow Bugreports";
+	
+	PREF_COMMUNICATION_UPDATE_AUTO							"Automatically Check for Updates";
+	PREF_COMMUNICATION_UPDATE_AUTO_DEVELOPER		"Show Developer Updates";
+	
+	PREF_COMMUNICATION_PROXY_URL								"Proxy";
+	PREF_COMMUNICATION_PROXY_PORT								"Port";
+	
+	PREF_COMMUNICATION_PROXY_TYPE								"Proxy Type";
+		PREF_COMMUNICATION_PROXY_HTML								"HTML";
+		PREF_COMMUNICATION_PROXY_SOCKS4							"SOCKS 4";
+		PREF_COMMUNICATION_PROXY_SOCKS5							"SOCKS 5";
+	
+	PREF_COMMUNICATION_PROXY_EXCLUDE						"Exclude Hosts/IPs";
+	
+	PREF_COMMUNICATION_PROXY_USE_AUTH						"Use Authentication";
+	PREF_COMMUNICATION_PROXY_USER								"Username";
+	PREF_COMMUNICATION_PROXY_PASS								"Password";
+}

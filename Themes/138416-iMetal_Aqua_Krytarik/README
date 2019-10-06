@@ -1,0 +1,26 @@
+Installation
+============
+
+Theme:
+------
+
+- place the themes' directory into "/usr/share/themes" or "~/.themes"
+- if you want to use your own panel background or if you have items at your panels which don't follow the panel-bg,
+outcomment the "bq_pixmap" lines in "gtk-2.0/panel.rc" and choose the panel-bg via the properties dialogs of your panels
+
+
+Icons (to fit the dark panels):
+-----------------------------
+
+- place the icon themes' directory into "/usr/share/icons" or "~/.icons"
+- open the text editor
+- browse to the icon themes' directory
+- open the file "index.theme"
+- replace the first entry in the line of "Inherits=" with the name of your favorite icon themes' directory ("Snow sabre" is mine)
+- save it
+
+
+Fix for some Thunderbird buttons:
+---------------------------------
+
+- place the included userChrome.css into the "chrome" directory of your Thunderbird profile or add its content to yours

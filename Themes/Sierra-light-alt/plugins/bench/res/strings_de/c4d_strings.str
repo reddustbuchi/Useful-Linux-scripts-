@@ -1,0 +1,113 @@
+// C4D-StringResource
+// Identifier	Text 
+
+STRINGTABLE
+{
+	IDS_CB_LINK1				"http://www.maxon.net/app_portal/cb_14_de.html";
+	IDS_CB_LINK2				"http://www.maxon.net/app_portal/cbmx_14_de.html";
+	
+	IDS_CB_GHZ				"GHz";
+	IDS_CB_CORE				"Kern";
+	IDS_CB_CORES				"Kerne";
+	IDS_CB_THREAD				"Thread";
+	IDS_CB_THREADS				"Threads";
+	IDS_CB_CORES_SHORT			"C";
+	IDS_CB_THREADS_SHORT			"T";
+	IDS_CB_ERROR_NOTFOUND			"Fehler!|# nicht gefunden";
+	IDS_CB_ERROR_START_PRERENDERING		"Fehler beim Starten der Rendervorbereitung";
+	IDS_CB_ERROR_START_RENDERING		"Fehler beim Starten des Renderers";
+	IDS_CB_PERFORM_OGLTEST_LOADING		"F\u00fchre OpenGL-Test durch (ESC zum Abbrechen)  ... Lade Szene";
+	IDS_CB_PERFORM_OGLTEST_LOADING_SHORT	"Lade";
+	IDS_CB_PERFORM_OGLTEST_PREPARE		"F\u00fchre OpenGL-Test durch (ESC zum Abbrechen)... Vorbereitung der Szene";
+	IDS_CB_PERFORM_OGLTEST_PREPARE_SHORT	"Vorber.";
+	IDS_CB_PERFORM_OGLTEST_TESTMATCH	"F\u00fchre OpenGL-Test durch (ESC zum Abbrechen)... Vergleich mit Referenzbild";
+	IDS_CB_PERFORM_OGLTEST_TESTMATCH_SHORT	"Vergleich";
+	IDS_CB_PERFORM_OGLTEST_DIFFERENCE	"F\u00fchre OpenGL-Test durch (ESC zum Abbrechen)... Bildunterschiede";
+	IDS_CB_PERFORM_OGLTEST_RUNBENCH		"F\u00fchre OpenGL-Test durch (ESC zum Abbrechen)... CINEBENCH l\u00e4uft";
+	IDS_CB_PERFORM_OGLTEST_RUNBENCH_SHORT	"L\u00e4uft";
+	IDS_CB_PERFORM_CPU1TEST_PREPARE		"F\u00fchre Einzelkern-Rendertest durch ... Vorbereitung der Szene";
+	IDS_CB_PERFORM_CPU1TEST_RENDERING	"F\u00fchre Einzelkern-Rendertest durch ... Berechnung";
+	IDS_CB_PERFORM_CPUxTEST_PREPARE		"F\u00fchre Rendertest durch ... Vorbereitung der Szene";
+	IDS_CB_PERFORM_CPUxTEST_RENDERING	"F\u00fchre Rendertest durch ... Berechnung";
+	IDS_CB_QUALITYERROR1			"OpenGL-Referenzbildvergleich fehlgeschlagen!|Renderfehler werden als rote Pixel markiert.|Der Unterschied zum Referenzbild ist zu gro\u00df.||Das Resultat ist zum Testen ungeeignet.";
+	IDS_CB_CANCELED				"Vorgang durch Benutzer abgebrochen.";
+	IDS_CB_GLTIMEOUT			"Ihre Grafikkarte hat die OpenGL-Vorbereitungszeit nicht in der vorgegebenen Zeit geschafft.||Test wurde abgebrochen!";
+	IDS_CB_GLERROR2				"Es gab einen Fehler beim OpenGL-Referenzbildtest.||Test wurde abgebrochen!";
+	IDS_CB_RESTART				"MAXON CINEBENCH wird zum \u00c4ndern der Sprache automatisch neu gestartet";
+	IDS_CB_WELCOME				"Dr\u00fccken Sie auf einen der 'Start'-Buttons, um den entsprechenden Test zu starten.";
+	IDS_CB_GFX_MINIMUM			"Die Grafikkarte unterst\u00fctzt nicht die notwendigen Mindestanforderungen";
+	IDS_CB_CMD_RUNALL			"Starte alle ausgew\u00e4hlten Tests";
+	IDS_CB_CMD_RUNALL_HELP			"Starte alle ausgew\u00e4hlten Tests";
+	IDS_CB_CMD_ADVANCED			"Erweiterter Test";
+	IDS_CB_CMD_ADVANCED_HELP		"Erweiterte MAXON CINEBENCH-Optionen anzeigen";
+	IDS_CB_CMD_KEEPBEST			"Besten Wert behalten";
+	IDS_CB_CMD_KEEPBEST_HELP		"Besten Wert behalten";
+	IDS_CB_CMD_SHOWPREFS	"Einstellungen...";
+	IDS_CB_CMD_SHOWPREFS_HELP "Einstellungen";
+	IDS_CB_CMD_WEBSITE	"MAXON CINEBENCH Webseite";
+	IDS_CB_CMD_WEBSITE_HELP "MAXON CINEBENCH Webseite";
+	IDS_CB_CMD_DISCLAIMER	"Haftungsausschluss";
+	IDS_CB_CMD_DISCLAIMER_HELP "Haftungsausschluss";
+	IDS_CB_CMD_CB				"MAXON CINEBENCH";
+	IDS_CB_CMD_CB_HELP			"MAXON CINEBENCH";
+	IDS_CB_CMD_CB_STAT			"MAXON CINEBENCH-Status";
+	IDS_CB_CMD_CB_STAT_HELP			"MAXON CINEBENCH-Status";
+	
+	IDS_CB_RANK_YOURMACHINE			"Ihr Rechner";
+	IDS_CB_RANK_IDENTICALMACHINE		"Identischer Rechner";
+	IDS_CB_RANK_COMPAREMACHINE		"Vergleichsrechner";
+	IDS_CB_RANK_SAMESPEED		"--- das Vergleichssystem hat die gleiche Geschwindigkeit wie Ihr System";
+	IDS_CB_RANK_SLOWER			"--- das Vergleichssystem ist # x langsamer als Ihr System";
+	IDS_CB_RANK_FASTER			"--- das Vergleichssystem ist # x schneller als Ihr System";
+	IDS_CB_RANK_REFMATCH			"OpenGL-Referenzbildvergleich: # %";
+	IDS_CB_FPS				"fps";
+	IDS_CB_PTS				"cb";
+	IDS_CB_RANK_OGL				"OpenGL: # fps";
+	IDS_CB_RANK_CBCPUSINGLECORE		"Rendering (Einzelkern): # Punkte";
+	IDS_CB_RANK_CBCPUMULTICORE		"Rendering: # Punkte";
+	IDS_CB_RANK_CBRATIO			"Multiprozessorverh\u00e4ltnis: # x";
+	IDS_CB_OGLVERSION			"OpenGL-Version";
+	IDS_CB_OGLDRIVERVERSION										"Treiber-Version";
+	IDS_CB_RANK_INFO			"MAXON CINEBENCH-Information";
+	IDS_CB_RANK_VERSION			"MAXON CINEBENCH-Version";
+	
+	IDS_CB_YOURSCORE			"Ihr Ergebnis";
+	IDS_CB_SAMEMACHINE			"Identischer Rechner";
+	IDS_CB_SAVESCSORE			"Wollen Sie Ihre Testergebnisse speichern?";
+	IDS_CB_FILEEXISTS			"Die Datei existiert bereits. Wollen Sie die Datei \u00fcberschreiben?|Nein - erzeugt eine neue Datei.";
+	IDS_CB_FILEERROR			"Fehler beim Erzeugen der Datei.";
+
+	IDS_CB_DLG_OGL				"OpenGL";
+	IDS_CB_DLG_RUN				"Start";
+	IDS_CB_DLG_REFMATCH			"     Bildvergleich";
+	IDS_CB_DLG_CPU				"CPU";
+	IDS_CB_DLG_CPU_SINGLE			"CPU (Einzelkern)";
+	IDS_CB_DLG_MPRATIO			"    MP-Verh\u00e4ltnis";
+	IDS_CB_DLG_YOURSYSTEM			"Ihr System";
+	IDS_CB_DLG_PROC				"Prozessor";
+	IDS_CB_DLG_CORES			"Kerne x GHz";
+	IDS_CB_DLG_OS				"Betriebssys.";
+	IDS_CB_DLG_CBVERSION			"CB-Version";
+	IDS_CB_DLG_GFXBOARD			"Grafikkarte";
+	IDS_CB_DLG_INFO				"Information";
+	IDS_CB_DLG_RANKING			"Rangliste";
+	IDS_CB_DLG_RANK_OPENGL			"OpenGL";
+	IDS_CB_DLG_RANK_OGLMATCH		"OpenGL-Referenzbild";
+	IDS_CB_DLG_RANK_CPU			"CPU";
+	IDS_CB_DLG_RANK_CPU1			"CPU (Einzelkern)";
+	IDS_CB_DLG_RANK_MPRATIO			"MP-Verh\u00e4ltnis";
+	IDS_CB_DLG_RANK_DETAILS			"Details";
+	IDS_CB_DLG_DETAILS_CORES		"Kerne";
+	IDS_CB_DLG_DETAILS_GHZ			"GHz";
+	IDS_CB_DLG_DETAILS_PROC			"Prozessor";
+	IDS_CB_DLG_DETAILS_GFXVENDOR		"Grafikkartenhersteller";
+	IDS_CB_DLG_DETAILS_GFXBOARD		"Grafikkarte";
+	IDS_CB_DLG_DETAILS_GFXOPENGLVERSION     "OpenGL-Version";
+	IDS_CB_DLG_DETAILS_GFXDRIVERVERSION	"Treiberversion";
+	IDS_CB_DLG_DETAILS_OS			"Betriebssystem";
+	IDS_CB_DLG_DETAILS_CBVERSION		"MAXON CINEBENCH-Version";
+	IDS_CB_DLG_DETAILS_CBINFO		"MAXON CINEBENCH-Information";
+	IDS_CB_DLG_DETAILS_CBVERSIONNUM		"MAXON CINEBENCH-Versionsnummer";
+	IDS_CB_DLG_DETAILS_CBBUILDID		"MAXON CINEBENCH-BuildID";
+	IDS_CB_DLG_DETAILS_OGLMATCH		"OpenGL-Referenzbildvergleich";
+}

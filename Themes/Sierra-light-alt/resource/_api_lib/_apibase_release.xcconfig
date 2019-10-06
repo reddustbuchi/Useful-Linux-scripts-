@@ -1,0 +1,38 @@
+#include "_apibase_debug"
+
+//---Architectures---
+ARCHS = x86_64
+
+//---Build Options---
+DEBUG_INFORMATION_FORMAT = dwarf-with-dsym
+
+//---Deployment---
+COPY_PHASE_STRIP = NO
+DEPLOYMENT_POSTPROCESSING = YES
+SEPARATE_STRIP = NO
+STRIP_INSTALLED_PRODUCT = NO
+STRIP_STYLE = debugging
+
+//---Code Generation---
+GCC_OPTIMIZATION_LEVEL = 3
+GCC_UNROLL_LOOPS = YES
+
+// Disabled warning flags for Intel Compiler
+// #68: integer conversion resulted in a change of sign
+// #191: type qualifier is meaningless on cast type
+// #279: controlling expression is constant
+// #654: overloaded virtual function xyz is only partially overridden in class zxy
+// #858: type qualifier on return type is meaningless
+// #1899: character literals
+// #10120: overriding '-O0' with '-O3'
+
+ICC_OTHER_CPLUSPLUSFLAGS = -wd68,191,279,654,858,1899,10120 -fp-speculationsafe -unroll -O3
+
+//---Preprocessing---
+GCC_PREFIX_HEADER = $(C4D_ROOTDIR)/resource/_api/ge_mac_flags.h
+GCC_GENERATE_DEBUGGING_SYMBOLS = YES
+
+// Link Time Optimization: Needs huge amount of RAM but seems to work for LLVM >= 2.0
+//LLVM_LTO = YES
+
+

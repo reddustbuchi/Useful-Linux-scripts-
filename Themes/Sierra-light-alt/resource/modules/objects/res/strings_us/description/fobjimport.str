@@ -1,0 +1,7 @@
+STRINGTABLE Fobjimport
+{
+	Fobjimport	"Wavefront Import";
+	OBJIMPORTFILTER_SCALE	"Scale";
+	OBJIMPORTFILTER_IMPORTNORMALS "Import Normals";
+	OBJIMPORTFILTER_OPTIMIZE "Optimize Unused Points";
+}

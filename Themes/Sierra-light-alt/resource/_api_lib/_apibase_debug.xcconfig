@@ -1,0 +1,88 @@
+//---Architectures---
+ARCHS = $(NATIVE_ARCH_ACTUAL)
+//ONLY_ACTIVE_ARCH = YES
+SDKROOT = macosx // use latest macosx SDK
+
+//---Build Locations---
+SYMROOT = $(C4D_ROOTDIR)/../../(build)
+
+//---Build Options---
+DEBUG_INFORMATION_FORMAT = dwarf
+
+//---Deployment---
+DEPLOYMENT_LOCATION = YES
+INSTALL_MODE_FLAG = ug+w,o-w,a+rX
+DSTROOT = $(PROJECT_ROOT)
+INSTALL_PATH = /.
+MACOSX_DEPLOYMENT_TARGET = 10.6
+COMBINE_HIDPI_IMAGES = YES
+COPY_PHASE_STRIP = NO
+
+//---Linking---
+DEAD_CODE_STRIPPING = YES
+PRESERVE_DEAD_CODE_INITS_AND_TERMS = YES
+
+//---Search Paths---
+ALWAYS_SEARCH_USER_PATHS = NO
+USER_HEADER_SEARCH_PATHS = $(C4D_ROOTDIR)/resource/_api/** $(C4D_ROOTDIR)/resource/res/** 
+
+//---Compiler Version
+//GCC_VERSION = 4.2
+//GCC_VERSION = com.apple.compilers.llvmgcc42
+GCC_VERSION = com.apple.compilers.llvm.clang.1_0
+//GCC_VERSION = com.intel.compilers.icc.12_0_0
+
+//---Code Generation---
+GCC_ENABLE_SSE3_EXTENSIONS = YES
+GCC_GENERATE_DEBUGGING_SYMBOLS = YES
+GCC_DYNAMIC_NO_PIC = NO								// YES: faster function calls for applications. Not appropriate for shared libraries (which need to be position-independent).
+GCC_SYMBOLS_PRIVATE_EXTERN = YES			// NOTE: Symbols are made visible, but only c4d_main is exported (everything else is filtered out, see export.txt)
+GCC_OPTIMIZATION_LEVEL = 0
+GCC_FAST_MATH = NO
+
+//---Language---
+GCC_ENABLE_CPP_EXCEPTIONS = NO
+GCC_ENABLE_CPP_RTTI = NO
+GCC_ENABLE_OBJC_EXCEPTIONS = YES
+OTHER_CPLUSPLUSFLAGS =  $(OTHER_CFLAGS) -fno-math-errno
+GCC_PRECOMPILE_PREFIX_HEADER = NO
+GCC_PREFIX_HEADER = $(C4D_ROOTDIR)/resource/_api/ge_mac_debug_flags.h
+CLANG_CXX_LANGUAGE_STANDARD = c++0x	// enable c++0x features for Clang 3
+CLANG_CXX_LIBRARY = libstdc++
+
+
+// Disabled warning flags for Intel Compiler
+// #68: integer conversion resulted in a change of sign
+// #191: type qualifier is meaningless on cast type
+// #279: controlling expression is constant
+// #654: overloaded virtual function xyz is only partially overridden in class zxy
+// #858: type qualifier on return type is meaningless
+// #1899: character literals
+
+ICC_OTHER_CPLUSPLUSFLAGS = -wd68,191,279,654,858,1899 -fp-speculationsafe -O0
+
+// /Qdiag-disable:9,111,280,310,442,869,1684,1786,1899,2157,2259,13000
+// /Qfp-speculationsafe /Qunroll /Qopenmp /Qsox- /O3 /Qdiag-error:589,1125 /Qdiag-disable:vec,cpu-dispatch
+
+//---Preprocessing---
+GCC_PREPROCESSOR_DEFINITIONS = C4D_COCOA MAC_OS_X_VERSION_MIN_REQUIRED=1060
+
+//---Warnings---
+GCC_WARN_CHECK_SWITCH_STATEMENTS = NO
+GCC_WARN_ABOUT_DEPRECATED_FUNCTIONS = YES
+GCC_WARN_ABOUT_INVALID_OFFSETOF_MACRO = NO
+GCC_WARN_ABOUT_MISSING_PROTOTYPES = NO
+GCC_WARN_ABOUT_RETURN_TYPE = YES
+GCC_WARN_INITIALIZER_NOT_FULLY_BRACKETED = YES
+GCC_WARN_MISSING_PARENTHESES = YES
+GCC_WARN_TYPECHECK_CALLS_TO_PRINTF = YES
+GCC_WARN_UNKNOWN_PRAGMAS = YES
+GCC_WARN_UNUSED_FUNCTION = YES
+GCC_WARN_UNUSED_LABEL = YES
+GCC_WARN_UNUSED_VALUE = YES
+GCC_WARN_UNUSED_VARIABLE = YES
+GCC_WARN_HIDDEN_VIRTUAL_FUNCTIONS = YES
+
+// To silence the Clang "'&&' within '||'" warning messages, disable this warning flag
+WARNING_CFLAGS = -Wno-logical-op-parentheses			// NOT supported by gcc/llvm-gcc - results in compile error if set for older compilers! 
+

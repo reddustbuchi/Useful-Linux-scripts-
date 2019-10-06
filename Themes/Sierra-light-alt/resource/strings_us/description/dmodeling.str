@@ -1,0 +1,38 @@
+STRINGTABLE dmodeling
+{
+	dmodeling									"Modeling Settings";
+
+  SNAP_SETTINGS							"Snap";
+	QUANTIZE_SETTINGS					"Quantize";
+	GUIDES_SETTINGS						"Guide & Workplanes";
+	
+	SNAP_SETTINGS_ENABLED			"Enable Snapping";
+	SNAP_SETTINGS_RADIUS			"Snap Radius";
+	SNAP_SETTINGS_TOOL				"Tool Specific";
+
+	QUANTIZE_ENABLED					"Enable Quantizing";
+	QUANTIZE_MOVE							"Movement";
+	QUANTIZE_SCALE						"Scaling";
+	QUANTIZE_ROTATE						"Rotation";
+	QUANTIZE_TEXTURE					"Texture";
+
+	SNAP_SETTINGS_GUIDEANGLE	"Guide Angle";
+	SNAP_SETTINGS_3D		"3D Snap";
+	SNAPMODE_GUIDE						"Guides";						
+	SNAPMODE_INTERSECTION			"Intersections";		
+	SNAPMODE_POINT						"Vertex";					
+	SNAPMODE_SPLINE						"Spline";						
+	SNAPMODE_DYNAMICGUIDE			"Dynamic Guides";		
+	SNAPMODE_SPLINEMID				"Spline Midpoint";	
+	SNAPMODE_EDGE							"Edge";							
+	SNAPMODE_EDGEMID					"Edge Midpoint";		
+	SNAPMODE_POLYGON					"Polygon";					
+	SNAPMODE_POLYGONCENTER		"Polygon Center";		
+	SNAPMODE_WORKPLANE				"Workplane";				
+	SNAPMODE_AXIS							"Axis";							
+	SNAPMODE_ORTHO						"Perpendicular";			
+	SNAPMODE_GRIDPOINT				"Grid Point";				
+	SNAPMODE_GRIDLINE					"Grid Line";				
+	SNAPMODE_MIDPOINT					"Mid Point";				
+	SNAPMODE_GUIDEMID					"Guide Midpoint";		
+}

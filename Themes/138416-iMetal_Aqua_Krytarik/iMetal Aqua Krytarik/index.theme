@@ -1,0 +1,11 @@
+[X-GNOME-Metatheme]
+Name=iMetal Aqua Krytarik
+Comment=based on Mac4Lin GTK Aqua, iMetal and Macbuntu
+Type=X-GNOME-Metatheme
+Encoding=UTF-8
+
+[X-GNOME-Metatheme]
+GtkTheme=iMetal Aqua Krytarik
+MetacityTheme=iMetal Aqua Krytarik
+IconTheme=ubuntu-mono-dark-panel
+ButtonLayout=close,minimize,maximize:
